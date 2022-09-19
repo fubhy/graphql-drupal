@@ -172,8 +172,10 @@ class EntityLoadMultiple extends DataProducerPluginBase implements ContainerFact
         }
 
         if (isset($language) && $language !== $entities[$id]->language()->getId() && $entities[$id] instanceof TranslatableInterface) {
-          $entities[$id] = $entities[$id]->getTranslation($language);
-          $entities[$id]->addCacheContexts(["static:language:{$language}"]);
+          if ($entities[$id]->hasTranslation($language)) {
+            $entities[$id] = $entities[$id]->getTranslation($language);
+            $entities[$id]->addCacheContexts(["static:language:{$language}"]);
+          }
         }
 
         if ($access) {
