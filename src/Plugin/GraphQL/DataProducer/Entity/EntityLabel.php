@@ -41,13 +41,13 @@ class EntityLabel extends DataProducerPluginBase implements DataProducerPluginCa
    * Resolver.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   * @param bool|null $access
+   * @param bool $access
    * @param \Drupal\Core\Session\AccountInterface|null $accessUser
    * @param \Drupal\graphql\GraphQL\Execution\FieldContext $context
    *
    * @return string|null
    */
-  public function resolve(EntityInterface $entity, ?bool $access, ?AccountInterface $accessUser, FieldContext $context) {
+  public function resolve(EntityInterface $entity, bool $access, ?AccountInterface $accessUser, FieldContext $context) {
     if ($access) {
       /** @var \Drupal\Core\Access\AccessResultInterface $accessResult */
       $accessResult = $entity->access('view label', $accessUser, TRUE);
