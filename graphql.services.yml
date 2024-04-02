@@ -82,6 +82,12 @@ services:
     class: Drupal\graphql\Cache\RequestPolicy\GetOnly
     tags:
       - { name: page_cache_request_policy }
+
+  # Deny caching of requests in the dynamic page cache.
+  graphql.request_policy.deny_query_to_endpoint:
+    public: false
+    class: Drupal\graphql\Cache\RequestPolicy\IsEndPoint
+    tags:
       - { name: dynamic_page_cache_request_policy }
 
   # Upcasting for graphql query request parameters.

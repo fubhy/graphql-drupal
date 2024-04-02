@@ -13,6 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 class AutomaticPersistedQueriesTest extends GraphQLTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'page_cache',
+  ];
+
+  /**
    * Test plugin.
    *
    * @var \Drupal\graphql\Plugin\PersistedQueryPluginInterface
@@ -24,6 +31,7 @@ class AutomaticPersistedQueriesTest extends GraphQLTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+    $this->configureCachePolicy();
     $schema = <<<GQL
       schema {
         query: Query

@@ -92,17 +92,14 @@ jobs:
           composer --no-interaction --no-progress require \
             webonyx/graphql-php:^14.8 \
             drupal/typed_data:^1.0 \
-            drupal/redirect:^1.0 \
-            guzzlehttp/guzzle:^7.4.5
+            drupal/redirect:^1.0
 
       - name: Run PHPUnit
         run: |
-          php -S 127.0.0.1:8080 >/dev/null 2>&1 &
           cp modules/graphql/phpunit.xml.dist core/phpunit.xml
           ./vendor/bin/phpunit --configuration core/phpunit.xml modules/graphql
         env:
-          SIMPLETEST_DB: "sqlite://127.0.0.1/sites/default/files/db.sqlite"
-          SIMPLETEST_BASE_URL: http://127.0.0.1:8080
+          SIMPLETEST_DB: "sqlite://localhost/:memory:"
 
       - name: Install PHPStan and Coder dependencies
         if: ${{ matrix.phpstan == '1' }}
