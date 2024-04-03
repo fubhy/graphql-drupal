@@ -44,12 +44,21 @@ class ApqSubscriber implements EventSubscriberInterface {
     $query = $event->getContext()->getOperation()->query;
     $queryHash = $event->getContext()->getOperation()->extensions['persistedQuery']['sha256Hash'] ?? '';
 
-    if (is_string($query) && is_string($queryHash) && $queryHash !== '') {
-      $computedQueryHash = hash('sha256', $query);
-      if ($queryHash !== $computedQueryHash) {
-        throw new Error('Provided sha does not match query');
+    if (is_string($queryHash) && $queryHash !== '') {
+      // Add cache context for dynamic page cache compatibility on all
+      // operations that have the hash set.
+      $event->getContext()->addCacheContexts(
+        ['url.query_args:variables', 'url.query_args:extensions']
+      );
+
+      // If we have a query and the hash matches then can cache it.
+      if (is_string($query)) {
+        $computedQueryHash = hash('sha256', $query);
+        if ($queryHash !== $computedQueryHash) {
+          throw new Error('Provided sha does not match query');
+        }
+        $this->cache->set($queryHash, $query);
       }
-      $this->cache->set($queryHash, $query);
     }
   }
 
