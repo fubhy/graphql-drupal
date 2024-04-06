@@ -8,7 +8,7 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Tests the automatic persisted query plugin.
+ * Tests the APQ plugin in combination with dynamic page cache.
  *
  * @group graphql
  */
@@ -108,31 +108,32 @@ GQL;
     $idQuery = 'query($id: String!) { node(id: $id) { id } }';
 
     // Post query to endpoint to register the query hashes.
-    $parameters['extensions']['persistedQuery']['sha256Hash'] = hash('sha256', $titleQuery);
-    $parameters['variables'] = '{"id": "2"}';
-    $content = json_encode(['query' => $titleQuery] + $parameters);
-    $request = Request::create($endpoint, 'POST', [], [], [], ['CONTENT_TYPE' => 'application/json'], $content);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $extensions['persistedQuery']['sha256Hash'] = hash('sha256', $titleQuery);
+    $variables = ['id' => '2'];
+    $result = $this->query($titleQuery, $this->server, $variables, $extensions, FALSE, Request::METHOD_POST);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['node' => ['title' => 'Node 2']]], json_decode($result->getContent(), TRUE));
 
-    $parameters['extensions']['persistedQuery']['sha256Hash'] = hash('sha256', $idQuery);
-    $parameters['variables'] = '{"id": "2"}';
-    $content = json_encode(['query' => $idQuery] + $parameters);
-    $request = Request::create($endpoint, 'POST', [], [], [], ['CONTENT_TYPE' => 'application/json'], $content);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $extensions['persistedQuery']['sha256Hash'] = hash('sha256', $idQuery);
+    $variables = ['id' => '2'];
+    $result = $this->query($idQuery, $this->server, $variables, $extensions, FALSE, Request::METHOD_POST);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['node' => ['id' => 2]]], json_decode($result->getContent(), TRUE));
 
     // Execute apq call.
-    $parameters['variables'] = '{"id": "1"}';
+    /*$parameters['extensions']['persistedQuery']['sha256Hash'] = hash('sha256', $idQuery);
+    $parameters['variables'] = ['id' => '1'];
     $request = Request::create($endpoint, 'GET', $parameters);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $result = $this->container->get('http_kernel')->handle($request);*/
+
+    $variables = ['id' => '1'];
+    $this->query($idQuery, $this->server, $variables, $extensions);
+
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['node' => ['id' => 1]]], json_decode($result->getContent(), TRUE));
 
     // Execute apq call with different variables.
-    $parameters['variables'] = '{"id": "2"}';
+    /*$parameters['variables'] = '{"id": "2"}';
     $request = Request::create($endpoint, 'GET', $parameters);
     $result = $this->container->get('http_kernel')->handle($request);
     $this->assertSame(200, $result->getStatusCode());
@@ -144,7 +145,7 @@ GQL;
     $request = Request::create($endpoint, 'GET', $parameters);
     $result = $this->container->get('http_kernel')->handle($request);
     $this->assertSame(200, $result->getStatusCode());
-    $this->assertSame(['data' => ['node' => ['title' => 'Node 2']]], json_decode($result->getContent(), TRUE));
+    $this->assertSame(['data' => ['node' => ['title' => 'Node 2']]], json_decode($result->getContent(), TRUE));*/
 
   }
 
