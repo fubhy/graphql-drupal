@@ -52,14 +52,12 @@ class AutomaticPersistedQueriesTest extends GraphQLTestBase {
     $this->server->addPersistedQueryInstance($this->pluginApq);
     $this->server->save();
 
-    $endpoint = $this->server->get('endpoint');
-
     $query = 'query { field_one } ';
-    $parameters['extensions']['persistedQuery']['sha256Hash'] = 'some random hash';
+    $extensions = ['persistedQuery' => ['sha256Hash' => 'some random hash']];
 
     // Check we get PersistedQueryNotFound.
-    $request = Request::create($endpoint, 'GET', $parameters);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $result = $this->query('', $this->server, [], $extensions);
+
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame([
       'errors' => [
@@ -71,9 +69,8 @@ class AutomaticPersistedQueriesTest extends GraphQLTestBase {
     ], json_decode($result->getContent(), TRUE));
 
     // Post query to endpoint with a not matching hash.
-    $content = json_encode(['query' => $query] + $parameters);
-    $request = Request::create($endpoint, 'POST', [], [], [], ['CONTENT_TYPE' => 'application/json'], $content);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $result = $this->query($query, $this->server, [], $extensions, FALSE, Request::METHOD_POST);
+
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame([
       'errors' => [
@@ -85,17 +82,14 @@ class AutomaticPersistedQueriesTest extends GraphQLTestBase {
     ], json_decode($result->getContent(), TRUE));
 
     // Post query to endpoint to get the result and cache it.
-    $parameters['extensions']['persistedQuery']['sha256Hash'] = hash('sha256', $query);
+    $extensions['persistedQuery']['sha256Hash'] = hash('sha256', $query);
+    $result = $this->query($query, $this->server, [], $extensions, FALSE, Request::METHOD_POST);
 
-    $content = json_encode(['query' => $query] + $parameters);
-    $request = Request::create($endpoint, 'POST', [], [], [], ['CONTENT_TYPE' => 'application/json'], $content);
-    $result = $this->container->get('http_kernel')->handle($request);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['field_one' => 'this is the field one']], json_decode($result->getContent(), TRUE));
 
-    // Execute first request again.
-    $request = Request::create($endpoint, 'GET', $parameters);
-    $result = $this->container->get('http_kernel')->handle($request);
+    // Execute first GET request again.
+    $result = $this->query($query, $this->server, [], $extensions);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['field_one' => 'this is the field one']], json_decode($result->getContent(), TRUE));
   }
