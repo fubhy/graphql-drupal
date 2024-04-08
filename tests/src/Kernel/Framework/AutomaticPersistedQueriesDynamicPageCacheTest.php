@@ -83,7 +83,6 @@ GQL;
     $this->server->removeAllPersistedQueryInstances();
     $this->server->addPersistedQueryInstance($this->pluginApq);
     $this->server->save();
-    $endpoint = $this->server->get('endpoint');
 
     NodeType::create([
       'type' => 'test',
@@ -121,32 +120,23 @@ GQL;
     $this->assertSame(['data' => ['node' => ['id' => 2]]], json_decode($result->getContent(), TRUE));
 
     // Execute apq call.
-    /*$parameters['extensions']['persistedQuery']['sha256Hash'] = hash('sha256', $idQuery);
-    $parameters['variables'] = ['id' => '1'];
-    $request = Request::create($endpoint, 'GET', $parameters);
-    $result = $this->container->get('http_kernel')->handle($request);*/
-
     $variables = ['id' => '1'];
-    $this->query($idQuery, $this->server, $variables, $extensions);
-
+    $result = $this->query(NULL, $this->server, $variables, $extensions);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['node' => ['id' => 1]]], json_decode($result->getContent(), TRUE));
 
     // Execute apq call with different variables.
-    /*$parameters['variables'] = '{"id": "2"}';
-    $request = Request::create($endpoint, 'GET', $parameters);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $variables = ['id' => '2'];
+    $result = $this->query(NULL, $this->server, $variables, $extensions);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['node' => ['id' => 2]]], json_decode($result->getContent(), TRUE));
 
     // Execute apq call with same parameters, but different query.
-    $parameters['extensions']['persistedQuery']['sha256Hash'] = hash('sha256', $titleQuery);
-    $parameters['variables'] = '{"id": "2"}';
-    $request = Request::create($endpoint, 'GET', $parameters);
-    $result = $this->container->get('http_kernel')->handle($request);
+    $extensions['persistedQuery']['sha256Hash'] = hash('sha256', $titleQuery);
+    $variables = ['id' => '2'];
+    $result = $this->query(NULL, $this->server, $variables, $extensions);
     $this->assertSame(200, $result->getStatusCode());
-    $this->assertSame(['data' => ['node' => ['title' => 'Node 2']]], json_decode($result->getContent(), TRUE));*/
-
+    $this->assertSame(['data' => ['node' => ['title' => 'Node 2']]], json_decode($result->getContent(), TRUE));
   }
 
 }

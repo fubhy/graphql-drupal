@@ -21,8 +21,8 @@ trait HttpRequestTrait {
   /**
    * Issue a simple query over http.
    *
-   * @param string $query
-   *   The query string.
+   * @param string|null $query
+   *   The query string. Can be omitted when testing auto persisted queries.
    * @param \Drupal\graphql\Entity\Server|null $server
    *   The server instance.
    * @param array $variables
@@ -40,7 +40,7 @@ trait HttpRequestTrait {
    *   The http response object.
    */
   protected function query(
-    string $query,
+    ?string $query,
     ?Server $server = NULL,
     array $variables = [],
     array $extensions = [],
@@ -51,13 +51,15 @@ trait HttpRequestTrait {
     $server = $server ?: $this->server;
     $endpoint = $this->server->get('endpoint');
     $extensions = !empty($extensions) ? ['extensions' => $extensions] : [];
-    // If the persisted flag is true, then instead of sending the full query to
-    // the server we only send the query id.
-    $query_key = $persisted ? 'queryId' : 'query';
     $data = [
-      $query_key => $query,
       'variables' => $variables,
     ] + $extensions;
+    if (!empty($query)) {
+      // If the persisted flag is true, then instead of sending the full query to
+      // the server we only send the query id.
+      $query_key = $persisted ? 'queryId' : 'query';
+      $data[$query_key] = $query;
+    }
     if ($operationName) {
       $data['operationName'] = $operationName;
     }

@@ -64,7 +64,7 @@ class AutomaticPersistedQueriesTest extends GraphQLTestBase {
     $extensions = ['persistedQuery' => ['sha256Hash' => 'some random hash']];
 
     // Check we get PersistedQueryNotFound.
-    $result = $this->query('', $this->server, [], $extensions);
+    $result = $this->query(NULL, $this->server, [], $extensions);
 
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame([
@@ -97,7 +97,7 @@ class AutomaticPersistedQueriesTest extends GraphQLTestBase {
     $this->assertSame(['data' => ['field_one' => 'this is the field one']], json_decode($result->getContent(), TRUE));
 
     // Execute first GET request again.
-    $result = $this->query($query, $this->server, [], $extensions);
+    $result = $this->query(NULL, $this->server, [], $extensions);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame(['data' => ['field_one' => 'this is the field one']], json_decode($result->getContent(), TRUE));
   }
