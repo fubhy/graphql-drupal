@@ -55,8 +55,8 @@ trait HttpRequestTrait {
       'variables' => $variables,
     ] + $extensions;
     if (!empty($query)) {
-      // If the persisted flag is true, then instead of sending the full query to
-      // the server we only send the query id.
+      // If the persisted flag is true, then instead of sending the full query
+      // to the server we only send the query id.
       $query_key = $persisted ? 'queryId' : 'query';
       $data[$query_key] = $query;
     }
