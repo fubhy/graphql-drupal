@@ -48,7 +48,6 @@ class ApqSubscriber implements EventSubscriberInterface {
       // Add cache context for dynamic page cache compatibility on all
       // operations that have the hash set.
       $event->getContext()->addCacheContexts(
-        //['url.query_args']
         ['url.query_args:variables', 'url.query_args:extensions']
       );
 
