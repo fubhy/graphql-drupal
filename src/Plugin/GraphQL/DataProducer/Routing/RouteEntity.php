@@ -106,14 +106,11 @@ class RouteEntity extends DataProducerPluginBase implements ContainerFactoryPlug
    *   The GraphQL field context.
    */
   public function resolve($url, ?string $language, FieldContext $context): ?Deferred {
-    if ($url instanceof Url) {
-      // Check that this route is actually an entity route.
-      if (strpos($url->getRouteName(), 'entity.') === FALSE) {
-        return NULL;
-      }
-      [, $type] = explode('.', $url->getRouteName());
-      // Make sure that entity type is not empty.
-      if (empty($type)) {
+    if ($url instanceof Url && $url->isRouted()) {
+      [$route_type, $type] = explode('.', $url->getRouteName());
+      // Check that this route is actually an entity route and make sure that 
+      // entity type is not empty.
+      if ($route_type !== 'entity' || empty($type)) {
         return NULL;
       }
       $parameters = $url->getRouteParameters();
