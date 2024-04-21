@@ -17,7 +17,6 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\Core\StringTranslation\ByteSizeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Token;
 use Drupal\file\FileInterface;
@@ -194,9 +193,13 @@ class FileUpload {
     switch ($uploaded_file->getError()) {
       case UPLOAD_ERR_INI_SIZE:
       case UPLOAD_ERR_FORM_SIZE:
+        // @todo Drupal 10.1 compatibility, needs to be converted to
+        // ByteSizeMarkup later.
+        // @phpstan-ignore-next-line
+        $maxUploadSize = format_size($this->getMaxUploadSize($settings));
         $response->addViolation($this->t('The file @file could not be saved because it exceeds @maxsize, the maximum allowed size for uploads.', [
           '@file' => $uploaded_file->getClientOriginalName(),
-          '@maxsize' => ByteSizeMarkup::create($this->getMaxUploadSize($settings)),
+          '@maxsize' => $maxUploadSize,
         ]));
         return $response;
 
