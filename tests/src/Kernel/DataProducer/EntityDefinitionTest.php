@@ -496,6 +496,11 @@ GQL;
         'entity_form_display_context' => $builder->fromContext('entity_form_display'),
       ])
     );
+
+    // @todo Different description between Drupal 10.1 and 10.2, can be removed
+    // when Drupal 10.1 support is dropped.
+    $this->fullDefinitionResult['entityDefinition']['fields'][11]['description'] =
+      $this->container->get('entity_field.manager')->getBaseFieldDefinitions('node')['created']->getDescription();
   }
 
   /**
