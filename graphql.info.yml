@@ -3,6 +3,6 @@ type: module
 description: 'Base module for integrating GraphQL with Drupal.'
 package: GraphQL
 configure: graphql.config_page
-core_version_requirement: ^9.3 || ^10
+core_version_requirement: ^10.1
 dependencies:
   - typed_data:typed_data

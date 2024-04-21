@@ -17,6 +17,7 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\ByteSizeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Token;
 use Drupal\file\FileInterface;
@@ -193,13 +194,9 @@ class FileUpload {
     switch ($uploaded_file->getError()) {
       case UPLOAD_ERR_INI_SIZE:
       case UPLOAD_ERR_FORM_SIZE:
-        // @todo Drupal 9 compatibility, needs to be converted to ByteSizeMarkup
-        // later.
-        // @phpstan-ignore-next-line
-        $maxUploadSize = format_size($this->getMaxUploadSize($settings));
         $response->addViolation($this->t('The file @file could not be saved because it exceeds @maxsize, the maximum allowed size for uploads.', [
           '@file' => $uploaded_file->getClientOriginalName(),
-          '@maxsize' => $maxUploadSize,
+          '@maxsize' => ByteSizeMarkup::create($this->getMaxUploadSize($settings)),
         ]));
         return $response;
 
@@ -271,7 +268,7 @@ class FileUpload {
       $file->setSize(@filesize($temp_file_path));
 
       // Validate against file_validate() first with the temporary path.
-      // @todo Drupal 9 compatibility, needs to be converted to file validate
+      // @todo Drupal 10.1 compatibility, needs to be converted to file validate
       // service later.
       // @phpstan-ignore-next-line
       $errors = file_validate($file, $validators);
@@ -505,7 +502,7 @@ class FileUpload {
           /** @var \Drupal\file\FileInterface $file */
           $file = $this->fileStorage->create([]);
           $file->setFilename($filename);
-          // @todo Drupal 9 compatibility, needs to be converted to file
+          // @todo Drupal 10.1 compatibility, needs to be converted to file
           // validator service later.
           // @phpstan-ignore-next-line
           $passes_validation = empty(file_validate_extensions($file, $validators['file_validate_extensions'][0]));

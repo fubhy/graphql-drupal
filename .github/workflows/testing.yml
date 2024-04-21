@@ -13,18 +13,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4', '8.0', '8.1']
-        # Keep testing Drupal 9 untill 6 months after it got unsupported, so
-        # untill May 1st 2024.
-        drupal-core: ['9.5.x']
+        php-versions: ['8.1', '8.2']
+        drupal-core: ['10.2.x']
         phpstan: ['0']
         include:
-          # Extra runs to also test on latest Drupal 10.
+          # Extra run to test older supported Drupal 10.1.x.
           - php-versions: '8.1'
-            drupal-core: '10.2.x'
-            phpstan: '0'
-          - php-versions: '8.2'
-            drupal-core: '10.2.x'
+            drupal-core: '10.1.x'
             phpstan: '0'
           # We only need to run PHPStan once on the latest PHP version.
           - php-versions: '8.3'
