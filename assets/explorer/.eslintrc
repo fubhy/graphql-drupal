@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb/base",
+  "extends": "airbnb-base",
   "globals": {
     "debug": true,
     "jQuery": true,

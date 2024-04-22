@@ -4,7 +4,7 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
-  entry: "./index.js",
+  entry: "./index.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.min.js",
@@ -23,6 +23,9 @@ module.exports = {
       },
     ],
   },
+  performance: {
+    hints: false,
+  },
   optimization: {
     minimize: true,
   },
@@ -33,8 +36,12 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: path.resolve(__dirname, "node_modules/graphiql/graphiql.css") },
+        { from: path.resolve(__dirname, "node_modules/@graphiql/plugin-explorer/dist/style.css") },
         { from: path.resolve(__dirname, "src/container.css") },
       ],
+    }),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
     }),
   ],
   externals: {

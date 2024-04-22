@@ -5,6 +5,7 @@ explorer:
   css:
     component:
       assets/explorer/dist/graphiql.css: {preprocess: false}
+      assets/explorer/dist/style.css: {preprocess: false}
       assets/explorer/dist/container.css: {preprocess: false}
   dependencies:
     - core/drupal
