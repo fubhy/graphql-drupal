@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GraphiQL } from 'graphiql';
 import { explorerPlugin } from '@graphiql/plugin-explorer';
+import PropTypes from 'prop-types';
 
 const Explorer = ({
   fetcher, schema, query: q, variables,
@@ -32,6 +33,13 @@ const Explorer = ({
       </GraphiQL>
     </div>
   );
+};
+
+Explorer.propTypes = {
+  fetcher: PropTypes.func.isRequired,
+  schema: PropTypes.object.isRequired,
+  query: PropTypes.string,
+  variables: PropTypes.string,
 };
 
 export default Explorer;

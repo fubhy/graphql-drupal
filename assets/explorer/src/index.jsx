@@ -20,14 +20,14 @@ Drupal.behaviors.graphQLRenderExplorer = {
     const graphQLSchema = buildClientSchema(settings.graphqlIntrospectionData.data);
 
     // Defines a GraphQL fetcher using the fetch API.
-    const graphQLFetcher = graphQLParams => fetch(settings.graphqlRequestUrl, {
+    const graphQLFetcher = (graphQLParams) => fetch(settings.graphqlRequestUrl, {
       method: 'post',
       credentials: 'same-origin',
       body: JSON.stringify(graphQLParams),
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(response => response.json());
+    }).then((response) => response.json());
 
     const root = createRoot(container);
 
@@ -37,7 +37,7 @@ Drupal.behaviors.graphQLRenderExplorer = {
         schema={graphQLSchema}
         query={settings.graphqlQuery || undefined}
         variables={settings.graphqlVariables || undefined}
-      />
-    )
+      />,
+    );
   },
 };
