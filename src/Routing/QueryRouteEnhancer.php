@@ -136,9 +136,7 @@ class QueryRouteEnhancer implements EnhancerInterface {
       // Allow other origins as configured in the CORS policy.
       if (!empty($this->corsOptions['enabled'])) {
         $cors_service = new CorsService($this->corsOptions);
-        // Drupal 9 compatibility, method name has changed in Drupal 10.
-        // @phpstan-ignore-next-line
-        if ($cors_service->isActualRequestAllowed($request)) {
+        if ($cors_service->isOriginAllowed($request)) {
           return;
         }
       }

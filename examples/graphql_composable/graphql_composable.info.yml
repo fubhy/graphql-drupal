@@ -5,4 +5,4 @@ package: GraphQL
 dependencies:
   - graphql:graphql
   - node:node
-core_version_requirement: ^9.3 || ^10
+core_version_requirement: ^10.1

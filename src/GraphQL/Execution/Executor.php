@@ -2,6 +2,7 @@
 
 namespace Drupal\graphql\GraphQL\Execution;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -22,7 +23,6 @@ use GraphQL\Type\Schema;
 use GraphQL\Utils\AST;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Executes GraphQL queries with cache lookup.
@@ -51,11 +51,9 @@ class Executor implements ExecutorImplementation {
   protected $contextsManager;
 
   /**
-   * The request stack.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
+   * The date/time service.
    */
-  protected $requestStack;
+  protected TimeInterface $time;
 
   /**
    * The event dispatcher.
@@ -127,8 +125,8 @@ class Executor implements ExecutorImplementation {
    *   The cache contexts manager service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cacheBackend
    *   The cache backend for caching query results.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-   *   The request stack.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The date/time service.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
    *   The event dispatcher.
    * @param \GraphQL\Executor\Promise\PromiseAdapter $adapter
@@ -143,7 +141,7 @@ class Executor implements ExecutorImplementation {
   public function __construct(
     CacheContextsManager $contextsManager,
     CacheBackendInterface $cacheBackend,
-    RequestStack $requestStack,
+    TimeInterface $time,
     EventDispatcherInterface $dispatcher,
     PromiseAdapter $adapter,
     Schema $schema,
@@ -156,7 +154,7 @@ class Executor implements ExecutorImplementation {
   ) {
     $this->contextsManager = $contextsManager;
     $this->cacheBackend = $cacheBackend;
-    $this->requestStack = $requestStack;
+    $this->time = $time;
     $this->dispatcher = $dispatcher;
 
     $this->adapter = $adapter;
@@ -198,7 +196,7 @@ class Executor implements ExecutorImplementation {
     return new static(
       $container->get('cache_contexts_manager'),
       $container->get('cache.graphql.results'),
-      $container->get('request_stack'),
+      $container->get('datetime.time'),
       $container->get('event_dispatcher'),
       $adapter,
       $schema,
@@ -444,8 +442,7 @@ class Executor implements ExecutorImplementation {
    * @see \Drupal\Core\Cache\CacheBackendInterface::set()
    */
   protected function maxAgeToExpire($maxAge) {
-    // @todo Can be removed when D9 support is dropped.
-    $time = $this->requestStack->getMainRequest()->server->get('REQUEST_TIME');
+    $time = $this->time->getRequestTime();
     return ($maxAge === Cache::PERMANENT) ? Cache::PERMANENT : (int) $time + $maxAge;
   }
 

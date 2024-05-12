@@ -7,8 +7,8 @@ use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 
-// @todo Drupal 9 compatibility: use the deprecated trait for Drupal 9.
-if (strpos(\Drupal::VERSION, '9') === 0) {
+// @todo Drupal 10.1 compatibility: use the deprecated trait for Drupal 10.1.
+if (strpos(\Drupal::VERSION, '10.1') === 0) {
 
   /**
    * Helper trait for compatibility with Drupal 9.
