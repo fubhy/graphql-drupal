@@ -100,7 +100,7 @@ class ServerForm extends EntityForm {
     // the first schema that is defined.
     $schema = ($input['schema'] ?? $server->get('schema')) ?: reset($schema_keys);
 
-    if ($this->operation == 'add') {
+    if ($this->operation == 'create') {
       $form['#title'] = $this->t('Add server');
     }
     else {
