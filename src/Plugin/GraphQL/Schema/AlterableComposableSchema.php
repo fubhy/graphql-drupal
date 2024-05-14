@@ -2,7 +2,6 @@
 
 namespace Drupal\graphql\Plugin\GraphQL\Schema;
 
-use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\graphql\Event\AlterSchemaDataEvent;
@@ -11,6 +10,7 @@ use Drupal\graphql\Plugin\SchemaExtensionPluginInterface;
 use Drupal\graphql\Plugin\SchemaExtensionPluginManager;
 use GraphQL\Language\Parser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Allows to alter the graphql files data before parsing.
@@ -28,7 +28,7 @@ class AlterableComposableSchema extends ComposableSchema {
   /**
    * The event dispatcher service.
    *
-   * @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
   protected $dispatcher;
 
@@ -67,7 +67,7 @@ class AlterableComposableSchema extends ComposableSchema {
    *   The schema extension plugin manager.
    * @param array $config
    *   The service configuration.
-   * @param \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
    *   The event dispatcher.
    *
    * @codeCoverageIgnore
@@ -80,7 +80,7 @@ class AlterableComposableSchema extends ComposableSchema {
     ModuleHandlerInterface $moduleHandler,
     SchemaExtensionPluginManager $extensionManager,
     array $config,
-    ContainerAwareEventDispatcher $dispatcher
+    EventDispatcherInterface $dispatcher,
   ) {
     parent::__construct(
       $configuration,
