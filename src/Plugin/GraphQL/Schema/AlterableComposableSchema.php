@@ -169,7 +169,8 @@ class AlterableComposableSchema extends ComposableSchema {
       $event,
       AlterSchemaExtensionDataEvent::EVENT_NAME
     );
-    $ast = !empty($extensions) ? Parser::parse(implode("\n\n", $event->getSchemaExtensionData()), ['noLocation' => TRUE]) : NULL;
+    $extensions = array_filter($event->getSchemaExtensionData());
+    $ast = !empty($extensions) ? Parser::parse(implode("\n\n", $extensions), ['noLocation' => TRUE]) : NULL;
 
     // No AST caching here as that will be done in getFullSchemaDocument().
     return $ast;

@@ -1,11 +1,10 @@
 <?php
 
-namespace Drupal\Tests\graphql\Kernel\Framework;
+namespace Drupal\Tests\graphql\Kernel;
 
 use Drupal\graphql\GraphQL\ResolverRegistry;
 use Drupal\graphql\Plugin\GraphQL\SchemaExtension\SdlSchemaExtensionPluginBase;
 use Drupal\graphql\Plugin\SchemaExtensionPluginManager;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\Tests\graphql\Kernel\Schema\AlterableComposableTestSchema;
 
 /**
@@ -105,6 +104,40 @@ class AlterableSchemaTest extends GraphQLTestBase {
   }
 
   /**
+   * Test if schema extension altering is working with empty extensions.
+   */
+  public function testEmptySchemaExtensionAlteredQueryResultPropertyAdded(): void {
+    $result = $this->query('query { alterableQuery(id: 1) { id, empty } }');
+    $this->assertSame(200, $result->getStatusCode());
+    // Here should be error that query result empty variable cannot be null.
+    // This leads to the internal server error with reference to the variable.
+    $this->assertSame([
+      'errors' => [
+        0 => [
+          'message' => 'Internal server error',
+          'extensions' => [
+            'category' => 'internal',
+          ],
+          'locations' => [
+            0 => [
+              'line' => 1,
+              'column' => 37,
+            ],
+          ],
+          'path' => [
+            'alterableQuery',
+            // Reference to our variable in the error.
+            'empty',
+          ],
+        ],
+      ],
+      'data' => [
+        'alterableQuery' => NULL,
+      ],
+    ], json_decode($result->getContent(), TRUE));
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function mockSchema($id, $schema, array $extensions = []): void {
@@ -124,15 +157,24 @@ class AlterableSchemaTest extends GraphQLTestBase {
       ->method('getBaseDefinition')
       ->willReturn('');
 
-    $extensions['graphql_alterable_schema_test']->expects(static::any())
-      ->method('getExtensionDefinition')
-      ->willReturn(
-        <<<GQL
+    // Different extension definition for different tests.
+    switch ($this->getName()) {
+      case 'testEmptySchemaExtensionAlteredQueryResultPropertyAdded':
+        $extensionDefinition = '';
+        break;
+
+      default:
+        $extensionDefinition = <<<GQL
           extend type Result {
             position: Int
           }
-        GQL
-      );
+        GQL;
+        break;
+    }
+
+    $extensions['graphql_alterable_schema_test']->expects(static::any())
+      ->method('getExtensionDefinition')
+      ->willReturn($extensionDefinition);
 
     $extensionManager->expects(static::any())
       ->method('getExtensions')

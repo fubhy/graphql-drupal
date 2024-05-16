@@ -33,7 +33,18 @@ class GraphQlSubscriber implements EventSubscriberInterface {
     $schemaData = $event->getSchemaExtensionData();
     // I do not recommend direct replace, better user parsing or regex.
     // But this is an example of what you can do.
-    $schemaData['graphql_alterable_schema_test'] = str_replace('position: Int', 'position: Int!', $schemaData['graphql_alterable_schema_test']);
+    $schemaData['graphql_alterable_schema_test'] = str_replace('position: Int', 'position: Int!', $schemaData['graphql_alterable_schema_test'] ?? '');
+
+    // Test empty extensions can still extend the schema.
+    // https://github.com/drupal-graphql/graphql/issues/1395
+    if (empty($schemaData['graphql_alterable_schema_test'])) {
+      $schemaData['graphql_alterable_schema_test'] = <<<GQL
+        extend type Result {
+          empty: Boolean!
+        }
+      GQL;
+    }
+
     $event->setSchemaExtensionData($schemaData);
   }
 
