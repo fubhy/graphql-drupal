@@ -6,17 +6,10 @@ parameters:
   customRulesetUsed: true
   paths:
     - .
-  # We inherit a lot of Drupal core docs that don't specify iterable types on
-  # arrays, not sure we can fix this in a good way.
-  checkMissingIterableValueType: false
-  # Not sure we can specify generic types properly with Drupal coding standards
-  # yet, disable for now.
-  checkGenericClassInNonGenericObjectType: false
-  excludePaths:
-    # Exclude the RouteLoad producer because the redirect module is not D10
-    # compatible so we are not downloading it.
-    - src/Plugin/GraphQL/DataProducer/Routing/RouteLoad.php
   ignoreErrors:
+    # We inherit a lot of Drupal core docs that don't specify iterable types on
+    # arrays, not sure we can fix this in a good way.
+    - identifier: missingType.iterableValue
     # @todo Ignore phpstan-drupal extension's rules for now, activate later.
     - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
     # new static() is a best practice in Drupal, so we cannot fix that.
