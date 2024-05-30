@@ -21,7 +21,7 @@ class DefaultValueTest extends GraphQLTestBase {
     // Only type is required.
     $plugin->setContextValue('type', 'node');
     $context_values = $plugin->getContextValuesWithDefaults();
-    $this->assertSame(TRUE, $context_values['access']);
+    $this->assertTrue($context_values['access']);
     $this->assertSame('view', $context_values['access_operation']);
   }
 
