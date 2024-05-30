@@ -101,7 +101,7 @@ jobs:
         # Pin the exact Coder version to upgrade manually when we want to.
         run: |
           composer --no-interaction --no-progress require \
-            phpstan/phpstan:^1.10.38 \
+            phpstan/phpstan:^1.11.2 \
             mglaman/phpstan-drupal:^1.1.2 \
             phpstan/phpstan-deprecation-rules:^1.0.0 \
             jangregor/phpstan-prophecy:^1.0.0 \

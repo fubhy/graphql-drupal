@@ -10,14 +10,14 @@ abstract class BufferBase {
   /**
    * The the array of buffers.
    *
-   * @var \SplObjectStorage[]
+   * @var \SplObjectStorage<object, object>[]
    */
   protected $buffers = [];
 
   /**
    * The array of result sets.
    *
-   * @var \SplObjectStorage[]
+   * @var \SplObjectStorage<object, object>[]
    */
   protected $results = [];
 
@@ -65,9 +65,9 @@ abstract class BufferBase {
    *
    * @param object $item
    *   The item to add to create the resolver for.
-   * @param \SplObjectStorage $buffer
+   * @param \SplObjectStorage<object, object> $buffer
    *   The buffer.
-   * @param \SplObjectStorage $result
+   * @param \SplObjectStorage<object, object> $result
    *   The result set.
    *
    * @return \Closure
@@ -85,9 +85,9 @@ abstract class BufferBase {
    *
    * @param object $item
    *   The buffer item to retrieve the result for.
-   * @param \SplObjectStorage $buffer
+   * @param \SplObjectStorage<object, object> $buffer
    *   The buffer.
-   * @param \SplObjectStorage $result
+   * @param \SplObjectStorage<object, object> $result
    *   The result set.
    *
    * @return mixed
@@ -112,10 +112,10 @@ abstract class BufferBase {
   /**
    * Resolves the given buffer wholly.
    *
-   * @param \SplObjectStorage $buffer
+   * @param \SplObjectStorage<object, object> $buffer
    *   The buffer to be resolved wholly.
    *
-   * @return \SplObjectStorage
+   * @return \SplObjectStorage<object, object>
    *   The resolved results for the given buffer, keyed by the corresponding
    *   buffer items.
    */
