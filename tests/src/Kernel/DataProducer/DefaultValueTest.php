@@ -11,7 +11,6 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
  */
 class DefaultValueTest extends GraphQLTestBase {
 
-
   /**
    * Test that the entity_load data producer has the correct default values.
    */
