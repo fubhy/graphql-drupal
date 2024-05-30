@@ -78,10 +78,6 @@ class EntityMultipleTest extends GraphQLTestBase {
       'type' => $this->node1->getEntityTypeId(),
       'bundles' => [$this->node1->bundle(), $this->node2->bundle()],
       'ids' => [$this->node1->id(), $this->node2->id(), $this->node3->id()],
-      // @todo We need to set these default values here to make the access
-      // handling work. Ideally that should not be needed.
-      'access' => TRUE,
-      'access_operation' => 'view',
     ]);
 
     $nids = array_values(array_map(function (NodeInterface $item) {
@@ -104,8 +100,6 @@ class EntityMultipleTest extends GraphQLTestBase {
     $result = $this->executeDataProducer('entity_load_multiple', [
       'type' => $this->node1->getEntityTypeId(),
       'ids' => [NULL],
-      'access' => TRUE,
-      'access_operation' => 'view',
     ]);
 
     $this->assertSame([], $result);
