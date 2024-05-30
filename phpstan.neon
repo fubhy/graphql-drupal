@@ -14,9 +14,6 @@ parameters:
     - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
     # new static() is a best practice in Drupal, so we cannot fix that.
     - "#^Unsafe usage of new static\\(\\)\\.$#"
-    # Drupal allows object property access to custom fields, so we cannot fix
-    # that.
-    - "#^Access to an undefined property Drupal\\\\#"
     # We forgot to use return type hints on some interfaces, cannot be changed
     # in stable 4.0.
     # @todo use return type hints everywhere for 5.0.

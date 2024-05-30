@@ -98,7 +98,9 @@ class ImageDerivative extends DataProducerPluginBase implements ContainerFactory
     $metadata->addCacheableDependency($access);
     if ($access->isAllowed() && $image_style = ImageStyle::load($style)) {
 
+      // @phpstan-ignore-next-line
       $width = $entity->width;
+      // @phpstan-ignore-next-line
       $height = $entity->height;
 
       if (empty($width) || empty($height)) {

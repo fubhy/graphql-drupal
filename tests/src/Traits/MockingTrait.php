@@ -106,7 +106,7 @@ trait MockingTrait {
   protected function createTestServer($schema, $endpoint, array $values = []): void {
     $this->server = Server::create([
       'schema' => $schema,
-      'name' => $this->randomGenerator->name(),
+      'name' => $this->randomMachineName(),
       'endpoint' => $endpoint,
     ] + $values);
 
