@@ -1,7 +1,4 @@
 parameters:
-  # PHPStan cannot find files in this test directory automatically.
-  scanDirectories:
-    - ../../core/tests/Drupal/Tests
   level: 6
   customRulesetUsed: true
   paths:
