@@ -62,7 +62,7 @@ abstract class EntityQueryBase extends DataProducerPluginBase implements Contain
     string $pluginId,
     array $pluginDefinition,
     EntityTypeManager $entityTypeManager,
-    AccountProxyInterface $current_user
+    AccountProxyInterface $current_user,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

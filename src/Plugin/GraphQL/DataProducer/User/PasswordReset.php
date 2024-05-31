@@ -80,7 +80,7 @@ class PasswordReset extends DataProducerPluginBase implements ContainerFactoryPl
     string $plugin_id,
     array $plugin_definition,
     Request $current_request,
-    LoggerChannelInterface $logger
+    LoggerChannelInterface $logger,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRequest = $current_request;

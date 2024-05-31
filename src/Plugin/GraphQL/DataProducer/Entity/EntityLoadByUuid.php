@@ -120,7 +120,7 @@ class EntityLoadByUuid extends DataProducerPluginBase implements ContainerFactor
     array $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
     EntityRepositoryInterface $entityRepository,
-    EntityUuidBuffer $entityBuffer
+    EntityUuidBuffer $entityBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

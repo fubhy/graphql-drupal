@@ -113,7 +113,7 @@ class EntityReferenceRevisions extends DataProducerPluginBase implements Contain
     string $pluginId,
     array $pluginDefinition,
     EntityTypeManager $entityTypeManager,
-    EntityRevisionBuffer $entityRevisionBuffer
+    EntityRevisionBuffer $entityRevisionBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

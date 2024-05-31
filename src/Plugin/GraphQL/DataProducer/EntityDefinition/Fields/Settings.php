@@ -42,7 +42,7 @@ class Settings extends DataProducerPluginBase {
    */
   public function resolve(
     FieldDefinitionInterface $entity_definition_field,
-    ?EntityFormDisplay $entity_form_display_context
+    ?EntityFormDisplay $entity_form_display_context,
   ): \Iterator {
     $settings = $entity_definition_field->getSettings();
 

@@ -98,7 +98,7 @@ class DataProducerProxy implements ResolverInterface {
     DataProducerPluginManager $pluginManager,
     RequestStack $requestStack,
     CacheContextsManager $contextsManager,
-    CacheBackendInterface $cacheBackend
+    CacheBackendInterface $cacheBackend,
   ) {
     $this->id = $id;
     $this->mapping = $mapping;

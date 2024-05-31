@@ -46,7 +46,7 @@ trait HttpRequestTrait {
     array $extensions = [],
     bool $persisted = FALSE,
     string $method = Request::METHOD_GET,
-    string $operationName = ''
+    string $operationName = '',
   ) {
     $server = $server ?: $this->server;
     $endpoint = $this->server->get('endpoint');

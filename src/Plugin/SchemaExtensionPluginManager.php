@@ -48,7 +48,7 @@ class SchemaExtensionPluginManager extends DefaultPluginManager {
     CacheBackendInterface $cacheBackend,
     $pluginInterface,
     $pluginAnnotationName,
-    array $config
+    array $config,
   ) {
     parent::__construct(
       $pluginSubdirectory,

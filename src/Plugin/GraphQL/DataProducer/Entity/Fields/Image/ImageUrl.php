@@ -80,7 +80,7 @@ class ImageUrl extends DataProducerPluginBase implements ContainerFactoryPluginI
     $pluginId,
     $pluginDefinition,
     RendererInterface $renderer,
-    FileUrlGeneratorInterface $fileUrlGenerator
+    FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->renderer = $renderer;

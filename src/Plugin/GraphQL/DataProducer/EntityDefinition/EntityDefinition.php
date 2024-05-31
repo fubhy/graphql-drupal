@@ -76,7 +76,7 @@ class EntityDefinition extends DataProducerPluginBase implements ContainerFactor
     array $configuration,
     string $plugin_id,
     array $plugin_definition,
-    EntityTypeManager $entity_type_manager
+    EntityTypeManager $entity_type_manager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
@@ -100,10 +100,11 @@ class EntityDefinition extends DataProducerPluginBase implements ContainerFactor
    * @return \Drupal\Core\Entity\EntityTypeInterface
    *   The entity definition.
    */
-  public function resolve(string $entity_type,
+  public function resolve(
+    string $entity_type,
     ?string $bundle,
     ?string $field_types,
-    FieldContext $field_context
+    FieldContext $field_context,
   ): EntityTypeInterface {
     if ($bundle) {
       $bundle_info = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);

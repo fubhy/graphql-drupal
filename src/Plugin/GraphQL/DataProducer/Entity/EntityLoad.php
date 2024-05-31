@@ -121,7 +121,7 @@ class EntityLoad extends DataProducerPluginBase implements ContainerFactoryPlugi
     array $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
     EntityRepositoryInterface $entityRepository,
-    EntityBuffer $entityBuffer
+    EntityBuffer $entityBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

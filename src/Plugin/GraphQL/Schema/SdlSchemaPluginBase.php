@@ -102,7 +102,7 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
     CacheBackendInterface $astCache,
     ModuleHandlerInterface $moduleHandler,
     SchemaExtensionPluginManager $extensionManager,
-    array $config
+    array $config,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->inDevelopment = !empty($config['development']);

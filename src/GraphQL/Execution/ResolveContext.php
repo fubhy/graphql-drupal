@@ -78,7 +78,7 @@ class ResolveContext implements RefinableCacheableDependencyInterface {
     OperationParams $operation,
     DocumentNode $document,
     $type,
-    array $config
+    array $config,
   ) {
     $this->addCacheContexts(['user.permissions']);
 

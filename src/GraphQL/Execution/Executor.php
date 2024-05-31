@@ -150,7 +150,7 @@ class Executor implements ExecutorImplementation {
     $root,
     $variables,
     $operation,
-    callable $resolver
+    callable $resolver,
   ) {
     $this->contextsManager = $contextsManager;
     $this->cacheBackend = $cacheBackend;
@@ -191,7 +191,7 @@ class Executor implements ExecutorImplementation {
     $root,
     $variables,
     $operation,
-    callable $resolver
+    callable $resolver,
   ) {
     return new static(
       $container->get('cache_contexts_manager'),

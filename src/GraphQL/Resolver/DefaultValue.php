@@ -50,7 +50,7 @@ class DefaultValue implements ResolverInterface {
     $args,
     ResolveContext $context,
     ResolveInfo $info,
-    FieldContext $field
+    FieldContext $field,
   ) {
     $result = $this->value->resolve($value, $args, $context, $info, $field);
     if ($result === NULL) {
