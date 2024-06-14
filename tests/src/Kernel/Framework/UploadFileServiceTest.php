@@ -339,7 +339,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     int $error_status,
     int $size = 0,
     string $dest_filename = 'test.txt',
-    string $source_filename = 'graphql_upload_test.txt'
+    string $source_filename = 'graphql_upload_test.txt',
   ): UploadedFile {
 
     $source_filepath = $this->getSourceTestFilePath($source_filename);

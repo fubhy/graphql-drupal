@@ -115,7 +115,7 @@ class TaxonomyLoadTree extends DataProducerPluginBase implements ContainerFactor
     string $pluginId,
     array $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
-    EntityBuffer $entityBuffer
+    EntityBuffer $entityBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

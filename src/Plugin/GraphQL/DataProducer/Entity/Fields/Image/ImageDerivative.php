@@ -73,7 +73,7 @@ class ImageDerivative extends DataProducerPluginBase implements ContainerFactory
     array $configuration,
     $pluginId,
     $pluginDefinition,
-    RendererInterface $renderer
+    RendererInterface $renderer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->renderer = $renderer;

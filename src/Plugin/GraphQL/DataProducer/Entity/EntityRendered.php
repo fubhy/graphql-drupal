@@ -86,7 +86,7 @@ class EntityRendered extends DataProducerPluginBase implements ContainerFactoryP
     $pluginId,
     $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
-    RendererInterface $renderer
+    RendererInterface $renderer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

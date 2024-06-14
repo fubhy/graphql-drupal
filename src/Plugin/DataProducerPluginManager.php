@@ -66,7 +66,7 @@ class DataProducerPluginManager extends DefaultPluginManager {
     CacheBackendInterface $resultCacheBackend,
     $pluginInterface,
     $pluginAnnotationName,
-    array $config
+    array $config,
   ) {
     parent::__construct(
       $pluginSubdirectory,

@@ -36,7 +36,7 @@ class PersistedQueryPluginManager extends DefaultPluginManager {
     CacheBackendInterface $definitionCacheBackend,
     $pluginInterface,
     $pluginAnnotationName,
-    array $config
+    array $config,
   ) {
     parent::__construct(
       $pluginSubdirectory,

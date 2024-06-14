@@ -125,7 +125,7 @@ class FileUpload {
     ConfigFactoryInterface $config_factory,
     RendererInterface $renderer,
     EventDispatcherInterface $eventDispatcher,
-    ImageFactory $image_factory
+    ImageFactory $image_factory,
   ) {
     /** @var \Drupal\file\FileStorageInterface $file_storage */
     $file_storage = $entityTypeManager->getStorage('file');

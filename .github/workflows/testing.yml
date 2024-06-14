@@ -107,7 +107,7 @@ jobs:
             jangregor/phpstan-prophecy:^1.0.0 \
             phpstan/phpstan-phpunit:^1.0.0 \
             phpstan/extension-installer:^1.0
-          composer --no-interaction --no-progress --with-all-dependencies upgrade drupal/coder:8.3.23
+          composer --no-interaction --no-progress --with-all-dependencies upgrade drupal/coder:8.3.24
 
       - name: Run PHPStan
         if: ${{ matrix.phpstan == '1' }}

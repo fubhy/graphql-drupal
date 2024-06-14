@@ -102,7 +102,7 @@ class TermFieldAutocomplete extends DataProducerPluginBase implements ContainerF
     $plugin_definition,
     Connection $database,
     EntityTypeManagerInterface $entity_type_manager,
-    ModuleHandlerInterface $module_handler
+    ModuleHandlerInterface $module_handler,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->database = $database;
@@ -271,7 +271,7 @@ class TermFieldAutocomplete extends DataProducerPluginBase implements ContainerF
     ?string $match_string,
     bool $prioritize_start_with,
     int $limit,
-    FieldContext $context
+    FieldContext $context,
   ): ?array {
     if ($limit <= 0) {
       $limit = 10;
