@@ -92,7 +92,8 @@ class DataProducerPluginManager extends DefaultPluginManager {
     $this->resultCacheBackend = $resultCacheBackend;
 
     // We don't use dependency injection here to avoid a constructor signature
-    // change. @phpstan-ignore-next-line
+    // change.
+    // @phpcs:ignore
     $this->populateContextDefaults = \Drupal::config('graphql.settings')->get('dataproducer_populate_default_values') ?? TRUE;
   }
 
