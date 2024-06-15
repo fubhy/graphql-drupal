@@ -93,8 +93,10 @@ class DataProducerPluginManager extends DefaultPluginManager {
 
     // We don't use dependency injection here to avoid a constructor signature
     // change.
-    // @phpcs:ignore @phpstan-ignore-next-line
+    // @phpcs:disable
+    // @phpstan-ignore-next-line
     $this->populateContextDefaults = \Drupal::config('graphql.settings')->get('dataproducer_populate_default_values') ?? TRUE;
+    // @phpcs:enable
   }
 
   /**
