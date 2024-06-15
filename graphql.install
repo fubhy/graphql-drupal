@@ -69,3 +69,15 @@ function graphql_update_8001(): void {
  */
 function graphql_update_8400() :void {
 }
+
+/**
+ * Preserve dataproducer default value behavior for old installations.
+ *
+ * Set dataproducer_populate_default_values to TRUE after you verified that your
+ * dataproducers are still working with the new default value behavior.
+ */
+function graphql_update_10400() :void {
+  \Drupal::configFactory()->getEditable('graphql.settings')
+    ->set('dataproducer_populate_default_values', FALSE)
+    ->save();
+}
