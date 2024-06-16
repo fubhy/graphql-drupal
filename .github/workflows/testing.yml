@@ -29,6 +29,9 @@ jobs:
           - php-versions: '8.3'
             drupal-core: '10.3.x'
             phpstan: '1'
+          - php-versions: '8.3'
+            drupal-core: '11.0.x'
+            phpstan: '1'
     steps:
       - name: Checkout Drupal core
         uses: actions/checkout@v4
