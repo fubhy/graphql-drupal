@@ -50,8 +50,8 @@ abstract class DataProducerPluginBase extends PluginBase implements DataProducer
     if (!method_exists($this, 'resolve')) {
       throw new \LogicException('Missing data producer resolve method.');
     }
-    $populateDefaulktValues = $this->configuration['dataproducer_populate_default_values'] ?? TRUE;
-    $context = $populateDefaulktValues ? $this->getContextValuesWithDefaults() : $this->getContextValues();
+    $populateDefaultValues = $this->configuration['dataproducer_populate_default_values'] ?? TRUE;
+    $context = $populateDefaultValues ? $this->getContextValuesWithDefaults() : $this->getContextValues();
     return call_user_func_array(
       [$this, 'resolve'],
       array_values(array_merge($context, [$field]))
