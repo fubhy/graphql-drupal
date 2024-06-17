@@ -94,8 +94,8 @@ jobs:
         run: |
           composer --no-interaction --no-progress require \
             webonyx/graphql-php:^15.12 \
-            drupal/typed_data:^1.0 \
-            drupal/redirect:^1.0
+            drupal/typed_data:^2.0 \
+            drupal/redirect:dev-1.x
 
       - name: Run PHPUnit
         run: |
