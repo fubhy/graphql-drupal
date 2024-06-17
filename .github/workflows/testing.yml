@@ -89,10 +89,11 @@ jobs:
           composer --no-interaction run-script drupal-phpunit-upgrade
           composer config --no-plugins allow-plugins.phpstan/extension-installer true
 
+      # Revisit - check for latest release of dependent modules.
       - name: Install GraphQL dependencies
         run: |
           composer --no-interaction --no-progress require \
-            webonyx/graphql-php:^14.8 \
+            webonyx/graphql-php:^15.12 \
             drupal/typed_data:^1.0 \
             drupal/redirect:^1.0
 
@@ -112,8 +113,8 @@ jobs:
             mglaman/phpstan-drupal:^1.1.2 \
             phpstan/phpstan-deprecation-rules:^1.0.0 \
             jangregor/phpstan-prophecy:^1.0.0 \
-            phpstan/phpstan-phpunit:^1.0.0 \
-            phpstan/extension-installer:^1.0
+            phpstan/phpstan-phpunit:^1.4 \
+            phpstan/extension-installer:^1.4
           composer --no-interaction --no-progress --with-all-dependencies upgrade drupal/coder:8.3.24
 
       - name: Run PHPStan

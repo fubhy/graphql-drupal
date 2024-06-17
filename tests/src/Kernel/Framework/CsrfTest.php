@@ -64,7 +64,7 @@ GQL;
   /**
    * Data provider for testContentTypeCsrf().
    */
-  public function provideSimpleContentTypes(): array {
+  public static function provideSimpleContentTypes(): array {
     // Three content types that can be sent with simple no-cors POST requests.
     return [
       ['text/plain'],
@@ -115,7 +115,7 @@ GQL;
   /**
    * Data provider for testAllowedJsonRequests().
    */
-  public function provideAllowedJsonHeaders(): array {
+  public static function provideAllowedJsonHeaders(): array {
     return [
       [['CONTENT_TYPE' => 'application/json']],
       [['CONTENT_TYPE' => 'application/graphql']],
@@ -149,7 +149,7 @@ GQL;
   /**
    * Data provider for testAllowedFormRequests().
    */
-  public function provideAllowedFormRequests(): array {
+  public static function provideAllowedFormRequests(): array {
     return [
       // Omitting the Origin and Apollo-Require-Preflight is allowed.
       [['CONTENT_TYPE' => 'multipart/form-data']],

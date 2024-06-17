@@ -62,7 +62,7 @@ GQL;
   /**
    * @return array
    */
-  public function builderProducingProvider(): array {
+  public static function builderProducingProvider(): array {
     return [
       ['entity_load', ResolverInterface::class],
       ['entity_id', ResolverInterface::class],

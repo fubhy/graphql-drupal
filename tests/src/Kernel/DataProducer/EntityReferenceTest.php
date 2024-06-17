@@ -136,7 +136,7 @@ class EntityReferenceTest extends GraphQLTestBase {
   /**
    * Data provider for testEmptyResults().
    */
-  public function emptyResultsProvider(): array {
+  public static function emptyResultsProvider(): array {
     return [
       // Test that an empty reference field returns an empty array.
       ['entity_reference', [

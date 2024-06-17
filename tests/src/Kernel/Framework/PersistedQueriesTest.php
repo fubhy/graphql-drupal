@@ -75,7 +75,7 @@ GQL;
   /**
    * Data provider for testPersistedQueries().
    */
-  public function persistedQueriesDataProvider(): array {
+  public static function persistedQueriesDataProvider(): array {
     return [
       // This is the most usual case, all the three plugins are enabled.
       [
