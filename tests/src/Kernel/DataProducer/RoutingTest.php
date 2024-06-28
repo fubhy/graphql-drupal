@@ -35,6 +35,7 @@ class RoutingTest extends GraphQLTestBase {
   public function setUp(): void {
     parent::setUp();
 
+    $this->installEntitySchema('path_alias');
     $this->installEntitySchema('redirect');
     $this->installConfig(['redirect']);
 
@@ -129,7 +130,8 @@ class RoutingTest extends GraphQLTestBase {
       'url' => $url,
     ]);
 
-    $this->assertEquals('/user/logout', $result);
+    // Starting with Drupal 10.3 the URL has a token at the end, ignore that.
+    $this->assertStringStartsWith('/user/logout', $result);
   }
 
   /**
