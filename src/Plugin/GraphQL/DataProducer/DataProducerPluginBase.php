@@ -50,12 +50,27 @@ abstract class DataProducerPluginBase extends PluginBase implements DataProducer
     if (!method_exists($this, 'resolve')) {
       throw new \LogicException('Missing data producer resolve method.');
     }
-
-    $context = $this->getContextValues();
+    $populateDefaultValues = $this->configuration['dataproducer_populate_default_values'] ?? TRUE;
+    $context = $populateDefaultValues ? $this->getContextValuesWithDefaults() : $this->getContextValues();
     return call_user_func_array(
       [$this, 'resolve'],
       array_values(array_merge($context, [$field]))
     );
+  }
+
+  /**
+   * Initializes all contexts and populates default values.
+   *
+   * We cannot use ::getContextValues() here because it does not work with
+   * default_value.
+   */
+  public function getContextValuesWithDefaults(): array {
+    $values = [];
+    foreach ($this->getContextDefinitions() as $name => $definition) {
+      $values[$name] = $this->getContext($name)->getContextValue();
+    }
+
+    return $values;
   }
 
 }
