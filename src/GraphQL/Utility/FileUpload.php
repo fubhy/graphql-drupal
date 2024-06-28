@@ -248,6 +248,8 @@ class FileUpload {
 
     $temp_file_path = $uploaded_file->getRealPath();
 
+    // Drupal 10.2 compatibility: use the deprecated constant for now.
+    // @phpstan-ignore-next-line
     $file_uri = $this->fileSystem->getDestinationFilename($file_uri, FileSystemInterface::EXISTS_RENAME);
 
     // Lock based on the prepared file URI.
@@ -291,6 +293,8 @@ class FileUpload {
       // FileSystemInterface::EXISTS_ERROR as the file location has already been
       // determined above in FileSystem::getDestinationFilename().
       try {
+        // Drupal 10.2 compatibility: use the deprecated constant for now.
+        // @phpstan-ignore-next-line
         $this->fileSystem->move($temp_file_path, $file_uri, FileSystemInterface::EXISTS_ERROR);
       }
       catch (FileException $e) {

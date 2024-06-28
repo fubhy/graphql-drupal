@@ -75,7 +75,6 @@ class LanguageConfigOverride implements ConfigFactoryOverrideInterface {
   public function createConfigObject($name, $collection = StorageInterface::DEFAULT_COLLECTION) {
     // The interface says we should return an object here, but we don't care and
     // this does not seem to break anything?
-    // @phpstan-ignore-next-line
     return NULL;
   }
 
