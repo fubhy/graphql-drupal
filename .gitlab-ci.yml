@@ -23,5 +23,5 @@ include:
 # https://git.drupalcode.org/project/gitlab_templates/-/blob/main/includes/include.drupalci.variables.yml
 # Uncomment the lines below if you want to override any of the variables. The following is just an example.
 ################
- variables:
-   _CSPELL_IGNORE_PATHS: 'assets/explorer/dist/*, assets/voyager/dist/*'
+variables:
+  CSPELL_IGNORE_PATHS: 'assets/explorer/dist/*, assets/voyager/dist/*'

@@ -29,7 +29,7 @@ input ArticleInput {
 }
 ```
 
-And now in our `.exntends.graphqls` file we will extend the Mutation type to add our new mutation. This is so that in the future other modules can also themselves extend this type with new mutations keeping things organized.
+And now in our `.extends.graphqls` file we will extend the Mutation type to add our new mutation. This is so that in the future other modules can also themselves extend this type with new mutations keeping things organized.
 
 ```
 extend type Mutation {
@@ -137,10 +137,10 @@ class CreateArticle extends DataProducerPluginBase implements ContainerFactoryPl
 }
 ```
 
-### Important note 
+### Important note
 
 One thing to notice when creating mutations like this is that Access checking needs to be done in the mutation, for queries this usually is done in the
-data producer directly (e.g. `entity_load` has access checking built-in) but because we are programatically creating
+data producer directly (e.g. `entity_load` has access checking built-in) but because we are programmatically creating
 things we need to check the user actually has access to do the operation.
 
 ## Calling the mutation
