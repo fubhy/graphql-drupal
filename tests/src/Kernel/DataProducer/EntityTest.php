@@ -17,8 +17,6 @@ use Drupal\user\UserInterface;
 /**
  * Data producers Entity test class.
  *
- * cspell:ignore otherbundle
- *
  * @group graphql
  */
 class EntityTest extends GraphQLTestBase {
@@ -89,6 +87,7 @@ class EntityTest extends GraphQLTestBase {
     ]);
     $content_type->save();
 
+    // cspell:ignore otherbundle
     $content_type = NodeType::create([
       'type' => 'otherbundle',
       'name' => 'otherbundle',

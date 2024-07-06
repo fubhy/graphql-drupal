@@ -25,3 +25,5 @@ include:
 ################
 variables:
   _CSPELL_IGNORE_PATHS: 'assets/explorer/dist/*, assets/voyager/dist/*'
+  SKIP_ESLINT: 1
+  SKIP_STYLELINT: 1

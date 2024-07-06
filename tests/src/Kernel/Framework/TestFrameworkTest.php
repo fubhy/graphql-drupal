@@ -9,8 +9,6 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 /**
  * Test the test framework.
  *
- * cspell:ignore wrongname
- *
  * @group graphql
  */
 class TestFrameworkTest extends GraphQLTestBase {
@@ -65,6 +63,7 @@ GQL;
    * Test result error assertions.
    */
   public function testErrorAssertion(): void {
+    // cspell:ignore wrongname
     $schema = <<<GQL
       type Query {
         wrongname: String

@@ -7,8 +7,6 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 /**
  * Tests the entire query result pipeline when using persisted queries.
  *
- * cspell:ignore Ecosia
- *
  * @group graphql
  */
 class PersistedQueriesTest extends GraphQLTestBase {
@@ -45,6 +43,7 @@ GQL;
     $this->mockResolver('Query', 'field_two', 'this is the field two');
     $this->mockResolver('Query', 'field_three', []);
     $this->mockResolver('Link', 'url', 'https://www.ecosia.org');
+    // cspell:ignore Ecosia
     $this->mockResolver('Link', 'title', 'Ecosia');
   }
 
