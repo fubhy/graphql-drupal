@@ -10,7 +10,13 @@
   },
   "require-dev": {
     "drupal/typed_data": "^1.0",
-    "drupal/redirect": "^1.0"
+    "drupal/redirect": "^1.0",
+    "phpstan/phpstan": "^1.11.2",
+    "mglaman/phpstan-drupal": "^1.1.2",
+    "phpstan/phpstan-deprecation-rules": "^1.0.0",
+    "jangregor/phpstan-prophecy": "^1.0.0",
+    "phpstan/phpstan-phpunit": "^1.0.0",
+    "phpstan/extension-installer": "^1.0"
   },
   "minimum-stability": "dev"
 }
