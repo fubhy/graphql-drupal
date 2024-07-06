@@ -9,6 +9,8 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 /**
  * Test the test framework.
  *
+ * cspell:ignore wrongname
+ *
  * @group graphql
  */
 class TestFrameworkTest extends GraphQLTestBase {
