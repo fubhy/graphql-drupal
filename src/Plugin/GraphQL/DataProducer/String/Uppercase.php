@@ -7,6 +7,8 @@ use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 /**
  * Transforms a string to uppercase.
  *
+ * cspell:ignore Uppercased
+ *
  * @DataProducer(
  *   id = "uppercase",
  *   name = @Translation("Uppercase"),

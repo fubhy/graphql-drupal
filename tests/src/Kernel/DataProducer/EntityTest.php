@@ -17,6 +17,8 @@ use Drupal\user\UserInterface;
 /**
  * Data producers Entity test class.
  *
+ * cspell:ignore otherbundle
+ *
  * @group graphql
  */
 class EntityTest extends GraphQLTestBase {

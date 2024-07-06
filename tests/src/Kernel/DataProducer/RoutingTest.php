@@ -139,6 +139,7 @@ class RoutingTest extends GraphQLTestBase {
    */
   public function testUrlNotFound(): void {
     $result = $this->executeDataProducer('route_load', [
+      // cspell:ignore idontexist
       'path' => '/idontexist',
     ]);
 

@@ -7,6 +7,8 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 /**
  * Tests the entire query result pipeline when using persisted queries.
  *
+ * cspell:ignore Ecosia
+ *
  * @group graphql
  */
 class PersistedQueriesTest extends GraphQLTestBase {

@@ -7,6 +7,8 @@ use Drupal\graphql\GraphQL\ResolverRegistry;
 /**
  * Tests that the resolver registry behaves correctly.
  *
+ * cspell:ignore Cabrio cabrio
+ *
  * @coversDefaultClass \Drupal\graphql\GraphQL\ResolverRegistry
  *
  * @group graphql

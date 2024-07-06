@@ -72,7 +72,7 @@ class EntityReferenceTest extends GraphQLTestBase {
     ]);
     $content_type2->save();
 
-    $this->createEntityReferenceField('node', 'test1', 'field_test1_to_test2', 'test1 lable', 'node', 'default', [], FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+    $this->createEntityReferenceField('node', 'test1', 'field_test1_to_test2', 'test1 label', 'node', 'default', [], FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
 
     $this->referencedNode = Node::create([
       'title' => 'Dolor2',

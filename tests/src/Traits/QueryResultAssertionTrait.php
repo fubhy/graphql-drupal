@@ -165,7 +165,7 @@ trait QueryResultAssertionTrait {
    * @internal
    */
   private function assertResultErrors(ExecutionResult $result, array $expected): void {
-    // Initalize the status.
+    // Initialize the status.
     $unexpected = [];
     $matchCount = array_fill_keys($expected, 0);
 
