@@ -36,7 +36,6 @@ variables:
 phpstan (custom):
   extends: phpstan
   rules:
-    - *opt-in-max-php-rule
-    - *php-files-exist-rule
+    - if: true
   needs:
     - "composer (max PHP version)"
