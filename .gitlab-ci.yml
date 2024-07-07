@@ -27,6 +27,16 @@ variables:
   _CSPELL_IGNORE_PATHS: 'assets/explorer/dist/*, assets/voyager/dist/*'
   SKIP_ESLINT: 1
   SKIP_STYLELINT: 1
+  # We only wan to run PHPStan once on the max PHP version, skip default runs.
+  SKIP_PHPSTAN: 1
   OPT_IN_TEST_PREVIOUS_MINOR: 1
   OPT_IN_TEST_NEXT_MINOR: 1
   OPT_IN_TEST_MAX_PHP: 1
+
+phpstan (custom):
+  extends: phpstan
+  rules:
+    - *opt-in-max-php-rule
+    - *php-files-exist-rule
+  needs:
+    - "composer (max PHP version)"
