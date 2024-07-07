@@ -35,7 +35,6 @@ variables:
 
 phpstan (custom):
   extends: phpstan
-  rules:
-    - if: true
+  rules: []
   needs:
     - "composer (max PHP version)"
