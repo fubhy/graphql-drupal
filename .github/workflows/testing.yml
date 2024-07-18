@@ -93,7 +93,7 @@ jobs:
       - name: Install GraphQL dependencies
         run: |
           composer --no-interaction --no-progress require \
-            webonyx/graphql-php:^15.12 \
+            webonyx/graphql-php:^14.8 \
             drupal/typed_data:^2.0 \
             drupal/redirect:dev-1.x
 
