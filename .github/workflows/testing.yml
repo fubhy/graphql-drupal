@@ -7,7 +7,7 @@ on:
 jobs:
   drupal:
     name: Drupal ${{ matrix.drupal-core }} (PHP ${{ matrix.php-versions }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       extensions: mbstring, xml, pdo_sqlite, gd, opcache
     strategy:
