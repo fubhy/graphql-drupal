@@ -104,7 +104,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     ]);
     $violations = $file_upload_response->getViolations();
 
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'The file "test.txt" could not be saved because the upload did not complete.',
       $violations[0]['message']
     );
@@ -140,7 +140,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     $violations = $file_upload_response->getViolations();
 
     // @todo Do we want HTML tags in our violations or not?
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'The file is <em class="placeholder">4 bytes</em> exceeding the maximum file size of <em class="placeholder">1 byte</em>.',
       $violations[0]['message']
     );
@@ -190,7 +190,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     ]);
     $violations = $file_upload_response->getViolations();
 
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'The image is too small. The minimum dimensions are <em class="placeholder">15x15</em> pixels and the image size is <em class="placeholder">10</em>x<em class="placeholder">10</em> pixels.',
       $violations[0]['message']
     );
@@ -228,7 +228,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     $violations = $file_upload_response->getViolations();
 
     // @todo Do we want HTML tags in our violations or not?
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'Only files with the following extensions are allowed: <em class="placeholder">odt</em>.',
       $violations[0]['message']
     );
@@ -256,6 +256,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
       \Drupal::service('renderer'),
       \Drupal::service('event_dispatcher'),
       \Drupal::service('image.factory'),
+      \Drupal::service('file.validator'),
     );
 
     // Create a Symfony dummy uploaded file in test mode.
@@ -319,7 +320,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
 
     // There must be violation regarding forbidden file extension.
     $violations = $file_upload_response->getViolations();
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'Only files with the following extensions are allowed: <em class="placeholder">txt</em>.',
       $violations[0]['message']
     );

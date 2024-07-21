@@ -12,7 +12,7 @@ interface ResponseInterface {
   /**
    * Adds the violation.
    *
-   * @param string|\Drupal\Core\StringTranslation\TranslatableMarkup $message
+   * @param string|\Drupal\Core\StringTranslation\TranslatableMarkup|\Symfony\Component\Validator\ConstraintViolationListInterface $message
    *   Violation message.
    * @param array $properties
    *   Other properties related to the violation.
@@ -22,12 +22,12 @@ interface ResponseInterface {
   /**
    * Adds multiple violations.
    *
-   * @param string[]|\Drupal\Core\StringTranslation\TranslatableMarkup[] $messages
+   * @param string[]|\Drupal\Core\StringTranslation\TranslatableMarkup[]|\Symfony\Component\Validator\ConstraintViolationListInterface $messages
    *   Violation messages.
    * @param array $properties
    *   Other properties related to the violation.
    */
-  public function addViolations(array $messages, array $properties = []): void;
+  public function addViolations(array|ConstraintViolationListInterface $messages, array $properties = []): void;
 
   /**
    * Gets the violations.

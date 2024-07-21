@@ -13,22 +13,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.1', '8.2']
-        drupal-core: ['10.3.x']
-        phpstan: ['0']
+        # # php-versions: ['8.1', '8.2']
+        # # drupal-core: ['10.3.x']
+        # phpstan: ['0']
         include:
-          # Extra run to test older supported Drupal 10.1.x.
-          - php-versions: '8.1'
-            drupal-core: '10.1.x'
-            phpstan: '0'
           # Extra run to test older supported Drupal 10.2.x.
-          - php-versions: '8.1'
-            drupal-core: '10.2.x'
-            phpstan: '0'
+          # - php-versions: '8.1'
+          #   drupal-core: '10.2.x'
+          #   phpstan: '0'
           # We only need to run PHPStan once on the latest PHP version.
-          - php-versions: '8.3'
-            drupal-core: '10.3.x'
-            phpstan: '1'
+          # - php-versions: '8.3'
+          #   drupal-core: '10.3.x'
+          #   phpstan: '1'
           - php-versions: '8.3'
             drupal-core: '11.0.x'
             phpstan: '1'

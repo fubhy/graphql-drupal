@@ -50,6 +50,7 @@ abstract class GraphQLTestBase extends KernelTestBase {
     'content_translation',
     'entity_reference_test',
     'field',
+    'file',
     'menu_link_content',
     'link',
     'typed_data',
@@ -75,6 +76,7 @@ abstract class GraphQLTestBase extends KernelTestBase {
     $this->installEntitySchema('graphql_server');
     $this->installEntitySchema('configurable_language');
     $this->installConfig(['language']);
+    $this->installEntitySchema('file');
     $this->installEntitySchema('menu_link_content');
 
     $this->setUpCurrentUser([], $this->userPermissions());
