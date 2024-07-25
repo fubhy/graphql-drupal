@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\graphql\GraphQL\Response;
 
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+
 /**
  * Response interface used for GraphQL responses.
  */

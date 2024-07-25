@@ -520,9 +520,9 @@ class FileUpload {
           /** @var \Drupal\file\FileInterface $file */
           $file = $this->fileStorage->create([]);
           $file->setFilename($filename);
-          $passes_validation = empty($this->fileValidator->validate($file, $validators['FileExtension']['extensions']));
+          $passes_validation = count($this->fileValidator->validate($file, $validators['FileExtension']['extensions']));
         }
-        if (empty($validators['FileExtension']['extensions']) || $passes_validation) {
+        if (empty($validators['FileExtension']['extensions']) || ($passes_validation > 0)) {
           if ((substr($filename, -4) != '.txt')) {
             // The destination filename will also later be used to create the
             // URI.
