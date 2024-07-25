@@ -37,9 +37,9 @@ class FileUpload {
   use StringTranslationTrait;
 
   /**
-   * The file storage where we will create new file entities from.
+   * The entity storage for the 'file' entity type.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\file\FileStorageInterface
    */
   protected $fileStorage;
 
@@ -137,7 +137,9 @@ class FileUpload {
     ImageFactory $image_factory,
     FileValidatorInterface $file_validator,
   ) {
-    $this->fileStorage = $entityTypeManager->getStorage('file');
+    /** @var \Drupal\file\FileStorageInterface $file_storage */
+    $file_storage = $entityTypeManager->getStorage('file');
+    $this->fileStorage = $file_storage;
     $this->currentUser = $currentUser;
     $this->mimeTypeGuesser = $mimeTypeGuesser;
     $this->fileSystem = $fileSystem;
@@ -268,7 +270,7 @@ class FileUpload {
 
     try {
       // Begin building file entity.
-      /** @var \Drupal\Core\Entity\EntityInterface $file */
+      /** @var \Drupal\file\FileInterface $file */
       $file = $this->fileStorage->create([]);
       $file->setOwnerId($this->currentUser->id());
       $file->setFilename($prepared_filename);
@@ -281,10 +283,11 @@ class FileUpload {
       // Validate against fileValidator first with the temporary path.
       /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
       $errors = $this->fileValidator->validate($file, $validators);
-      if (!empty($errors)) {
+      if (count($errors) > 0) {
         $response->addViolations($errors);
         return $response;
       }
+
       // Validate Image resolution.
       $maxResolution = $settings['max_resolution'] ?? 0;
       $minResolution = $settings['min_resolution'] ?? 0;
@@ -323,7 +326,6 @@ class FileUpload {
       }
 
       $file->save();
-
       $response->setFileEntity($file);
       return $response;
     }
@@ -515,7 +517,7 @@ class FileUpload {
 
         $passes_validation = FALSE;
         if (!empty($validators['FileExtension']['extensions'])) {
-          /** @var \Drupal\Core\Entity\EntityInterface $file */
+          /** @var \Drupal\file\FileInterface $file */
           $file = $this->fileStorage->create([]);
           $file->setFilename($filename);
           $passes_validation = empty($this->fileValidator->validate($file, $validators['FileExtension']['extensions']));

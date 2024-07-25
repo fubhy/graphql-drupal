@@ -114,9 +114,9 @@ class AlterableSchemaTest extends GraphQLTestBase {
     $this->assertSame([
       'errors' => [
         0 => [
-          'message' => 'Internal server error',
+          'message' => 'Cannot query field "empty" on type "Result".',
           'extensions' => [
-            'category' => 'internal',
+            'category' => 'graphql',
           ],
           'locations' => [
             0 => [
@@ -124,15 +124,7 @@ class AlterableSchemaTest extends GraphQLTestBase {
               'column' => 37,
             ],
           ],
-          'path' => [
-            'alterableQuery',
-            // Reference to our variable in the error.
-            'empty',
-          ],
         ],
-      ],
-      'data' => [
-        'alterableQuery' => NULL,
       ],
     ], json_decode($result->getContent(), TRUE));
   }

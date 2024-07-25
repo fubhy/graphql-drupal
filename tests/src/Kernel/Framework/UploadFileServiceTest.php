@@ -16,16 +16,18 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UploadFileServiceTest extends GraphQLTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = ['file', 'graphql_file_validate'];
-
-  /**
    * The FileUpload object we want to test, gets prepared in setUp().
    *
    * @var \Drupal\graphql\GraphQL\Utility\FileUpload
    */
   protected $uploadService;
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  protected static $modules = ['file'];
 
   /**
    * Gets the file path of the source file.
@@ -67,7 +69,6 @@ class UploadFileServiceTest extends GraphQLTestBase {
       'file_directory' => 'test',
     ]);
     $file_entity = $file_upload_response->getFileEntity();
-
     $this->assertSame('public://test/test.txt', $file_entity->getFileUri());
     $this->assertFileExists($file_entity->getFileUri());
   }
