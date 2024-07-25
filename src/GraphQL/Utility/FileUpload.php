@@ -514,7 +514,6 @@ class FileUpload {
         // If the file will be rejected anyway due to a disallowed extension, it
         // should not be renamed; rather, we'll let fileValidator service
         // to validate FileExtension reject it below.
-
         $passes_validation = FALSE;
         if (!empty($validators['FileExtension']['extensions'])) {
           /** @var \Drupal\file\FileInterface $file */

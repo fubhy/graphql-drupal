@@ -23,9 +23,6 @@ jobs:
             phpstan: '0'
           # We only need to run PHPStan once on the latest PHP version.
           - php-versions: '8.3'
-            drupal-core: '10.3.x'
-            phpstan: '1'
-          - php-versions: '8.3'
             drupal-core: '11.0.x'
             phpstan: '1'
     steps:

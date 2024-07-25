@@ -92,6 +92,7 @@ class QueryRouteEnhancer implements EnhancerInterface {
       return;
     }
 
+    // @phpstan-ignore-next-line
     $content_format = method_exists($request, 'getContentTypeFormat') ? $request->getContentTypeFormat() : $request->getContentType();
     if ($content_format === NULL) {
       // Symfony before 5.4 does not detect "multipart/form-data", check for it
