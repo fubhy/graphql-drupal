@@ -27,7 +27,7 @@ class Response implements ResponseInterface {
   /**
    * {@inheritdoc}
    */
-  public function addViolations($messages, array $properties = []): void {
+  public function addViolations(array $messages, array $properties = []): void {
     foreach ($messages as $message) {
       $this->addViolation($message, $properties);
     }

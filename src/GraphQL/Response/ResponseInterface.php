@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\graphql\GraphQL\Response;
 
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-
 /**
  * Response interface used for GraphQL responses.
  */
@@ -14,7 +12,7 @@ interface ResponseInterface {
   /**
    * Adds the violation.
    *
-   * @param string|\Drupal\Core\StringTranslation\TranslatableMarkup|\Symfony\Component\Validator\ConstraintViolationListInterface $message
+   * @param string|\Drupal\Core\StringTranslation\TranslatableMarkup $message
    *   Violation message.
    * @param array $properties
    *   Other properties related to the violation.
@@ -24,12 +22,12 @@ interface ResponseInterface {
   /**
    * Adds multiple violations.
    *
-   * @param string[]|\Drupal\Core\StringTranslation\TranslatableMarkup[]|\Symfony\Component\Validator\ConstraintViolationListInterface $messages
+   * @param string[]|\Drupal\Core\StringTranslation\TranslatableMarkup[] $messages
    *   Violation messages.
    * @param array $properties
    *   Other properties related to the violation.
    */
-  public function addViolations(array|ConstraintViolationListInterface $messages, array $properties = []): void;
+  public function addViolations(array $messages, array $properties = []): void;
 
   /**
    * Gets the violations.

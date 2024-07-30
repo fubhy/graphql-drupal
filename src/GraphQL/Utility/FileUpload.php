@@ -281,11 +281,13 @@ class FileUpload {
       $file->setSize(@filesize($temp_file_path));
 
       // Validate against fileValidator first with the temporary path.
-      /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
-      $errors = $this->fileValidator->validate($file, $validators);
-      if (count($errors) > 0) {
-        $response->addViolations($errors);
-        return $response;
+      /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $file_validate_errors */
+      $file_validate_errors = $this->fileValidator->validate($file, $validators);
+      $errors = [];
+      if (count($file_validate_errors) > 0) {
+        foreach ($file_validate_errors as $violation) {
+          $errors[] = $violation->getMessage();
+        }
       }
 
       // Validate Image resolution.
@@ -294,11 +296,14 @@ class FileUpload {
       if (!empty($maxResolution) || !empty($minResolution)) {
         $image_resolution_errors = $this->validateFileImageResolution($file, $maxResolution, $minResolution);
         if (!empty($image_resolution_errors)) {
-          $response->addViolations($image_resolution_errors);
-          return $response;
+          $errors = array_merge($errors, $image_resolution_errors);
         }
       }
 
+      if (!empty($errors)) {
+        $response->addViolations($errors);
+        return $response;
+      }
       $file->setFileUri($file_uri);
       // Move the file to the correct location after validation. Use
       // FileSystemInterface::EXISTS_ERROR as the file location has already been
