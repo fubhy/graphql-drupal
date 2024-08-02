@@ -54,7 +54,7 @@ class DefaultValueTest extends GraphQLTestBase {
   /**
    * Data provider for the testLegacyDefaultValueSetting test.
    */
-  public function settingsProvider(): array {
+  public static function settingsProvider(): array {
     return [
       [FALSE, TestLegacyEntityLoad::class],
       [TRUE, TestNewEntityLoad::class],

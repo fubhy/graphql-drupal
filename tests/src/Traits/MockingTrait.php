@@ -53,6 +53,7 @@ trait MockingTrait {
    *   The return callback promise.
    */
   protected function toPromise($value) {
+    // @phpstan-ignore-next-line
     return $this->returnCallback(is_callable($value) ? $value : function () use ($value) {
       yield $value;
     });
@@ -89,7 +90,7 @@ trait MockingTrait {
 
     $this->schemaPluginManager->method('createInstance')
       ->with($this->equalTo($id))
-      ->will($this->returnValue($this->schema));
+      ->willReturn($this->schema);
 
     $this->container->set('plugin.manager.graphql.schema', $this->schemaPluginManager);
   }
@@ -169,14 +170,14 @@ trait MockingTrait {
 
     $this->schemaPluginManager->expects($this->any())
       ->method('getDefinitions')
-      ->will($this->returnValue([
+      ->willReturn([
         $id => [
           'id' => $id,
           'name' => 'Test schema',
           'provider' => 'graphql',
           'class' => '\Drupal\graphql\Plugin\GraphQL\Schema\SdlSchemaPluginBase',
         ],
-      ]));
+      ]);
   }
 
   /**

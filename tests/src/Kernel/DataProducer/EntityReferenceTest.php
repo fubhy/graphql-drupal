@@ -5,32 +5,8 @@ namespace Drupal\Tests\graphql\Kernel\DataProducer;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
-
-// @todo Drupal 10.1 compatibility: use the deprecated trait for Drupal 10.1.
-if (strpos(\Drupal::VERSION, '10.1') === 0) {
-
-  /**
-   * Helper trait for compatibility with Drupal 9.
-   *
-   * @phpcs:disable Drupal.Classes.ClassFileName.NoMatch
-   */
-  trait EntityReferenceFieldCreationTrait {
-    // @phpstan-ignore-next-line
-    use \Drupal\Tests\field\Traits\EntityReferenceTestTrait;
-
-  }
-}
-else {
-
-  /**
-   * Helper trait for compatibility with Drupal 10.
-   */
-  trait EntityReferenceFieldCreationTrait {
-    use \Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
-
-  }
-}
 
 /**
  * Tests the entity_reference data producers.
@@ -136,7 +112,7 @@ class EntityReferenceTest extends GraphQLTestBase {
   /**
    * Data provider for testEmptyResults().
    */
-  public function emptyResultsProvider(): array {
+  public static function emptyResultsProvider(): array {
     return [
       // Test that an empty reference field returns an empty array.
       ['entity_reference', [

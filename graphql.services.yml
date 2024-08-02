@@ -184,6 +184,7 @@ services:
       - '@renderer'
       - '@event_dispatcher'
       - '@image.factory'
+      - '@file.validator'
 
   plugin.manager.graphql.persisted_query:
     class: Drupal\graphql\Plugin\PersistedQueryPluginManager

@@ -1,0 +1,5 @@
+services:
+  graphql_file_validate_test_subscriber:
+    class: Drupal\graphql_file_validate\EventSubscriber\GraphqlFileValidationTestSubscriber
+    tags:
+      - { name: event_subscriber }
