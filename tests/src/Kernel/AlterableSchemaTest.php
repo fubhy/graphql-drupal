@@ -3,7 +3,7 @@
 namespace Drupal\Tests\graphql\Kernel;
 
 use Drupal\graphql\GraphQL\ResolverRegistry;
-use Drupal\graphql\Plugin\GraphQL\SchemaExtension\SdlSchemaExtensionPluginBase;
+use Drupal\graphql\Plugin\SchemaExtensionPluginInterface;
 use Drupal\graphql\Plugin\SchemaExtensionPluginManager;
 use Drupal\Tests\graphql\Kernel\Schema\AlterableComposableTestSchema;
 
@@ -148,10 +148,8 @@ class AlterableSchemaTest extends GraphQLTestBase {
       ->getMock();
 
     // Adds extra extension in order to test alter extension data event.
-    $extensions['graphql_alterable_schema_test'] = $this->getMockBuilder(SdlSchemaExtensionPluginBase::class)
-      ->disableOriginalConstructor()
-      ->onlyMethods(['getBaseDefinition', 'getExtensionDefinition'])
-      ->getMockForAbstractClass();
+    $extensions['graphql_alterable_schema_test'] = $this->getMockBuilder(SchemaExtensionPluginInterface::class)
+      ->getMock();
 
     $extensions['graphql_alterable_schema_test']->expects(static::any())
       ->method('getBaseDefinition')
@@ -193,7 +191,7 @@ class AlterableSchemaTest extends GraphQLTestBase {
         $this->container->get('event_dispatcher'),
       ])
       ->onlyMethods(['getSchemaDefinition', 'getResolverRegistry'])
-      ->getMockForAbstractClass();
+      ->getMock();
 
     $this->schema->expects(static::any())
       ->method('getSchemaDefinition')
