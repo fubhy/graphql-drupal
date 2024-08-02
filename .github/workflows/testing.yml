@@ -7,6 +7,7 @@ on:
 jobs:
   drupal:
     name: Drupal ${{ matrix.drupal-core }} (PHP ${{ matrix.php-versions }})
+    # We cannot use ubuntu-latest right now as it still points to 22.04 and we need a newer database driver."
     runs-on: ubuntu-24.04
     env:
       extensions: mbstring, xml, pdo_sqlite, gd, opcache
