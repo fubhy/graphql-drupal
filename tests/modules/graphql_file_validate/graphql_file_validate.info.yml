@@ -1,0 +1,5 @@
+type: module
+name: GraphQL File Validate Test
+description: Tests file validate on uploads.
+package: Testing
+hidden: TRUE
