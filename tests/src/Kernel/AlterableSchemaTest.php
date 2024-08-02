@@ -156,7 +156,7 @@ class AlterableSchemaTest extends GraphQLTestBase {
       ->willReturn('');
 
     // Different extension definition for different tests.
-    switch ($this->getName()) {
+    switch ($this->name()) {
       case 'testEmptySchemaExtensionAlteredQueryResultPropertyAdded':
         $extensionDefinition = '';
         break;
