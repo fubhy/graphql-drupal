@@ -145,7 +145,7 @@ trait MockingTrait {
         ['development' => FALSE],
       ])
       ->onlyMethods(['getSchemaDefinition', 'getResolverRegistry'])
-      ->getMockForAbstractClass();
+      ->getMock();
 
     $this->schema->expects(static::any())
       ->method('getSchemaDefinition')
