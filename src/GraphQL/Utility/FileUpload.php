@@ -37,7 +37,7 @@ class FileUpload {
   use StringTranslationTrait;
 
   /**
-   * The entity storage for the 'file' entity type.
+   * The file storage where we will create new file entities from.
    *
    * @var \Drupal\file\FileStorageInterface
    */
@@ -294,10 +294,7 @@ class FileUpload {
       $maxResolution = $settings['max_resolution'] ?? 0;
       $minResolution = $settings['min_resolution'] ?? 0;
       if (!empty($maxResolution) || !empty($minResolution)) {
-        $image_resolution_errors = $this->validateFileImageResolution($file, $maxResolution, $minResolution);
-        if (!empty($image_resolution_errors)) {
-          $errors = array_merge($errors, $image_resolution_errors);
-        }
+        $errors += $this->validateFileImageResolution($file, $maxResolution, $minResolution);
       }
 
       if (!empty($errors)) {

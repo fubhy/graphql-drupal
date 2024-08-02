@@ -16,6 +16,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UploadFileServiceTest extends GraphQLTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = ['file_validator_test'];
+
+  /**
    * The FileUpload object we want to test, gets prepared in setUp().
    *
    * @var \Drupal\graphql\GraphQL\Utility\FileUpload
