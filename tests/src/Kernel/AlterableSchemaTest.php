@@ -114,9 +114,9 @@ class AlterableSchemaTest extends GraphQLTestBase {
     $this->assertSame([
       'errors' => [
         0 => [
-          'message' => 'Cannot query field "empty" on type "Result".',
+          'message' => 'Internal server error',
           'extensions' => [
-            'category' => 'graphql',
+            'category' => 'internal',
           ],
           'locations' => [
             0 => [
@@ -124,7 +124,15 @@ class AlterableSchemaTest extends GraphQLTestBase {
               'column' => 37,
             ],
           ],
+          'path' => [
+            'alterableQuery',
+            // Reference to our variable in the error.
+            'empty',
+          ],
         ],
+      ],
+      'data' => [
+        'alterableQuery' => NULL,
       ],
     ], json_decode($result->getContent(), TRUE));
   }
@@ -146,6 +154,7 @@ class AlterableSchemaTest extends GraphQLTestBase {
     $extensions['graphql_alterable_schema_test']->expects(static::any())
       ->method('getBaseDefinition')
       ->willReturn('');
+
     // Different extension definition for different tests.
     // PHPUnit compatibility: remove once support for Drupal 10.2 is dropped.
     $methodName = method_exists($this, 'name') ? 'name' : 'getName';
