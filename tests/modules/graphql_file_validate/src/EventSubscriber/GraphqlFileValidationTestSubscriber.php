@@ -19,7 +19,7 @@ class GraphqlFileValidationTestSubscriber implements EventSubscriberInterface {
    *   The event.
    */
   public function onFileValidation(FileValidationEvent $event): void {
-    graphql_file_validate('validate', [$event->file->id()]);
+    graphql_file_validate_test_file($event->file);
   }
 
   /**

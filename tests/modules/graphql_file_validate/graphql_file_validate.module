@@ -10,7 +10,7 @@ use Drupal\file\FileInterface;
 /**
  * Test to validate file exists.
  */
-function graphql_file_validate(FileInterface $file): void {
+function graphql_file_validate_test_file(FileInterface $file): void {
   if (!file_exists($file->getFileUri())) {
     throw new \Exception('File does not exist during validation: ' . $file->getFileUri());
   }
