@@ -1,5 +1,5 @@
 type: module
 name: GraphQL Alterable Schema Test
-description: Tests if alterting schema is working.
+description: Tests if altering the schema is working.
 package: Testing
 hidden: TRUE

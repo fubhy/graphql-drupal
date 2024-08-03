@@ -43,6 +43,7 @@ GQL;
     $this->mockResolver('Query', 'field_two', 'this is the field two');
     $this->mockResolver('Query', 'field_three', []);
     $this->mockResolver('Link', 'url', 'https://www.ecosia.org');
+    // cspell:ignore Ecosia
     $this->mockResolver('Link', 'title', 'Ecosia');
   }
 

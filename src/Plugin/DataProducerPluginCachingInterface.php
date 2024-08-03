@@ -3,7 +3,7 @@
 namespace Drupal\graphql\Plugin;
 
 /**
- * Defines cachable data producer plugins.
+ * Defines a cacheable data producer plugins.
  */
 interface DataProducerPluginCachingInterface extends DataProducerPluginInterface {
 

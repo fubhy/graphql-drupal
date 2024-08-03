@@ -4,11 +4,11 @@ The 4.x version of the Drupal GraphQL module is built on top of a concept called
 
 A data producer is more or less a function that takes arguments (either from an end user query or static) and resolves these into some other data, for example taking an entity (such as a node) and giving back a particular field.
 
-Lets imagine we want to make a custom field available for a schema, in this case we have an `author` field in the "Article" content type. For this field we can have a producer that takes an entity and returns or resolves the creator field. Let's apply this to our custom schema which alreay defines an "Article" type.
+Lets imagine we want to make a custom field available for a schema, in this case we have an `author` field in the "Article" content type. For this field we can have a producer that takes an entity and returns or resolves the creator field. Let's apply this to our custom schema which already defines an "Article" type.
 
 ## Add the field to the schema
 
-In your `.graphqls` file add the schema defintion
+In your `.graphqls` file add the schema definition
 
 ```
 type Article {
@@ -44,7 +44,7 @@ $registry->addFieldResolver('Article', 'author',
   )
 );
 ```
-Now you can make a sample article (as a user) and if you now go over to your graphql explorer and run the following query : 
+Now you can make a sample article (as a user) and if you now go over to your graphql explorer and run the following query :
 
 ```
 {
@@ -54,9 +54,9 @@ Now you can make a sample article (as a user) and if you now go over to your gra
     author
   }
 }
-``` 
+```
 
-You should get a response in the same format e.g. : 
+You should get a response in the same format e.g. :
 
 ```json
 {
@@ -68,11 +68,11 @@ You should get a response in the same format e.g. :
     }
   }
 }
-``` 
+```
 
 ### Resolver builder
 
-You need to initalize the `ResolverBuilder` once inside the `registerResolvers` method (or `getResolverRegistry` if you do not want to use schema extensions) in order to start registering resolvers. This is what will give you access to all the data producers by calling the `produce` method which takes as a parameter the data producer id.
+You need to initialize the `ResolverBuilder` once inside the `registerResolvers` method (or `getResolverRegistry` if you do not want to use schema extensions) in order to start registering resolvers. This is what will give you access to all the data producers by calling the `produce` method which takes as a parameter the data producer id.
 
 Essentially calling the `produce` method with the data producer id is what you need to do every time you want to make a field available in the schema. We tell Drupal where and how to get the data and specify where this maps to.
 
