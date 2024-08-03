@@ -87,6 +87,7 @@ class EntityTest extends GraphQLTestBase {
     ]);
     $content_type->save();
 
+    // cspell:ignore otherbundle
     $content_type = NodeType::create([
       'type' => 'otherbundle',
       'name' => 'otherbundle',

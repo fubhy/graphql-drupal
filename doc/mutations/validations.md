@@ -49,7 +49,7 @@ We define a Violation scalar which will just hold the error messages that will b
 
 ## Create the ArticleResponse class
 
-Because we need adition content inside our Response we make a class that implements the module's ResponseInterface. Inside it will have a `article` property (like we saw before). This will be added in the `src/Wrappers/Response` folder and we will call it `ArticleResponse.php`
+Because we need additional content inside our Response we make a class that implements the module's ResponseInterface. Inside it will have a `article` property (like we saw before). This will be added in the `src/Wrappers/Response` folder and we will call it `ArticleResponse.php`
 
 ```php
 
@@ -207,7 +207,7 @@ We have added a new type that is returned `$response` where we call the `setArti
 
 ## Resolve errors and article
 
-To resolve our fields similar to before we go to our schema implementation again and add the resolvers for the 
+To resolve our fields similar to before we go to our schema implementation again and add the resolvers for the
 `ArticleResponse` we created (what the mutation now returns back):
 
 ```php
@@ -232,7 +232,7 @@ public function registerResolvers(ResolverRegistryInterface $registry) {
 }
 ```
 
-And that's it if we now call this mutation for example as an anonymous user (if we set aribtrary queries enabled in the permissions for the module) we should get an error : 
+And that's it if we now call this mutation for example as an anonymous user (if we set arbitrary queries enabled in the permissions for the module) we should get an error :
 
 ```json
 {

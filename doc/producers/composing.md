@@ -26,7 +26,7 @@ $registry->addFieldResolver('Query', 'currentUser', $builder->compose(
     ->map('type', $builder->fromValue('user'))
     ->map('id', $builder->fromParent()),
   $builder->callback(function ($entity) {
-    // Here we can do anything we want to the data. We get as a parameter anyting that was returned
+    // Here we can do anything we want to the data. We get as a parameter anything that was returned
     // in the previous step.
   })
 ));

@@ -19,6 +19,7 @@ class ResolverRegistryTest extends GraphQLTestBase {
   public function setUp(): void {
     parent::setUp();
 
+    // cspell:ignore Cabrio cabrio
     $schema = <<<GQL
       type Query {
         transportation: Vehicle

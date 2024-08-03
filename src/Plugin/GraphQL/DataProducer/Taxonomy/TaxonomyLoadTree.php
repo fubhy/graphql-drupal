@@ -126,7 +126,7 @@ class TaxonomyLoadTree extends DataProducerPluginBase implements ContainerFactor
    * Resolves the taxonomy tree for given vocabulary.
    *
    * @param string $vid
-   *   The vocanulary ID.
+   *   The vocabulary ID.
    * @param int $parent
    *   The ID of the parent's term to load the tree for.
    * @param int|null $max_depth

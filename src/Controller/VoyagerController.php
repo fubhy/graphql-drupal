@@ -8,7 +8,7 @@ use Drupal\graphql\GraphQL\Utility\Introspection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller for the GraphQL Voyager visualisation API.
+ * Controller for the GraphQL Voyager visualization API.
  *
  * @codeCoverageIgnore
  */

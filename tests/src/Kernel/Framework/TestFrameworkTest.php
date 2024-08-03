@@ -63,6 +63,7 @@ GQL;
    * Test result error assertions.
    */
   public function testErrorAssertion(): void {
+    // cspell:ignore wrongname
     $schema = <<<GQL
       type Query {
         wrongname: String

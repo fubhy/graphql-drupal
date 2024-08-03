@@ -12,7 +12,7 @@ use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
  *   name = @Translation("Uppercase"),
  *   description = @Translation("Transforms a string to uppercase."),
  *   produces = @ContextDefinition("string",
- *     label = @Translation("Uppercased string")
+ *     label = @Translation("Uppercase converted string")
  *   ),
  *   consumes = {
  *     "string" = @ContextDefinition("string",
