@@ -42,7 +42,7 @@ class CurrentUser extends DataProducerPluginBase implements ContainerFactoryPlug
   }
 
   /**
-   * CurrentUser constructor.
+   * Constructs a new CurrentUser data producer.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -59,7 +59,7 @@ class CurrentUser extends DataProducerPluginBase implements ContainerFactoryPlug
   }
 
   /**
-   * Returns current user.
+   * Returns the current user.
    *
    * @param \Drupal\graphql\GraphQL\Execution\FieldContext $field_context
    *   Field context.
@@ -68,9 +68,9 @@ class CurrentUser extends DataProducerPluginBase implements ContainerFactoryPlug
    *   The current user.
    */
   public function resolve(FieldContext $field_context): AccountInterface {
-    // Response must be cached based on current user as a cache context,
-    // otherwise a new user would became a previous user.
-    $field_context->addCacheableDependency($this->currentUser);
+    // Response must be cached per user so that information from previously
+    // logged in users will not leak to newly logged in users.
+    $field_context->addCacheContexts(['user']);
     return $this->currentUser;
   }
 
