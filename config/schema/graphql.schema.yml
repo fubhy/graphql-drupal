@@ -72,6 +72,11 @@ graphql.settings:
   label: "GraphQL Settings"
   mapping:
     # @todo Remove in GraphQL 5.
+    dataproducer_allow_current_user_caching:
+      type: boolean
+      label: "Allow the result of the current_user data producer to be cached"
+      description: "Legacy setting: Allows the results of resolvers that invoke the current_user data producer to be cached. Set this to true to be future-proof. This setting is deprecated and will be removed in a future release."
+    # @todo Remove in GraphQL 5.
     dataproducer_populate_default_values:
       type: boolean
       label: "Populate dataproducer context default values"
