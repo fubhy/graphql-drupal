@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\graphql\Kernel\DataProducer;
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
-use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\user\Entity\User;
 
 /**
