@@ -1,5 +1,0 @@
-dataproducer
-dataproducers
-GraphiQL
-graphqls
-webonyx
