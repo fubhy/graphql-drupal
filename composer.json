@@ -9,7 +9,6 @@
     "webonyx/graphql-php": "^14.8.0"
   },
   "require-dev": {
-    "drupal/typed_data": "^1.0",
     "drupal/redirect": "^1.0",
     "phpstan/phpstan": "^1.11.2",
     "mglaman/phpstan-drupal": "^1.1.2",
