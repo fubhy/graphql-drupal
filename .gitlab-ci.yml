@@ -1,0 +1,29 @@
+################
+# Uses the GitLabCI template for Drupal projects.
+# The full documentation is on https://project.pages.drupalcode.org/gitlab_templates/
+################
+
+include:
+  - project: $_GITLAB_TEMPLATES_REPO
+    ref: $_GITLAB_TEMPLATES_REF
+    file:
+      - "/includes/include.drupalci.main.yml"
+      - "/includes/include.drupalci.variables.yml"
+      - "/includes/include.drupalci.workflows.yml"
+
+variables:
+  SKIP_ESLINT: 1
+  SKIP_STYLELINT: 1
+  # We only wan to run PHPStan once on the max PHP version, skip default runs.
+  SKIP_PHPSTAN: 1
+  OPT_IN_TEST_PREVIOUS_MINOR: 1
+  OPT_IN_TEST_NEXT_MINOR: 1
+  OPT_IN_TEST_MAX_PHP: 1
+  OPT_IN_TEST_NEXT_MAJOR: 1
+
+phpstan (custom):
+  extends: phpstan
+  rules:
+    - when: on_success
+  needs:
+    - "composer (next major)"
