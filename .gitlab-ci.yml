@@ -27,4 +27,4 @@ phpstan (custom):
   rules:
     - when: on_success
   needs:
-    - "composer (max PHP version)"
+    - "composer (next major)"
