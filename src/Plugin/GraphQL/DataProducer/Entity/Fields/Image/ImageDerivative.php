@@ -97,13 +97,12 @@ class ImageDerivative extends DataProducerPluginBase implements ContainerFactory
     $access = $entity->access('view', NULL, TRUE);
     $metadata->addCacheableDependency($access);
     if ($access->isAllowed() && $image_style = ImageStyle::load($style)) {
-
       // @phpstan-ignore-next-line
       $width = $entity->width;
       // @phpstan-ignore-next-line
       $height = $entity->height;
 
-      if (empty($width) || empty($height)) {
+      if ($width == NULL || $height == NULL) {
         /** @var \Drupal\Core\Image\ImageInterface $image */
         $image = \Drupal::service('image.factory')->get($entity->getFileUri());
         if ($image->isValid()) {

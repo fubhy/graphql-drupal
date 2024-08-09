@@ -7,27 +7,24 @@ on:
 jobs:
   drupal:
     name: Drupal ${{ matrix.drupal-core }} (PHP ${{ matrix.php-versions }})
-    runs-on: ubuntu-latest
+    # We cannot use ubuntu-latest right now as it still points to 22.04 and we need a newer database driver.
+    runs-on: ubuntu-24.04
     env:
       extensions: mbstring, xml, pdo_sqlite, gd, opcache
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['8.1', '8.2', '8.3']
         drupal-core: ['10.3.x']
         phpstan: ['0']
         include:
-          # Extra run to test older supported Drupal 10.1.x.
-          - php-versions: '8.1'
-            drupal-core: '10.1.x'
-            phpstan: '0'
           # Extra run to test older supported Drupal 10.2.x.
           - php-versions: '8.1'
             drupal-core: '10.2.x'
             phpstan: '0'
           # We only need to run PHPStan once on the latest PHP version.
           - php-versions: '8.3'
-            drupal-core: '10.3.x'
+            drupal-core: '11.0.x'
             phpstan: '1'
     steps:
       - name: Checkout Drupal core
@@ -86,12 +83,13 @@ jobs:
           composer --no-interaction run-script drupal-phpunit-upgrade
           composer config --no-plugins allow-plugins.phpstan/extension-installer true
 
+      # Revisit - check for latest release of dependent modules.
       - name: Install GraphQL dependencies
         run: |
           composer --no-interaction --no-progress require \
             webonyx/graphql-php:^14.8 \
-            drupal/typed_data:^1.0 \
-            drupal/redirect:^1.0
+            drupal/typed_data:^2.0 \
+            drupal/redirect:dev-1.x
 
       - name: Run PHPUnit
         run: |
@@ -105,12 +103,12 @@ jobs:
         # Pin the exact Coder version to upgrade manually when we want to.
         run: |
           composer --no-interaction --no-progress require \
-            phpstan/phpstan:^1.11.2 \
+            phpstan/phpstan:^1.11.9 \
             mglaman/phpstan-drupal:^1.1.2 \
             phpstan/phpstan-deprecation-rules:^1.0.0 \
             jangregor/phpstan-prophecy:^1.0.0 \
-            phpstan/phpstan-phpunit:^1.0.0 \
-            phpstan/extension-installer:^1.0
+            phpstan/phpstan-phpunit:^1.4 \
+            phpstan/extension-installer:^1.4
           composer --no-interaction --no-progress --with-all-dependencies upgrade drupal/coder:8.3.24
 
       - name: Run PHPStan

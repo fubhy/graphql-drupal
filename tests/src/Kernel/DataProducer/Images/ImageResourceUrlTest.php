@@ -27,7 +27,7 @@ class ImageResourceUrlTest extends GraphQLTestBase {
   /**
    * Provider for testImageResourceUrl().
    */
-  public function imageResourceUrlProvider(): array {
+  public static function imageResourceUrlProvider(): array {
     return [
       [
         ['url' => 'http://localhost/test_image.jpg'],

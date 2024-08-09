@@ -27,7 +27,7 @@ class StringTest extends GraphQLTestBase {
   /**
    * Tests the upper case data producer.
    */
-  public function uppercaseProvider(): array {
+  public static function uppercaseProvider(): array {
     return [
       ['test', 'TEST'],
       ['123 ..!!', '123 ..!!'],
