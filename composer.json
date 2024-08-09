@@ -5,7 +5,6 @@
   "homepage": "http://drupal.org/project/graphql",
   "license": "GPL-2.0+",
   "require": {
-    "drupal/typed_data": "^1.0 || ^2.0",
     "php": ">=8.1",
     "webonyx/graphql-php": "^14.8.0"
   },
