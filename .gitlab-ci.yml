@@ -12,7 +12,6 @@ include:
       - "/includes/include.drupalci.workflows.yml"
 
 variables:
-  _CSPELL_IGNORE_PATHS: 'assets/explorer/dist/*, assets/voyager/dist/*'
   SKIP_ESLINT: 1
   SKIP_STYLELINT: 1
   # We only wan to run PHPStan once on the max PHP version, skip default runs.
