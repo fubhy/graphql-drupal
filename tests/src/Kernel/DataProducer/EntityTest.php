@@ -223,14 +223,10 @@ class EntityTest extends GraphQLTestBase {
 
     $this->assertEquals('Dummy label', $this->executeDataProducer('entity_label', [
       'entity' => $this->entity,
-      // @todo Remove when https://github.com/drupal-graphql/graphql/issues/1233 is fixed.
-      'access' => TRUE,
     ]));
 
     $this->assertNull($this->executeDataProducer('entity_label', [
       'entity' => $this->entity,
-      // @todo Remove when https://github.com/drupal-graphql/graphql/issues/1233 is fixed.
-      'access' => TRUE,
     ]));
   }
 

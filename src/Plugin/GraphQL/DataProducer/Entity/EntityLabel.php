@@ -22,7 +22,7 @@ use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity")
  *     ),
- *     "access" = @ContextDefinition("boolean",
+ *     "check_access" = @ContextDefinition("boolean",
  *       label = @Translation("Check access"),
  *       required = FALSE,
  *       default_value = TRUE
@@ -41,14 +41,17 @@ class EntityLabel extends DataProducerPluginBase implements DataProducerPluginCa
    * Resolver.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   * @param bool $access
+   * @param bool $check_access
    * @param \Drupal\Core\Session\AccountInterface|null $accessUser
    * @param \Drupal\graphql\GraphQL\Execution\FieldContext $context
    *
    * @return string|null
    */
-  public function resolve(EntityInterface $entity, bool $access, ?AccountInterface $accessUser, FieldContext $context) {
-    if ($access) {
+  public function resolve(EntityInterface $entity, ?bool $check_access, ?AccountInterface $accessUser, FieldContext $context) {
+    if (is_null($check_access)) {
+      $check_access = TRUE;
+    }
+    if ($check_access) {
       /** @var \Drupal\Core\Access\AccessResultInterface $accessResult */
       $accessResult = $entity->access('view label', $accessUser, TRUE);
       $context->addCacheableDependency($accessResult);
