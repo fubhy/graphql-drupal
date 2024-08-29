@@ -1,6 +1,9 @@
+name: Close all issues
+
 on:
   issues:
     types: [opened]
+
 jobs:
   closeAll:
     runs-on: ubuntu-latest
