@@ -15,3 +15,4 @@ This module requires composer for installation. To install, simply run `composer
 * Documentation: [https://drupal-graphql.gitbook.io/graphql/v/8.x-4.x/](https://drupal-graphql.gitbook.io/graphql/v/8.x-4.x/)
 * Project homepage: [https://www.drupal.org/project/graphql](https://www.drupal.org/project/graphql)
 * Contributing: [https://github.com/drupal-graphql/graphql](https://github.com/drupal-graphql/graphql)
+
