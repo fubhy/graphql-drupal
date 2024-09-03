@@ -223,7 +223,7 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
    */
   private function getFullSchemaDocument(Schema $schema, array $extensions): ?DocumentNode {
     // Only use caching of the parsed document if we aren't in development mode.
-    $cid = "full:{$this->getPluginId()}";
+    $cid = "server:{$this->serverId}:full:{$this->getPluginId()}";
     if (empty($this->inDevelopment) && $cache = $this->astCache->get($cid)) {
       return $cache->data;
     }
