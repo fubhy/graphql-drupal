@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 use Drupal\graphql_examples\Wrappers\QueryConnection;
+use Drupal\node\Entity\Node;
 use GraphQL\Error\UserError;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -70,7 +71,7 @@ class QueryArticles extends DataProducerPluginBase implements ContainerFactoryPl
     array $configuration,
     $pluginId,
     $pluginDefinition,
-    EntityTypeManagerInterface $entityTypeManager
+    EntityTypeManagerInterface $entityTypeManager,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;
@@ -94,7 +95,13 @@ class QueryArticles extends DataProducerPluginBase implements ContainerFactoryPl
     $entityType = $storage->getEntityType();
     $query = $storage->getQuery()
       ->currentRevision()
-      ->accessCheck();
+      ->accessCheck()
+      // The access check does not filter out unpublished nodes automatically,
+      // so we need to do this explicitly here. We don't want to run access
+      // checks on loaded nodes later, as that would then make the query count
+      // numbers wrong. Therefore all fields relevant for access need to be
+      // included here.
+      ->condition('status', Node::PUBLISHED);
 
     $query->condition($entityType->getKey('bundle'), 'article');
     $query->range($offset, $limit);

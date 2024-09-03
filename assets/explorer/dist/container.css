@@ -2,3 +2,8 @@
   position: relative;
   height: 650px;
 }
+
+.graphiql-dialog-overlay,
+.graphiql-dialog {
+  z-index: 101;
+}

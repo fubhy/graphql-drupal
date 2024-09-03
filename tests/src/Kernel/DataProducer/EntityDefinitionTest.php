@@ -6,9 +6,9 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
-use Drupal\node\Entity\NodeType;
 use Drupal\graphql\GraphQL\ResolverBuilder;
+use Drupal\node\Entity\NodeType;
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 
 /**
  * Test the entity_definition data producer and friends.
@@ -211,7 +211,7 @@ class EntityDefinitionTest extends GraphQLTestBase {
         [
           'id' => 'created',
           'label' => 'Authored on',
-          'description' => 'The time that the node was created.',
+          'description' => 'The date and time that the content was created.',
           'type' => 'created',
           'required' => FALSE,
           'multiple' => FALSE,
@@ -496,6 +496,11 @@ GQL;
         'entity_form_display_context' => $builder->fromContext('entity_form_display'),
       ])
     );
+
+    // @todo Different description between Drupal 10.1 and 10.2, can be removed
+    // when Drupal 10.1 support is dropped.
+    $this->fullDefinitionResult['entityDefinition']['fields'][11]['description'] =
+      $this->container->get('entity_field.manager')->getBaseFieldDefinitions('node')['created']->getDescription();
   }
 
   /**

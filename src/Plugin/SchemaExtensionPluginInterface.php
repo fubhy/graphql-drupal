@@ -2,8 +2,8 @@
 
 namespace Drupal\graphql\Plugin;
 
-use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Component\Plugin\DerivativeInspectionInterface;
+use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\graphql\GraphQL\ResolverRegistryInterface;
 
 /**

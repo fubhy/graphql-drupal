@@ -16,6 +16,90 @@ use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 class RouteEntityTest extends GraphQLTestBase {
 
   /**
+   * Published test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $publishedNode;
+
+  /**
+   * French translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationFrPublished;
+
+  /**
+   * German translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationDePublished;
+
+  /**
+   * Unpublished test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $unpublishedNode;
+
+  /**
+   * French translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationFrUnpublished;
+
+  /**
+   * German translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationDeUnpublished;
+
+  /**
+   * Unpublished test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $unpublishedToPublishedNode;
+
+  /**
+   * Published french translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationFrUnpublishedToPublished;
+
+  /**
+   * Published German translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationDeUnpublishedToPublished;
+
+  /**
+   * Published test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $publishedToUnpublishedNode;
+
+  /**
+   * Unpublished french translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationFrPublishedToUnpublished;
+
+  /**
+   * Unpublished German translation of test node.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $translationDePublishedToUnpublished;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
@@ -30,66 +114,66 @@ class RouteEntityTest extends GraphQLTestBase {
     $content_type->save();
 
     // Published node and published translations.
-    $this->published_node = Node::create([
+    $this->publishedNode = Node::create([
       'title' => 'Test Event',
       'type' => 'event',
       'status' => NodeInterface::PUBLISHED,
     ]);
-    $this->published_node->save();
+    $this->publishedNode->save();
 
-    $this->translation_fr_published = $this->published_node->addTranslation('fr', ['title' => 'Test Event FR']);
-    $this->translation_fr_published->save();
+    $this->translationFrPublished = $this->publishedNode->addTranslation('fr', ['title' => 'Test Event FR']);
+    $this->translationFrPublished->save();
 
-    $this->translation_de_published = $this->published_node->addTranslation('de', ['title' => 'Test Event DE']);
-    $this->translation_de_published->save();
+    $this->translationDePublished = $this->publishedNode->addTranslation('de', ['title' => 'Test Event DE']);
+    $this->translationDePublished->save();
 
     // Unpublished node and unpublished translations.
-    $this->unpublished_node = Node::create([
+    $this->unpublishedNode = Node::create([
       'title' => 'Test Unpublished Event',
       'type' => 'event',
       'status' => NodeInterface::NOT_PUBLISHED,
     ]);
-    $this->unpublished_node->save();
+    $this->unpublishedNode->save();
 
-    $this->translation_fr_unpublished = $this->unpublished_node->addTranslation('fr', ['title' => 'Test Unpublished Event FR']);
-    $this->translation_fr_unpublished->status = NodeInterface::NOT_PUBLISHED;
-    $this->translation_fr_unpublished->save();
+    $this->translationFrUnpublished = $this->unpublishedNode->addTranslation('fr', ['title' => 'Test Unpublished Event FR']);
+    $this->translationFrUnpublished->setUnpublished();
+    $this->translationFrUnpublished->save();
 
-    $this->translation_de_unpublished = $this->unpublished_node->addTranslation('de', ['title' => 'Test Unpublished Event DE']);
-    $this->translation_de_unpublished->status = NodeInterface::NOT_PUBLISHED;
-    $this->translation_de_unpublished->save();
+    $this->translationDeUnpublished = $this->unpublishedNode->addTranslation('de', ['title' => 'Test Unpublished Event DE']);
+    $this->translationDeUnpublished->setUnpublished();
+    $this->translationDeUnpublished->save();
 
     // Unpublished node to published translations.
-    $this->unpublished_to_published_node = Node::create([
+    $this->unpublishedToPublishedNode = Node::create([
       'title' => 'Test Unpublished to Published Event',
       'type' => 'event',
       'status' => NodeInterface::NOT_PUBLISHED,
     ]);
-    $this->unpublished_to_published_node->save();
+    $this->unpublishedToPublishedNode->save();
 
-    $this->translation_fr_unpublished_to_published = $this->unpublished_to_published_node->addTranslation('fr', ['title' => 'Test Unpublished to Published Event FR']);
-    $this->translation_fr_unpublished_to_published->status = NodeInterface::PUBLISHED;
-    $this->translation_fr_unpublished_to_published->save();
+    $this->translationFrUnpublishedToPublished = $this->unpublishedToPublishedNode->addTranslation('fr', ['title' => 'Test Unpublished to Published Event FR']);
+    $this->translationFrUnpublishedToPublished->setPublished();
+    $this->translationFrUnpublishedToPublished->save();
 
-    $this->translation_de_unpublished_to_published = $this->unpublished_to_published_node->addTranslation('de', ['title' => 'Test Unpublished to Published Event DE']);
-    $this->translation_de_unpublished_to_published->status = NodeInterface::PUBLISHED;
-    $this->translation_de_unpublished_to_published->save();
+    $this->translationDeUnpublishedToPublished = $this->unpublishedToPublishedNode->addTranslation('de', ['title' => 'Test Unpublished to Published Event DE']);
+    $this->translationDeUnpublishedToPublished->setPublished();
+    $this->translationDeUnpublishedToPublished->save();
 
     // Published node to unpublished translations.
-    $this->published_to_unpublished_node = Node::create([
+    $this->publishedToUnpublishedNode = Node::create([
       'title' => 'Test Published to Unpublished Event',
       'type' => 'event',
       'status' => NodeInterface::PUBLISHED,
     ]);
-    $this->published_to_unpublished_node->save();
+    $this->publishedToUnpublishedNode->save();
 
-    $this->translation_fr_published_to_unpublished = $this->published_to_unpublished_node->addTranslation('fr', ['title' => 'Test Published to Unpublished Event FR']);
-    $this->translation_fr_published_to_unpublished->status = NodeInterface::NOT_PUBLISHED;
-    $this->translation_fr_published_to_unpublished->save();
+    $this->translationFrPublishedToUnpublished = $this->publishedToUnpublishedNode->addTranslation('fr', ['title' => 'Test Published to Unpublished Event FR']);
+    $this->translationFrPublishedToUnpublished->setUnpublished();
+    $this->translationFrPublishedToUnpublished->save();
 
-    $this->translation_de_published_to_unpublished = $this->published_to_unpublished_node->addTranslation('de', ['title' => 'Test Published to Unpublished Event DE']);
-    $this->translation_de_published_to_unpublished->status = NodeInterface::NOT_PUBLISHED;
-    $this->translation_de_published_to_unpublished->save();
+    $this->translationDePublishedToUnpublished = $this->publishedToUnpublishedNode->addTranslation('de', ['title' => 'Test Published to Unpublished Event DE']);
+    $this->translationDePublishedToUnpublished->setUnpublished();
+    $this->translationDePublishedToUnpublished->save();
 
     \Drupal::service('content_translation.manager')->setEnabled('node', 'event', TRUE);
   }
@@ -99,34 +183,34 @@ class RouteEntityTest extends GraphQLTestBase {
    */
   public function testRouteEntity(): void {
     // Published node to published translations.
-    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->published_node->id()]);
+    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->publishedNode->id()]);
 
     $result = $this->executeDataProducer('route_entity', [
       'url' => $url,
     ]);
 
-    $this->assertEquals($this->published_node->id(), $result->id());
-    $this->assertEquals($this->published_node->label(), $result->label());
+    $this->assertEquals($this->publishedNode->id(), $result->id());
+    $this->assertEquals($this->publishedNode->label(), $result->label());
 
     $result = $this->executeDataProducer('route_entity', [
       'url' => $url,
       'language' => 'fr',
     ]);
 
-    $this->assertEquals($this->translation_fr_published->id(), $result->id());
-    $this->assertEquals($this->translation_fr_published->label(), $result->label());
+    $this->assertEquals($this->translationFrPublished->id(), $result->id());
+    $this->assertEquals($this->translationFrPublished->label(), $result->label());
 
     $result = $this->executeDataProducer('route_entity', [
       'url' => $url,
       'language' => 'de',
     ]);
 
-    $this->assertEquals($this->translation_de_published->id(), $result->id());
-    $this->assertEquals($this->translation_de_published->label(), $result->label());
+    $this->assertEquals($this->translationDePublished->id(), $result->id());
+    $this->assertEquals($this->translationDePublished->label(), $result->label());
 
     // Unpublished node to unpublished translations. Make sure we are not
     // allowed to get the unpublished nodes or translations.
-    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->unpublished_node->id()]);
+    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->unpublishedNode->id()]);
     foreach ([NULL, 'fr', 'de'] as $lang) {
       $result = $this->executeDataProducer('route_entity', [
         'url' => $url,
@@ -138,7 +222,7 @@ class RouteEntityTest extends GraphQLTestBase {
 
     // Unpublished node to published translations. Make sure we are not able to
     // get unpublished source, but we are able to get published translations.
-    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->unpublished_to_published_node->id()]);
+    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->unpublishedToPublishedNode->id()]);
 
     $result = $this->executeDataProducer('route_entity', [
       'url' => $url,
@@ -151,27 +235,27 @@ class RouteEntityTest extends GraphQLTestBase {
       'language' => 'fr',
     ]);
 
-    $this->assertEquals($this->translation_fr_unpublished_to_published->id(), $result->id());
-    $this->assertEquals($this->translation_fr_unpublished_to_published->label(), $result->label());
+    $this->assertEquals($this->translationFrUnpublishedToPublished->id(), $result->id());
+    $this->assertEquals($this->translationFrUnpublishedToPublished->label(), $result->label());
 
     $result = $this->executeDataProducer('route_entity', [
       'url' => $url,
       'language' => 'de',
     ]);
 
-    $this->assertEquals($this->translation_de_unpublished_to_published->id(), $result->id());
-    $this->assertEquals($this->translation_de_unpublished_to_published->label(), $result->label());
+    $this->assertEquals($this->translationDeUnpublishedToPublished->id(), $result->id());
+    $this->assertEquals($this->translationDeUnpublishedToPublished->label(), $result->label());
 
     // Published node to unpublished translations. Make sure we are able to get
     // published source, but we are not able to get unpublished translations.
-    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->published_to_unpublished_node->id()]);
+    $url = Url::fromRoute('entity.node.canonical', ['node' => $this->publishedToUnpublishedNode->id()]);
 
     $result = $this->executeDataProducer('route_entity', [
       'url' => $url,
     ]);
 
-    $this->assertEquals($this->published_to_unpublished_node->id(), $result->id());
-    $this->assertEquals($this->published_to_unpublished_node->label(), $result->label());
+    $this->assertEquals($this->publishedToUnpublishedNode->id(), $result->id());
+    $this->assertEquals($this->publishedToUnpublishedNode->label(), $result->label());
 
     foreach (['fr', 'de'] as $lang) {
       $result = $this->executeDataProducer('route_entity', [

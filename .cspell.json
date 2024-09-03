@@ -1,0 +1,25 @@
+{
+  "description": "Cspell config for graphql module.",
+  "language": "en-US",
+  "allowCompoundWords": false,
+  "globRoot": ".",
+  "minWordLength": 4,
+  "ignorePaths": [
+    "assets/explorer/dist/*",
+    "assets/voyager/dist/*"
+  ],
+  "dictionaries": [],
+  "dictionaryDefinitions": [],
+  "words": [
+    "dataproducer",
+    "dataproducers",
+    "GraphiQL",
+    "graphqls",
+    "webonyx"
+  ],
+  "flagWords": [
+    "e-mail",
+    "grey",
+    "queuing"
+  ]
+}

@@ -6,9 +6,9 @@ Custom data producers allow you essentially hook into any data of Drupal, becaus
 
 Lets look at a custom Data producer that loads the current user (similar to the 3.x version of currentUser query).
 
-The first step as seen before  is to add our query to the schema : 
+The first step as seen before  is to add our query to the schema :
 
-``` 
+```
 type Query {
   ...
   currentUser: User
@@ -21,12 +21,12 @@ type User {
 }
 ```
 
-Now that we have this we need to make a resolver that actually loads this user, but for that first we need our own custom data producer "CurrentUser" : 
+Now that we have this we need to make a resolver that actually loads this user, but for that first we need our own custom data producer "CurrentUser" :
 
 ```php
 <?php
 
-namespace Drupal\mydrupalgql\Plugin\GraphQL\DataProducer;
+namespace Drupal\example\Plugin\GraphQL\DataProducer;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -99,7 +99,7 @@ class CurrentUser extends DataProducerPluginBase implements ContainerFactoryPlug
 
 We are defining a custom data producer `current_user` that we can now use to resolve our query that we previously added to the schema.  Notice that our data producer returns only the user id and not the actual user object. However we can combine it with an entity_load which is already made very efficient with in the module (taking advantage of caching strategies using buffering) so we don't have to actually load the user here.
 
-Lets see how we can consume our newly created data producer : 
+Lets see how we can consume our newly created data producer :
 
 ```php
 $registry->addFieldResolver('Query', 'currentUser', $builder->compose(
@@ -112,7 +112,7 @@ $registry->addFieldResolver('Query', 'currentUser', $builder->compose(
 
 Notice how we combine our custom data producer with a built-in `entity_load` to make querying more performance and standardized across. We will look at `compose` in more detail in the next section.
 
-In the end when we do a query like this : 
+In the end when we do a query like this :
 
 ```graphql
 {
@@ -123,7 +123,7 @@ In the end when we do a query like this :
 }
 ```
 
-we get a result like this : 
+we get a result like this :
 
 ```json
 {
@@ -136,4 +136,15 @@ we get a result like this :
 }
 ```
 
-(For this to actually work we would need to add resolvers to the User object to resolve the `id` and `name` properties).
+For this to actually work we would need to add resolvers to the User object to resolve the `id` and `name` properties like so:
+```php
+$registry->addFieldResolver('User', 'id', $builder->callback(function ($account) {
+  /** @var \Drupal\Core\Session\AccountProxyInterface $account */
+  return $account->id();
+}));
+
+$registry->addFieldResolver('User', 'name', $builder->callback(function ($account) {
+  /** @var \Drupal\Core\Session\AccountProxyInterface $account */
+  return $account->getAccountName();
+}));
+```

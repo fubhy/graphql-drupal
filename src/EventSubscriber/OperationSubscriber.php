@@ -73,7 +73,7 @@ class OperationSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [
       OperationEvent::GRAPHQL_OPERATION_BEFORE => 'onBeforeOperation',
       OperationEvent::GRAPHQL_OPERATION_AFTER => 'onAfterOperation',

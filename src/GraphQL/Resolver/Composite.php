@@ -3,9 +3,9 @@
 namespace Drupal\graphql\GraphQL\Resolver;
 
 use Drupal\graphql\GraphQL\Execution\FieldContext;
-use GraphQL\Executor\Promise\Adapter\SyncPromise;
-use Drupal\graphql\GraphQL\Utility\DeferredUtility;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
+use Drupal\graphql\GraphQL\Utility\DeferredUtility;
+use GraphQL\Executor\Promise\Adapter\SyncPromise;
 use GraphQL\Type\Definition\ResolveInfo;
 
 /**

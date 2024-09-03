@@ -1,72 +1,17 @@
 parameters:
-  # PHPStan cannot find files in this test directory automatically.
-  scanDirectories:
-    - ../../core/tests/Drupal/Tests
   level: 6
   customRulesetUsed: true
   paths:
     - .
-  # We test with PHPStan on Drupal 8 and 9 and might have different ignored
-  # errors on both.
-  reportUnmatchedIgnoredErrors: false
-  # We inherit a lot of Drupal core docs that don't specify iterable types on
-  # arrays, not sure we can fix this in a good way.
-  checkMissingIterableValueType: false
-  # Not sure we can specify generic types properly with Drupal coding standards
-  # yet, disable for now.
-  checkGenericClassInNonGenericObjectType: false
-  # Exclude the RouteLoad producer because the redirect module is not D10
-  # compatible so we are not downloading it.
-  excludePaths:
-    - src/Plugin/GraphQL/DataProducer/Routing/RouteLoad.php
   ignoreErrors:
-    # @todo Ignore phpstan-drupal extension's rules for now, activate later.
-    - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
+    # We inherit a lot of Drupal core docs that don't specify iterable types on
+    # arrays, not sure we can fix this in a good way.
+    - identifier: missingType.iterableValue
     # new static() is a best practice in Drupal, so we cannot fix that.
     - "#^Unsafe usage of new static\\(\\)\\.$#"
-    # Drupal allows object property access to custom fields, so we cannot fix
-    # that.
-    - "#^Access to an undefined property Drupal\\\\#"
-    # PHPUnit deprecation warnings in Drupal 9 that we don't care about.
-    - "#^Call to deprecated method setMethods\\(\\) of class PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder:#"
-    - "#^Method Symfony\\\\Contracts\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
-    # Drupal allows object property access to custom fields, so we cannot fix
-    # that.
-    - "#^Property Drupal\\\\.+ \\(Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\) does not accept .+\\.$#"
-    # Incomplete type doc comments in Drupal core that we have to ignore.
-    -
-      message: "#^Method Drupal\\\\graphql\\\\Plugin\\\\LanguageNegotiation\\\\OperationLanguageNegotiation\\:\\:getLangcode\\(\\) should return string but returns false\\.$#"
-      count: 1
-      path: src/Plugin/LanguageNegotiation/OperationLanguageNegotiation.php
-    - "#^Parameter .+ of method Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface\\:\\:range\\(\\) expects null, int given\\.$#"
     # We forgot to use return type hints on some interfaces, cannot be changed
     # in stable 4.0.
     # @todo use return type hints everywhere for 5.0.
-    -
-      message: "#^Method Drupal\\\\graphql\\\\Entity\\\\ServerInterface\\:\\:addPersistedQueryInstance\\(\\) has no return typehint specified\\.$#"
-      count: 1
-      path: src/Entity/ServerInterface.php
-
-    -
-      message: "#^Method Drupal\\\\graphql\\\\Entity\\\\ServerInterface\\:\\:removePersistedQueryInstance\\(\\) has no return typehint specified\\.$#"
-      count: 1
-      path: src/Entity/ServerInterface.php
-
-    -
-      message: "#^Method Drupal\\\\graphql\\\\Entity\\\\ServerInterface\\:\\:removeAllPersistedQueryInstances\\(\\) has no return typehint specified\\.$#"
-      count: 1
-      path: src/Entity/ServerInterface.php
-
-    -
-      message: "#^Method Drupal\\\\graphql\\\\Plugin\\\\PersistedQueryPluginInterface\\:\\:setWeight\\(\\) has no return typehint specified\\.$#"
-      count: 1
-      path: src/Plugin/PersistedQueryPluginInterface.php
-
-    -
-      message: "#^Method Drupal\\\\graphql\\\\Plugin\\\\SchemaExtensionPluginInterface\\:\\:registerResolvers\\(\\) has no return typehint specified\\.$#"
-      count: 1
-      path: src/Plugin/SchemaExtensionPluginInterface.php
-
     -
       message: "#^Method Drupal\\\\graphql\\\\Plugin\\\\PersistedQueryPluginInterface\\:\\:setWeight\\(\\) has no return type specified\\.$#"
       count: 1
@@ -92,7 +37,33 @@ parameters:
       count: 1
       path: src/Entity/ServerInterface.php
 
+    # @todo Some leftover \Drupal calls that can be fixed later.
     -
-      message: "#^Unable to resolve the template type ExpectedType in call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\)$#"
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
       count: 1
-      path: tests/src/Kernel/ResolverBuilderTest.php
+      path: examples/graphql_example/src/Wrappers/QueryConnection.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 3
+      path: src/Controller/ServerListBuilder.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/GraphQL/Execution/Executor.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/Plugin/GraphQL/DataProducer/Entity/Fields/Image/ImageDerivative.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/Plugin/GraphQL/DataProducer/EntityDefinition/EntityDefinition.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/Plugin/GraphQL/DataProducer/User/PasswordReset.php

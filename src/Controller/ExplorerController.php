@@ -86,6 +86,13 @@ class ExplorerController implements ContainerInjectionInterface {
     $url = $this->urlGenerator->generate("graphql.query.{$graphql_server->id()}");
     $introspectionData = $this->introspection->introspect($graphql_server);
 
+    if ($graphql_server->get('disable_introspection')) {
+      return [
+        '#type' => 'markup',
+        '#markup' => $this->t('Introspection is disabled for this server, enable it to use the Explorer.'),
+      ];
+    }
+
     return [
       '#type' => 'markup',
       '#markup' => '<div id="graphql-explorer"></div>',

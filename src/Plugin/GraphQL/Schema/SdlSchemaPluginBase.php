@@ -13,12 +13,15 @@ use Drupal\graphql\GraphQL\ResolverRegistryInterface;
 use Drupal\graphql\Plugin\SchemaExtensionPluginInterface;
 use Drupal\graphql\Plugin\SchemaExtensionPluginManager;
 use Drupal\graphql\Plugin\SchemaPluginInterface;
+use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQL\Language\AST\TypeDefinitionNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQL\Language\Parser;
+use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use GraphQL\Utils\SchemaExtender;
+use GraphQL\Utils\SchemaPrinter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -106,7 +109,7 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
     CacheBackendInterface $astCache,
     ModuleHandlerInterface $moduleHandler,
     SchemaExtensionPluginManager $extensionManager,
-    array $config
+    array $config,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->inDevelopment = !empty($config['development']);
@@ -131,15 +134,8 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
    */
   public function getSchema(ResolverRegistryInterface $registry) {
     $extensions = $this->getExtensions();
-    $resolver = [$registry, 'resolveType'];
     $document = $this->getSchemaDocument($extensions);
-    $schema = BuildSchema::build($document, function ($config, TypeDefinitionNode $type) use ($resolver) {
-      if ($type instanceof InterfaceTypeDefinitionNode || $type instanceof UnionTypeDefinitionNode) {
-        $config['resolveType'] = $resolver;
-      }
-
-      return $config;
-    });
+    $schema = $this->buildSchema($document, $registry);
 
     if (empty($extensions)) {
       return $schema;
@@ -149,10 +145,31 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
       $extension->registerResolvers($registry);
     }
 
-    if ($extendSchema = $this->getExtensionDocument($extensions)) {
-      return SchemaExtender::extend($schema, $extendSchema);
+    $extendedDocument = $this->getFullSchemaDocument($schema, $extensions);
+    if (empty($extendedDocument)) {
+      return $schema;
     }
 
+    return $this->buildSchema($extendedDocument, $registry);
+  }
+
+  /**
+   * Create a GraphQL schema object from the given AST document.
+   *
+   * This method is private for now as the build/cache approach might change.
+   */
+  private function buildSchema(DocumentNode $astDocument, ResolverRegistryInterface $registry): Schema {
+    $resolver = [$registry, 'resolveType'];
+    // Performance: only validate the schema in development mode, skip it in
+    // production on every request.
+    $options = empty($this->inDevelopment) ? ['assumeValid' => TRUE] : [];
+    $schema = BuildSchema::build($astDocument, function ($config, TypeDefinitionNode $type) use ($resolver) {
+      if ($type instanceof InterfaceTypeDefinitionNode || $type instanceof UnionTypeDefinitionNode) {
+        $config['resolveType'] = $resolver;
+      }
+
+      return $config;
+    }, $options);
     return $schema;
   }
 
@@ -188,11 +205,41 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
     });
 
     $schema = array_merge([$this->getSchemaDefinition()], $extensions);
-    $ast = Parser::parse(implode("\n\n", $schema));
+    // For caching and parsing big schemas we need to disable the creation of
+    // location nodes in the AST object to prevent serialization and memory
+    // errors. See https://github.com/webonyx/graphql-php/issues/1164
+    $ast = Parser::parse(implode("\n\n", $schema), ['noLocation' => TRUE]);
     if (empty($this->inDevelopment)) {
       $this->astCache->set($cid, $ast, CacheBackendInterface::CACHE_PERMANENT, ['graphql']);
     }
 
+    return $ast;
+  }
+
+  /**
+   * Returns the full AST combination of parsed schema with extensions, cached.
+   *
+   * This method is private for now as the build/cache approach might change.
+   */
+  private function getFullSchemaDocument(Schema $schema, array $extensions): ?DocumentNode {
+    // Only use caching of the parsed document if we aren't in development mode.
+    $cid = "full:{$this->getPluginId()}";
+    if (empty($this->inDevelopment) && $cache = $this->astCache->get($cid)) {
+      return $cache->data;
+    }
+
+    $ast = NULL;
+    if ($extendAst = $this->getExtensionDocument($extensions)) {
+      $fullSchema = SchemaExtender::extend($schema, $extendAst);
+      // Performance: export the full schema as string and parse it again. That
+      // way we can cache the full AST.
+      $fullSchemaString = SchemaPrinter::doPrint($fullSchema);
+      $ast = Parser::parse($fullSchemaString, ['noLocation' => TRUE]);
+    }
+
+    if (empty($this->inDevelopment)) {
+      $this->astCache->set($cid, $ast, CacheBackendInterface::CACHE_PERMANENT, ['graphql']);
+    }
     return $ast;
   }
 
@@ -207,23 +254,14 @@ abstract class SdlSchemaPluginBase extends PluginBase implements SchemaPluginInt
    * @throws \GraphQL\Error\SyntaxError
    */
   protected function getExtensionDocument(array $extensions = []) {
-    // Only use caching of the parsed document if we aren't in development mode.
-    $cid = "server:{$this->serverId}:extension:{$this->getPluginId()}";
-    if (empty($this->inDevelopment) && $cache = $this->astCache->get($cid)) {
-      return $cache->data;
-    }
-
     $extensions = array_filter(array_map(function (SchemaExtensionPluginInterface $extension) {
       return $extension->getExtensionDefinition();
     }, $extensions), function ($definition) {
       return !empty($definition);
     });
 
-    $ast = !empty($extensions) ? Parser::parse(implode("\n\n", $extensions)) : NULL;
-    if (empty($this->inDevelopment)) {
-      $this->astCache->set($cid, $ast, CacheBackendInterface::CACHE_PERMANENT, ['graphql']);
-    }
-
+    $ast = !empty($extensions) ? Parser::parse(implode("\n\n", $extensions), ['noLocation' => TRUE]) : NULL;
+    // No AST caching here as that will be done in getFullSchemaDocument().
     return $ast;
   }
 

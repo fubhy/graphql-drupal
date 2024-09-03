@@ -2,15 +2,16 @@
 
 namespace Drupal\Tests\graphql\Kernel\Framework;
 
+use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\Cache\Context\ContextCacheKeys;
 use Drupal\Core\Render\RenderContext;
+use Drupal\graphql\Entity\Server;
 use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
-use Prophecy\Argument;
-use Drupal\graphql\Entity\Server;
-use Drupal\Core\Cache\CacheableDependencyInterface;
 use GraphQL\Deferred;
+use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Test query result caching.
@@ -41,7 +42,7 @@ GQL;
   public function testCacheableResult(): void {
     $dummy = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $dummy->expects($this->once())
@@ -66,7 +67,7 @@ GQL;
    */
   public function testUncacheableResult(): void {
     $cacheable = $this->getMockBuilder(CacheableDependencyInterface::class)
-      ->setMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
+      ->onlyMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
       ->getMock();
 
     $cacheable->expects($this->any())
@@ -83,7 +84,7 @@ GQL;
 
     $dummy = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $dummy->expects($this->exactly(2))
@@ -111,7 +112,7 @@ GQL;
    */
   public function testUncacheableResultAnnotation(): void {
     $cacheable = $this->getMockBuilder(CacheableDependencyInterface::class)
-      ->setMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
+      ->onlyMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
       ->getMock();
 
     $cacheable->expects($this->any())
@@ -128,7 +129,7 @@ GQL;
 
     $dummy = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $dummy->expects($this->exactly(2))
@@ -157,7 +158,7 @@ GQL;
   public function testVariables(): void {
     $dummy = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $dummy->expects($this->exactly(2))
@@ -185,7 +186,7 @@ GQL;
    */
   public function testContext(): void {
     $cacheable = $this->getMockBuilder(CacheableDependencyInterface::class)
-      ->setMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
+      ->onlyMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
       ->getMock();
 
     $cacheable->expects($this->any())
@@ -202,7 +203,7 @@ GQL;
 
     $dummy = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $dummy->expects($this->exactly(2))
@@ -261,7 +262,7 @@ GQL;
    */
   public function testTags(): void {
     $cacheable = $this->getMockBuilder(CacheableDependencyInterface::class)
-      ->setMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
+      ->onlyMethods(['getCacheTags', 'getCacheMaxAge', 'getCacheContexts'])
       ->getMock();
 
     $cacheable->expects($this->any())
@@ -278,7 +279,7 @@ GQL;
 
     $dummy = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $dummy->expects($this->exactly(2))
@@ -383,6 +384,36 @@ GQL;
 
     $result = $this->query($query);
     $this->assertEquals(200, $result->getStatusCode());
+  }
+
+  /**
+   * Ensure that a different operation name does not get a cached result.
+   */
+  public function testOperationNameCaching(): void {
+    $dummy = $this->getMockBuilder(Server::class)
+      ->disableOriginalConstructor()
+      ->onlyMethods(['id'])
+      ->getMock();
+
+    // The dataproducer should be called twice because 2 differently named
+    // queries are not cached.
+    $dummy->expects($this->exactly(2))
+      ->method('id')
+      ->willReturn('test');
+
+    // Use the same resolver for both fields.
+    foreach (['root', 'leakA'] as $field_name) {
+      $this->mockResolver('Query', $field_name,
+        function () use ($dummy) {
+          return $dummy->id();
+        }
+      );
+    }
+
+    // First call is uncached.
+    $this->query('query one { root } query two { leakA }', NULL, [], [], FALSE, Request::METHOD_GET, 'one');
+    // Second call is uncached.
+    $this->query('query one { root } query two { leakA }', NULL, [], [], FALSE, Request::METHOD_GET, 'two');
   }
 
 }

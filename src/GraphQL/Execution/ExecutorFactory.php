@@ -50,7 +50,7 @@ class ExecutorFactory {
     ResolveContext $context,
     $variables,
     $operation,
-    callable $resolver
+    callable $resolver,
   ) {
     return Executor::create($this->container,
       $adapter,

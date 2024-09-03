@@ -1,0 +1,16 @@
+name: Close all issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  closeAll:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close Issue
+        uses: peter-evans/close-issue@v3
+        with:
+          comment: |
+            Please open issues on drupal.org: https://www.drupal.org/project/issues/graphql
+            Auto-closing this issue.

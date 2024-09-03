@@ -3,6 +3,7 @@
 namespace Drupal\graphql\Plugin\GraphQL\DataProducer\Routing;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Language\Language;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
@@ -24,6 +25,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   consumes = {
  *     "path" = @ContextDefinition("string",
  *       label = @Translation("Path")
+ *     ),
+ *     "language" = @ContextDefinition("string",
+ *       label = @Translation("Language"),
+ *       required = FALSE,
+ *       default_value = "und"
  *     )
  *   }
  * )
@@ -79,7 +85,7 @@ class RouteLoad extends DataProducerPluginBase implements ContainerFactoryPlugin
     $pluginId,
     $pluginDefinition,
     PathValidatorInterface $pathValidator,
-    ?RedirectRepository $redirectRepository = NULL
+    ?RedirectRepository $redirectRepository = NULL,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->pathValidator = $pathValidator;
@@ -90,20 +96,22 @@ class RouteLoad extends DataProducerPluginBase implements ContainerFactoryPlugin
    * Resolver.
    *
    * @param string $path
+   * @param string|null $language
    * @param \Drupal\Core\Cache\RefinableCacheableDependencyInterface $metadata
    *
    * @return \Drupal\Core\Url|null
    */
-  public function resolve($path, RefinableCacheableDependencyInterface $metadata) {
-    if ($this->redirectRepository) {
-      /** @var \Drupal\redirect\Entity\Redirect|null $redirect */
-      $redirect = $this->redirectRepository->findMatchingRedirect($path, []);
-      if ($redirect) {
-        return $redirect->getRedirectUrl();
-      }
+  public function resolve($path, ?string $language, RefinableCacheableDependencyInterface $metadata) {
+    $language = $language ?? Language::LANGCODE_NOT_SPECIFIED;
+    $redirect = $this->redirectRepository ? $this->redirectRepository->findMatchingRedirect($path, [], $language) : NULL;
+    if ($redirect !== NULL) {
+      $url = $redirect->getRedirectUrl();
+    }
+    else {
+      $url = $this->pathValidator->getUrlIfValidWithoutAccessCheck($path);
     }
 
-    if (($url = $this->pathValidator->getUrlIfValidWithoutAccessCheck($path)) && $url->isRouted() && $url->access()) {
+    if ($url && $url->isRouted() && $url->access()) {
       return $url;
     }
 

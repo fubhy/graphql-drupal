@@ -9,6 +9,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -96,20 +97,22 @@ class EntityTranslations extends DataProducerPluginBase implements ContainerFact
    * @param bool|null $access
    * @param \Drupal\Core\Session\AccountInterface|null $accessUser
    * @param string|null $accessOperation
+   * @param \Drupal\graphql\GraphQL\Execution\FieldContext $context
    *
    * @return array|null
    */
-  public function resolve(EntityInterface $entity, ?bool $access, ?AccountInterface $accessUser, ?string $accessOperation) {
+  public function resolve(EntityInterface $entity, ?bool $access, ?AccountInterface $accessUser, ?string $accessOperation, FieldContext $context) {
     if ($entity instanceof TranslatableInterface && $entity->isTranslatable()) {
       $languages = $entity->getTranslationLanguages();
 
-      return array_map(function (LanguageInterface $language) use ($entity, $access, $accessOperation, $accessUser) {
+      return array_map(function (LanguageInterface $language) use ($entity, $access, $accessOperation, $accessUser, $context) {
         $langcode = $language->getId();
         $entity = $entity->getTranslation($langcode);
         $entity->addCacheContexts(["static:language:{$langcode}"]);
         if ($access) {
           /** @var \Drupal\Core\Access\AccessResultInterface $accessResult */
           $accessResult = $entity->access($accessOperation, $accessUser, TRUE);
+          $context->addCacheableDependency($accessResult);
           if (!$accessResult->isAllowed()) {
             return NULL;
           }

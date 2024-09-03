@@ -26,7 +26,7 @@ $registry->addFieldResolver('Query', 'currentUser', $builder->compose(
     ->map('type', $builder->fromValue('user'))
     ->map('id', $builder->fromParent()),
   $builder->callback(function ($entity) {
-    // Here we can do anything we want to the data. We get as a parameter anyting that was returned
+    // Here we can do anything we want to the data. We get as a parameter anything that was returned
     // in the previous step.
   })
 ));
@@ -40,7 +40,7 @@ Note that you can always easily tap into the chain and e.g. use xdebug to debug 
   $builder->compose(
       $builder->tap($builder->callback(function ($parent, $args) {
           // YOU CAN SET A XDEBUG BREAKPOINT IN THESE CALLBACKS TO CHECK THE VALUES.
-          echo("Compose step 0.");
+          $compose_step = 0;
       })),
       // Load the file object from the field.
       $builder->produce('property_path')
@@ -49,7 +49,7 @@ Note that you can always easily tap into the chain and e.g. use xdebug to debug 
         ->map('path', $builder->fromValue('YOUR_FIELD_NAME.YOUR_FIELD_PROPERTY')),
       $builder->tap($builder->callback(function ($parent, $args) {
           // YOU CAN SET A XDEBUG BREAKPOINT IN THESE CALLBACKS TO CHECK THE VALUES.
-          echo("Compose step 1.");
+          $compose_step = 1;
       })),
       // Load the image style derivative of the file.
       $builder->produce('image_derivative')
@@ -57,14 +57,14 @@ Note that you can always easily tap into the chain and e.g. use xdebug to debug 
         ->map('style', $builder->fromValue('YOUR_IMAGE_STYLE')),
       $builder->tap($builder->callback(function ($parent, $args) {
           // YOU CAN SET A XDEBUG BREAKPOINT IN THESE CALLBACKS TO CHECK THE VALUES.
-          echo("Compose step 2.");
+          $compose_step = 2;
       })),
       // Retrieve the url of the generated image.
       $builder->produce('image_style_url')
         ->map('derivative', $builder->fromParent()),
       $builder->tap($builder->callback(function ($parent, $args) {
           // YOU CAN SET A XDEBUG BREAKPOINT IN THESE CALLBACKS TO CHECK THE VALUES.
-          echo("Compose step 3.");
+          $compose_step = 3;
       }))
     )
   );

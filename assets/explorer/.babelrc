@@ -1,4 +1,4 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
-  "plugins": ["syntax-dynamic-import"]
+  "presets": [ "@babel/env", "@babel/react" ],
+  "plugins": [ "syntax-dynamic-import" ]
 }

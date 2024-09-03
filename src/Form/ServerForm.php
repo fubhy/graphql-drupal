@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
@@ -99,7 +100,7 @@ class ServerForm extends EntityForm {
     // the first schema that is defined.
     $schema = ($input['schema'] ?? $server->get('schema')) ?: reset($schema_keys);
 
-    if ($this->operation == 'add') {
+    if ($this->operation == 'create') {
       $form['#title'] = $this->t('Add server');
     }
     else {
@@ -245,6 +246,19 @@ class ServerForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   */
+  protected function copyFormValuesToEntity(EntityInterface $entity, array $form, FormStateInterface $form_state): void {
+    // Translate the debug flag from individual checkboxes to the enum value
+    // that the GraphQL library expects.
+    $debug_flag = $form_state->getValue('debug_flag');
+    if (is_array($debug_flag)) {
+      $form_state->setValue('debug_flag', array_sum($debug_flag));
+    }
+    parent::copyFormValuesToEntity($entity, $form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
@@ -274,9 +288,6 @@ class ServerForm extends EntityForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $formState): void {
-    // Translate the debug flag from individual checkboxes to the enum value
-    // that the GraphQL library expects.
-    $formState->setValue('debug_flag', array_sum($formState->getValue('debug_flag')));
     parent::submitForm($form, $formState);
 
     $schema = $formState->getValue('schema');

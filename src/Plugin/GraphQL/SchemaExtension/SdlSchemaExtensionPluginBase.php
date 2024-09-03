@@ -53,7 +53,7 @@ abstract class SdlSchemaExtensionPluginBase extends PluginBase implements Schema
     array $configuration,
     $pluginId,
     array $pluginDefinition,
-    ModuleHandlerInterface $moduleHandler
+    ModuleHandlerInterface $moduleHandler,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->moduleHandler = $moduleHandler;

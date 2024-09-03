@@ -165,7 +165,7 @@ trait QueryResultAssertionTrait {
    * @internal
    */
   private function assertResultErrors(ExecutionResult $result, array $expected): void {
-    // Initalize the status.
+    // Initialize the status.
     $unexpected = [];
     $matchCount = array_fill_keys($expected, 0);
 
@@ -192,7 +192,7 @@ trait QueryResultAssertionTrait {
         while ($original_error->getPrevious() !== NULL) {
           $original_error = $original_error->getPrevious();
         }
-        $unexpected[] = "Error message: ${error_message}\n  Originated in: {$original_error->getFile()}:{$original_error->getLine()}";
+        $unexpected[] = "Error message: {$error_message}\n  Originated in: {$original_error->getFile()}:{$original_error->getLine()}";
       }
     }
 

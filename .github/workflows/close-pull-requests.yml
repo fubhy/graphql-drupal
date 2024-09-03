@@ -1,0 +1,15 @@
+name: Close all pull requests
+
+on:
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: superbrothers/close-pull-request@v3
+      with:
+        comment: |
+          Please open issues and pull requests on drupal.org: https://www.drupal.org/project/issues/graphql
+          Auto-closing this pull request.

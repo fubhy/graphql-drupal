@@ -1,0 +1,6 @@
+services:
+
+  graphql_alterable_schema_test.alter_data_subscriber:
+    class: Drupal\graphql_alterable_schema_test\EventSubscriber\GraphQlSubscriber
+    tags:
+      - { name: event_subscriber }

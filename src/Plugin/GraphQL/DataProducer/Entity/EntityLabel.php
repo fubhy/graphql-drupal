@@ -3,6 +3,8 @@
 namespace Drupal\graphql\Plugin\GraphQL\DataProducer\Entity;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\Plugin\DataProducerPluginCachingInterface;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 
@@ -19,7 +21,12 @@ use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
  *   consumes = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity")
- *     )
+ *     ),
+ *     "access_user" = @ContextDefinition("entity:user",
+ *       label = @Translation("User"),
+ *       required = FALSE,
+ *       default_value = NULL
+ *     ),
  *   }
  * )
  */
@@ -29,11 +36,19 @@ class EntityLabel extends DataProducerPluginBase implements DataProducerPluginCa
    * Resolver.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Session\AccountInterface|null $accessUser
+   * @param \Drupal\graphql\GraphQL\Execution\FieldContext $context
    *
    * @return string|null
    */
-  public function resolve(EntityInterface $entity) {
-    return $entity->label();
+  public function resolve(EntityInterface $entity, ?AccountInterface $accessUser, FieldContext $context) {
+    /** @var \Drupal\Core\Access\AccessResultInterface $accessResult */
+    $accessResult = $entity->access('view label', $accessUser, TRUE);
+    $context->addCacheableDependency($accessResult);
+    if ($accessResult->isAllowed()) {
+      return $entity->label();
+    }
+    return NULL;
   }
 
 }

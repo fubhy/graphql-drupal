@@ -36,6 +36,13 @@ class DataProducerPluginManager extends DefaultPluginManager {
   protected $resultCacheBackend;
 
   /**
+   * Backwards compatibility flag to populate context defaults or not.
+   *
+   * @todo Remove in 5.x.
+   */
+  protected bool $populateContextDefaults = TRUE;
+
+  /**
    * DataProducerPluginManager constructor.
    *
    * @param bool|string $pluginSubdirectory
@@ -66,7 +73,7 @@ class DataProducerPluginManager extends DefaultPluginManager {
     CacheBackendInterface $resultCacheBackend,
     $pluginInterface,
     $pluginAnnotationName,
-    array $config
+    array $config,
   ) {
     parent::__construct(
       $pluginSubdirectory,
@@ -83,6 +90,21 @@ class DataProducerPluginManager extends DefaultPluginManager {
     $this->requestStack = $requestStack;
     $this->contextsManager = $contextsManager;
     $this->resultCacheBackend = $resultCacheBackend;
+
+    // We don't use dependency injection here to avoid a constructor signature
+    // change.
+    // @phpcs:disable
+    // @phpstan-ignore-next-line
+    $this->populateContextDefaults = \Drupal::config('graphql.settings')->get('dataproducer_populate_default_values') ?? TRUE;
+    // @phpcs:enable
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createInstance($plugin_id, array $configuration = []) {
+    $configuration['dataproducer_populate_default_values'] = $this->populateContextDefaults;
+    return parent::createInstance($plugin_id, $configuration);
   }
 
   /**

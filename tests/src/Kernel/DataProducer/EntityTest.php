@@ -2,15 +2,17 @@
 
 namespace Drupal\Tests\graphql\Kernel\DataProducer;
 
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
-use Drupal\node\NodeInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultForbidden;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\user\UserInterface;
-use Drupal\node\Entity\NodeType;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\entity_test\Entity\EntityTestBundle;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
+use Drupal\node\NodeInterface;
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
+use Drupal\user\UserInterface;
 
 /**
  * Data producers Entity test class.
@@ -25,6 +27,41 @@ class EntityTest extends GraphQLTestBase {
   protected $node;
 
   /**
+   * Mocked test entity.
+   *
+   * @var \Drupal\node\NodeInterface|\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected $entity;
+
+  /**
+   * Mocked test entity interface.
+   *
+   * @var \Drupal\Core\Entity\EntityInterface
+   */
+  protected $entityInterface;
+
+  /**
+   * Mocked test user.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $user;
+
+  /**
+   * Translated test entity.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $translationFr;
+
+  /**
+   * Translated test entity.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $translationDe;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
@@ -34,7 +71,7 @@ class EntityTest extends GraphQLTestBase {
       ->disableOriginalConstructor()
       ->getMock();
 
-    $this->entity_interface = $this->getMockBuilder(EntityInterface::class)
+    $this->entityInterface = $this->getMockBuilder(EntityInterface::class)
       ->disableOriginalConstructor()
       ->getMock();
 
@@ -50,6 +87,7 @@ class EntityTest extends GraphQLTestBase {
     ]);
     $content_type->save();
 
+    // cspell:ignore otherbundle
     $content_type = NodeType::create([
       'type' => 'otherbundle',
       'name' => 'otherbundle',
@@ -64,11 +102,11 @@ class EntityTest extends GraphQLTestBase {
     ]);
     $this->node->save();
 
-    $this->translation_fr = $this->node->addTranslation('fr', ['title' => 'sit amet fr']);
-    $this->translation_fr->save();
+    $this->translationFr = $this->node->addTranslation('fr', ['title' => 'sit amet fr']);
+    $this->translationFr->save();
 
-    $this->translation_de = $this->node->addTranslation('de', ['title' => 'sit amet de']);
-    $this->translation_de->save();
+    $this->translationDe = $this->node->addTranslation('de', ['title' => 'sit amet de']);
+    $this->translationDe->save();
 
     \Drupal::service('content_translation.manager')->setEnabled('node', 'lorem', TRUE);
   }
@@ -103,7 +141,7 @@ class EntityTest extends GraphQLTestBase {
 
     $this->assertNull($this->executeDataProducer('entity_changed', [
       'format' => 'Y-m-d',
-      'entity' => $this->entity_interface,
+      'entity' => $this->entityInterface,
     ]));
   }
 
@@ -122,7 +160,7 @@ class EntityTest extends GraphQLTestBase {
 
     $this->assertNull($this->executeDataProducer('entity_created', [
       'format' => 'Y-m-d',
-      'entity' => $this->entity_interface,
+      'entity' => $this->entityInterface,
     ]));
   }
 
@@ -164,7 +202,30 @@ class EntityTest extends GraphQLTestBase {
       ->method('label')
       ->willReturn('Dummy label');
 
+    $this->entity->expects($this->exactly(2))
+      ->method('access')
+      ->willReturnCallback(static function (): AccessResult {
+        static $counter = 0;
+        switch ($counter) {
+          case 0:
+            $counter++;
+            return AccessResult::allowed();
+
+          case 1:
+            $counter++;
+            return AccessResult::forbidden();
+
+          default:
+            throw new \LogicException('The access() method should not have been called more than twice.');
+        }
+      })
+      ->with('view label', NULL, TRUE);
+
     $this->assertEquals('Dummy label', $this->executeDataProducer('entity_label', [
+      'entity' => $this->entity,
+    ]));
+
+    $this->assertNull($this->executeDataProducer('entity_label', [
       'entity' => $this->entity,
     ]));
   }
@@ -199,7 +260,7 @@ class EntityTest extends GraphQLTestBase {
     ]));
 
     $this->assertNull($this->executeDataProducer('entity_owner', [
-      'entity' => $this->entity_interface,
+      'entity' => $this->entityInterface,
     ]));
   }
 
@@ -229,7 +290,7 @@ class EntityTest extends GraphQLTestBase {
     ]));
 
     $this->assertNull($this->executeDataProducer('entity_published', [
-      'entity' => $this->entity_interface,
+      'entity' => $this->entityInterface,
     ]));
   }
 
@@ -239,7 +300,7 @@ class EntityTest extends GraphQLTestBase {
   public function testResolveAccess(): void {
     $this->entity->expects($this->any())
       ->method('access')
-      ->willReturn(FALSE);
+      ->willReturn(new AccessResultForbidden());
 
     $this->assertFalse($this->executeDataProducer('entity_access', [
       'entity' => $this->entity,
@@ -283,6 +344,26 @@ class EntityTest extends GraphQLTestBase {
 
     $this->assertEquals($url, $this->executeDataProducer('entity_url', [
       'entity' => $this->entity,
+    ]));
+  }
+
+  /**
+   * @covers \Drupal\graphql\Plugin\GraphQL\DataProducer\Entity\EntityUrl::resolve
+   */
+  public function testResolveAbsoluteUrl(): void {
+    $url = $this->getMockBuilder(Url::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    $this->entity->expects($this->once())
+      ->method('toUrl')
+      ->with('canonical', ['absolute' => TRUE])
+      ->willReturn($url);
+
+    $this->assertEquals($url, $this->executeDataProducer('entity_url', [
+      'entity' => $this->entity,
+      'rel' => 'canonical',
+      'options' => ['absolute' => TRUE],
     ]));
   }
 
@@ -389,14 +470,7 @@ class EntityTest extends GraphQLTestBase {
 
     // @todo Add metadata check.
     // $this->assertContains('node:1', $metadata->getCacheTags());
-    // Rendered output is slightly different in Drupal 8 vs. 9.
-    [$version] = explode('.', \Drupal::VERSION, 2);
-    if ($version == 8) {
-      $this->assertStringContainsString('<a href="/node/1" rel="bookmark"><span>' . $this->node->getTitle() . '</span>', $result);
-    }
-    else {
-      $this->assertMatchesRegularExpression('#<a href="/node/1" rel="bookmark">\s*<span>' . $this->node->getTitle() . '</span>#', $result);
-    }
+    $this->assertMatchesRegularExpression('#<a href="/node/1" rel="bookmark">\s*<span>' . $this->node->getTitle() . '</span>#', $result);
   }
 
 }

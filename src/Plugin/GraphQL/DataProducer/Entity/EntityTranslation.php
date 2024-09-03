@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -97,10 +98,11 @@ class EntityTranslation extends DataProducerPluginBase implements ContainerFacto
    * @param bool|null $access
    * @param \Drupal\Core\Session\AccountInterface|null $accessUser
    * @param string|null $accessOperation
+   * @param \Drupal\graphql\GraphQL\Execution\FieldContext $context
    *
    * @return \Drupal\Core\Entity\EntityInterface|null
    */
-  public function resolve(EntityInterface $entity, $language, ?bool $access, ?AccountInterface $accessUser, ?string $accessOperation) {
+  public function resolve(EntityInterface $entity, $language, ?bool $access, ?AccountInterface $accessUser, ?string $accessOperation, FieldContext $context) {
     if ($entity instanceof TranslatableInterface && $entity->isTranslatable()) {
       $entity = $entity->getTranslation($language);
       $entity->addCacheContexts(["static:language:{$language}"]);
@@ -109,6 +111,7 @@ class EntityTranslation extends DataProducerPluginBase implements ContainerFacto
       if ($access) {
         /** @var \Drupal\Core\Access\AccessResultInterface $accessResult */
         $accessResult = $entity->access($accessOperation, $accessUser, TRUE);
+        $context->addCacheableDependency($accessResult);
         if (!$accessResult->isAllowed()) {
           return NULL;
         }

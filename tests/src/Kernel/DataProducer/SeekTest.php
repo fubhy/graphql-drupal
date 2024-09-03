@@ -37,7 +37,7 @@ class SeekTest extends GraphQLTestBase {
    *
    * @return array
    */
-  public function seekProvider(): array {
+  public static function seekProvider(): array {
     return [
       [
         [1, 2, 3],

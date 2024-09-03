@@ -8,9 +8,9 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\graphql\GraphQL\Buffers\EntityRevisionBuffer;
 use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
-use Drupal\graphql\GraphQL\Buffers\EntityRevisionBuffer;
 use GraphQL\Deferred;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -113,7 +113,7 @@ class EntityReferenceRevisions extends DataProducerPluginBase implements Contain
     string $pluginId,
     array $pluginDefinition,
     EntityTypeManager $entityTypeManager,
-    EntityRevisionBuffer $entityRevisionBuffer
+    EntityRevisionBuffer $entityRevisionBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

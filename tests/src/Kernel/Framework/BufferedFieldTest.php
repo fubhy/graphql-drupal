@@ -43,7 +43,7 @@ GQL;
    */
   public function testBatchedFields(): void {
     $buffer = $this->getMockBuilder(BufferBase::class)
-      ->setMethods(['resolveBufferArray'])
+      ->onlyMethods(['resolveBufferArray'])
       ->getMock();
 
     $users = [

@@ -42,14 +42,14 @@ class Weight extends DataProducerPluginBase {
    */
   public function resolve(
     FieldDefinitionInterface $entity_definition_field,
-    ?EntityFormDisplay $entity_form_display_context
+    ?EntityFormDisplay $entity_form_display_context,
   ): int {
     if ($entity_form_display_context) {
       $content = $entity_form_display_context->get('content');
       $field_id = $entity_definition_field->getName();
 
       if (isset($content[$field_id])) {
-        return $content[$field_id]['weight'];
+        return (int) $content[$field_id]['weight'];
       }
       else {
         return 0;

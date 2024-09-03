@@ -1,6 +1,0 @@
-codecov:
-  branch: '8.x-3.x'
-
-ignore:
-  - 'tests/**/*' # Ignore the core test directory.
-  - 'modules/**/tests/**/*' # Ignore sub-module test directories.

@@ -10,12 +10,13 @@ use Drupal\graphql\GraphQL\ResolverBuilder;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\graphql\Traits\DataProducerExecutionTrait;
-use Drupal\Tests\graphql\Traits\MockingTrait;
 use Drupal\Tests\graphql\Traits\HttpRequestTrait;
+use Drupal\Tests\graphql\Traits\MockingTrait;
 use Drupal\Tests\graphql\Traits\QueryFileTrait;
 use Drupal\Tests\graphql\Traits\QueryResultAssertionTrait;
 use Drupal\Tests\graphql\Traits\SchemaPrinterTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Provides helper methods for kernel tests in GraphQL module.
@@ -28,6 +29,7 @@ abstract class GraphQLTestBase extends KernelTestBase {
   use SchemaPrinterTrait;
   use MockingTrait;
   use UserCreationTrait;
+  use ProphecyTrait;
 
   /**
    * The server under test.
@@ -48,6 +50,7 @@ abstract class GraphQLTestBase extends KernelTestBase {
     'content_translation',
     'entity_reference_test',
     'field',
+    'file',
     'menu_link_content',
     'link',
     'typed_data',
@@ -73,6 +76,7 @@ abstract class GraphQLTestBase extends KernelTestBase {
     $this->installEntitySchema('graphql_server');
     $this->installEntitySchema('configurable_language');
     $this->installConfig(['language']);
+    $this->installEntitySchema('file');
     $this->installEntitySchema('menu_link_content');
 
     $this->setUpCurrentUser([], $this->userPermissions());
@@ -80,11 +84,13 @@ abstract class GraphQLTestBase extends KernelTestBase {
     ConfigurableLanguage::create([
       'id' => 'fr',
       'weight' => 1,
+      'label' => 'French',
     ])->save();
 
     ConfigurableLanguage::create([
       'id' => 'de',
       'weight' => 2,
+      'label' => 'German',
     ])->save();
 
     $this->builder = new ResolverBuilder();

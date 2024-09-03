@@ -4,11 +4,11 @@ namespace Drupal\graphql\GraphQL;
 
 use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
+use Drupal\graphql\GraphQL\Resolver\ResolverInterface;
 use GraphQL\Executor\Executor;
 use GraphQL\Type\Definition\ImplementingType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
-use Drupal\graphql\GraphQL\Resolver\ResolverInterface;
 
 /**
  * Contains all the mappings how to resolve a GraphQL request.

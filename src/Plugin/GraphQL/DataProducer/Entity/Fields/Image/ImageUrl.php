@@ -3,13 +3,13 @@
 namespace Drupal\graphql\Plugin\GraphQL\DataProducer\Entity\Fields\Image;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\file\FileInterface;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 
 /**
  * Returns the file URL of a file entity.
@@ -80,7 +80,7 @@ class ImageUrl extends DataProducerPluginBase implements ContainerFactoryPluginI
     $pluginId,
     $pluginDefinition,
     RendererInterface $renderer,
-    FileUrlGeneratorInterface $fileUrlGenerator
+    FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->renderer = $renderer;

@@ -3,8 +3,8 @@
 namespace Drupal\Tests\graphql\Kernel\Framework;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\graphql\Entity\Server;
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 
 /**
  * Test disabled result cache.
@@ -49,7 +49,7 @@ GQL;
 
     $object = $this->getMockBuilder(Server::class)
       ->disableOriginalConstructor()
-      ->setMethods(['id'])
+      ->onlyMethods(['id'])
       ->getMock();
 
     $object->expects($this->exactly(2))

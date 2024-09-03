@@ -18,7 +18,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['file', 'graphql_file_validate'];
+  protected static $modules = ['graphql_file_validate'];
 
   /**
    * The FileUpload object we want to test, gets prepared in setUp().
@@ -67,7 +67,6 @@ class UploadFileServiceTest extends GraphQLTestBase {
       'file_directory' => 'test',
     ]);
     $file_entity = $file_upload_response->getFileEntity();
-
     $this->assertSame('public://test/test.txt', $file_entity->getFileUri());
     $this->assertFileExists($file_entity->getFileUri());
   }
@@ -104,7 +103,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     ]);
     $violations = $file_upload_response->getViolations();
 
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'The file "test.txt" could not be saved because the upload did not complete.',
       $violations[0]['message']
     );
@@ -140,8 +139,58 @@ class UploadFileServiceTest extends GraphQLTestBase {
     $violations = $file_upload_response->getViolations();
 
     // @todo Do we want HTML tags in our violations or not?
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'The file is <em class="placeholder">4 bytes</em> exceeding the maximum file size of <em class="placeholder">1 byte</em>.',
+      $violations[0]['message']
+    );
+  }
+
+  /**
+   * Tests that a larger image is resized to maximum dimensions.
+   */
+  public function testDimensionTooLargeValidation(): void {
+    // Create a Symfony dummy uploaded file in test mode.
+    $uploadFile = $this->getUploadedFile(UPLOAD_ERR_OK, 4);
+
+    $image = file_get_contents(\Drupal::service('extension.list.module')->getPath('graphql') . '/tests/files/image/10x10.png');
+
+    // Create a file with 4 bytes.
+    file_put_contents($uploadFile->getRealPath(), $image);
+
+    $file_upload_response = $this->uploadService->saveFileUpload($uploadFile, [
+      'uri_scheme' => 'public',
+      'file_directory' => 'test',
+      // Only allow maximum 5x5 dimension.
+      'max_resolution' => '5x5',
+    ]);
+    $file_entity = $file_upload_response->getFileEntity();
+    $image = \Drupal::service('image.factory')->get($file_entity->getFileUri());
+    $this->assertEquals(5, $image->getWidth());
+    $this->assertEquals(5, $image->getHeight());
+  }
+
+  /**
+   * Tests that a image that is too small returns a violation.
+   */
+  public function testDimensionTooSmallValidation(): void {
+    // Create a Symfony dummy uploaded file in test mode.
+    $uploadFile = $this->getUploadedFile(UPLOAD_ERR_OK, 4);
+
+    $image = file_get_contents(\Drupal::service('extension.list.module')->getPath('graphql') . '/tests/files/image/10x10.png');
+
+    // Create a file with 4 bytes.
+    file_put_contents($uploadFile->getRealPath(), $image);
+
+    $file_upload_response = $this->uploadService->saveFileUpload($uploadFile, [
+      'uri_scheme' => 'public',
+      'file_directory' => 'test',
+      // Only allow minimum dimension 15x15.
+      'min_resolution' => '15x15',
+    ]);
+    $violations = $file_upload_response->getViolations();
+
+    $this->assertStringContainsString(
+      'The image is too small. The minimum dimensions are <em class="placeholder">15x15</em> pixels and the image size is <em class="placeholder">10</em>x<em class="placeholder">10</em> pixels.',
       $violations[0]['message']
     );
   }
@@ -178,7 +227,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     $violations = $file_upload_response->getViolations();
 
     // @todo Do we want HTML tags in our violations or not?
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'Only files with the following extensions are allowed: <em class="placeholder">odt</em>.',
       $violations[0]['message']
     );
@@ -205,6 +254,8 @@ class UploadFileServiceTest extends GraphQLTestBase {
       \Drupal::service('config.factory'),
       \Drupal::service('renderer'),
       \Drupal::service('event_dispatcher'),
+      \Drupal::service('image.factory'),
+      \Drupal::service('file.validator'),
     );
 
     // Create a Symfony dummy uploaded file in test mode.
@@ -268,7 +319,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
 
     // There must be violation regarding forbidden file extension.
     $violations = $file_upload_response->getViolations();
-    $this->assertStringMatchesFormat(
+    $this->assertStringContainsString(
       'Only files with the following extensions are allowed: <em class="placeholder">txt</em>.',
       $violations[0]['message']
     );
@@ -288,7 +339,7 @@ class UploadFileServiceTest extends GraphQLTestBase {
     int $error_status,
     int $size = 0,
     string $dest_filename = 'test.txt',
-    string $source_filename = 'graphql_upload_test.txt'
+    string $source_filename = 'graphql_upload_test.txt',
   ): UploadedFile {
 
     $source_filepath = $this->getSourceTestFilePath($source_filename);

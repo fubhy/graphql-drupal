@@ -88,7 +88,7 @@ class RouteEntity extends DataProducerPluginBase implements ContainerFactoryPlug
     $pluginId,
     $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
-    EntityBuffer $entityBuffer
+    EntityBuffer $entityBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

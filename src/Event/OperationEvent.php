@@ -2,9 +2,9 @@
 
 namespace Drupal\graphql\Event;
 
+use Drupal\Component\EventDispatcher\Event;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
 use GraphQL\Executor\ExecutionResult;
-use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Represents an event that is triggered before and after a GraphQL operation.

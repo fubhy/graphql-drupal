@@ -91,7 +91,7 @@ class Fields extends DataProducerPluginBase implements ContainerFactoryPluginInt
     string $plugin_id,
     array $plugin_definition,
     EntityTypeManager $entity_type_manager,
-    EntityFieldManager $entity_field_manager
+    EntityFieldManager $entity_field_manager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
@@ -117,9 +117,9 @@ class Fields extends DataProducerPluginBase implements ContainerFactoryPluginInt
    */
   public function resolve(
     EntityTypeInterface $entity_definition,
-    ?array $bundle_context = NULL,
-    ?string $field_types_context = NULL,
-    FieldContext $field_context
+    ?array $bundle_context,
+    ?string $field_types_context,
+    FieldContext $field_context,
   ): \Iterator {
 
     if ($entity_definition instanceof ContentEntityTypeInterface) {

@@ -1,9 +1,38 @@
 {
-  "parser": "babel-eslint",
-  "extends": "airbnb/base",
+  "parser": "@babel/eslint-parser",
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    }
+  },
+  "rules": {
+    "import/no-unresolved": [
+      2,
+      {
+        "ignore": [
+          "drupal",
+          "jquery"
+        ]
+      }
+    ]
+  },
   "globals": {
     "debug": true,
     "jQuery": true,
-    "Drupal": true
+    "Drupal": true,
+    "once": true
   }
 }

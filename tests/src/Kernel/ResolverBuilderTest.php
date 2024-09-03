@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\graphql\Kernel;
 
-use GraphQL\Deferred;
 use Drupal\graphql\GraphQL\Resolver\ResolverInterface;
+use GraphQL\Deferred;
 
 /**
  * Tests that the resolver builder behaves correctly.
@@ -62,7 +62,7 @@ GQL;
   /**
    * @return array
    */
-  public function builderProducingProvider(): array {
+  public static function builderProducingProvider(): array {
     return [
       ['entity_load', ResolverInterface::class],
       ['entity_id', ResolverInterface::class],
@@ -229,6 +229,26 @@ GQL;
 GQL;
 
     $this->assertResults($query, [], ['tree' => ['context' => ['myContext' => 'my context value']]]);
+  }
+
+  /**
+   * @covers ::cond
+   */
+  public function testSingleCond(): void {
+    $this->mockResolver('Query', 'me', $this->builder->cond([
+      [
+        $this->builder->fromValue(FALSE),
+        $this->builder->fromValue('This should resolve into null.'),
+      ],
+    ]));
+
+    $query = <<<GQL
+      query {
+        me
+      }
+GQL;
+
+    $this->assertResults($query, [], ['me' => NULL]);
   }
 
   /**

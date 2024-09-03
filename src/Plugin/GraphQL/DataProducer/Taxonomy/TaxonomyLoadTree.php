@@ -115,7 +115,7 @@ class TaxonomyLoadTree extends DataProducerPluginBase implements ContainerFactor
     string $pluginId,
     array $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
-    EntityBuffer $entityBuffer
+    EntityBuffer $entityBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;
@@ -126,7 +126,7 @@ class TaxonomyLoadTree extends DataProducerPluginBase implements ContainerFactor
    * Resolves the taxonomy tree for given vocabulary.
    *
    * @param string $vid
-   *   The vocanulary ID.
+   *   The vocabulary ID.
    * @param int $parent
    *   The ID of the parent's term to load the tree for.
    * @param int|null $max_depth

@@ -125,7 +125,7 @@ class EntityReference extends DataProducerPluginBase implements ContainerFactory
     array $pluginDefinition,
     EntityTypeManagerInterface $entityTypeManager,
     EntityRepositoryInterface $entityRepository,
-    EntityBuffer $entityBuffer
+    EntityBuffer $entityBuffer,
   ) {
     parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->entityTypeManager = $entityTypeManager;

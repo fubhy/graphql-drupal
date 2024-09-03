@@ -20,14 +20,14 @@ This is the main entry point for your schema. You can insert new types, inputs a
 
 For now all you need to know about this file is that it extends the base file. What this will allow is to better organize resolvers into different modules where each module might expose different things to the schema. The only existing type by default is `Query` and so to define new queries you have to add them here in the extension.graphqls file.
 
-For more information about composable schemas go to [Advanced section](./../advanced/composable-schemas.md) when talking about spliting schemas so that you can make certain modules enable new functionalities as they are enabled.
+For more information about composable schemas go to [Advanced section](./../advanced/composable-schemas.md) when talking about splitting schemas so that you can make certain modules enable new functionalities as they are enabled.
 
 ### Plugins
 
 The module also includes some Plugins which are required inside the folder `src/Plugin/GraphQL/Schema` and optionally `src/Plugin/GraphQL/SchemaExtension`:
 
-- ComposableSchemaExample.php : This file will define the schema itself. You can register default resolvers and also regular resolvers here. If you don't have a particular need you don't really need anything more than the anotation for your schema at first. Later with more complex examples we will show how it can be useful to add some base functionality (automatic resolvers or default resolvers).
-- ComposableGraphQLSchemaExtension.php : This file will be used to implement resolvers in a way that is composeable (recommended). We recommend having at least one of these, but you can also implement resolvers across multiple modules by including several schema extensions in each module that exposes certain functionality to the schema when enabled. See the [Advanced section](./../advanced/composable-schemas.md) when talking about spliting schemas.
+- ComposableSchemaExample.php : This file will define the schema itself. You can register default resolvers and also regular resolvers here. If you don't have a particular need you don't really need anything more than the annotation for your schema at first. Later with more complex examples we will show how it can be useful to add some base functionality (automatic resolvers or default resolvers).
+- ComposableGraphQLSchemaExtension.php : This file will be used to implement resolvers in a way that is composable (recommended). We recommend having at least one of these, but you can also implement resolvers across multiple modules by including several schema extensions in each module that exposes certain functionality to the schema when enabled. See the [Advanced section](./../advanced/composable-schemas.md) when talking about splitting schemas.
 
 #### Note
 

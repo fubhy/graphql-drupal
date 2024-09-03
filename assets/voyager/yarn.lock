@@ -99,6 +99,11 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
+"@drupal/once@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@drupal/once/-/once-1.0.1.tgz#7c1ef480aec6d5fa4b5ae986afa5a607afc38482"
+  integrity sha512-O8tQmNDBgSm3ADuFZ5OZlGxsrdsc+pEqd1NBoMpSzWwiOnWwC91tqDwnlX+mDh7sBJoJ+4vVwFh0NLUV4LPFvg==
+
 "@eslint/eslintrc@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.1.0.tgz#583d12dbec5d4f22f333f9669f7d0b7c7815b4d3"

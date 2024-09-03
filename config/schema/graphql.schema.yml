@@ -66,3 +66,13 @@ graphql.default_persisted_query_configuration:
 
 plugin.plugin_configuration.persisted_query.*:
   type: graphql.default_persisted_query_configuration
+
+graphql.settings:
+  type: config_object
+  label: "GraphQL Settings"
+  mapping:
+    # @todo Remove in GraphQL 5.
+    dataproducer_populate_default_values:
+      type: boolean
+      label: "Populate dataproducer context default values"
+      description: "Legacy setting: Populate dataproducer context default values before executing the resolve method. Set this to true to be future-proof. This setting is deprecated and will be removed in a future release."

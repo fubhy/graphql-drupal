@@ -60,7 +60,7 @@ interface ServerInterface extends ConfigEntityInterface {
   /**
    * Returns the current persisted queries set.
    *
-   * @return \Drupal\graphql\Plugin\PersistedQueryPluginInterface[]
+   * @return \Drupal\graphql\Plugin\PersistedQueryPluginInterface[]|null
    */
   public function getPersistedQueryInstances();
 

@@ -1,5 +1,5 @@
 type: module
 name: GraphQL File Validate Test
-description: Tests hook_file_validate() on uploads.
+description: Tests file validate on uploads.
 package: Testing
 hidden: TRUE

@@ -37,7 +37,8 @@ class Condition implements ResolverInterface {
    */
   public function resolve($value, $args, ResolveContext $context, ResolveInfo $info, FieldContext $field) {
     $branches = $this->branches;
-    while ([$condition, $resolver] = array_pad(array_shift($branches), 2, NULL)) {
+    while ($branch = array_shift($branches)) {
+      [$condition, $resolver] = array_pad($branch, 2, NULL);
       if ($condition instanceof ResolverInterface) {
         if (($condition = $condition->resolve($value, $args, $context, $info, $field)) === NULL) {
           // Bail out early if a resolver returns NULL.

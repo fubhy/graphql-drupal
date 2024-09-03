@@ -11,12 +11,12 @@ use Drupal\graphql\GraphQL\Resolver\Context;
 use Drupal\graphql\GraphQL\Resolver\DefaultValue;
 use Drupal\graphql\GraphQL\Resolver\Map;
 use Drupal\graphql\GraphQL\Resolver\ParentValue;
+use Drupal\graphql\GraphQL\Resolver\ResolverInterface;
 use Drupal\graphql\GraphQL\Resolver\SourceContext;
 use Drupal\graphql\GraphQL\Resolver\Tap;
 use Drupal\graphql\GraphQL\Resolver\Value;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerProxy;
 use Drupal\typed_data\DataFetcherTrait;
-use Drupal\graphql\GraphQL\Resolver\ResolverInterface;
 
 /**
  * Wires and maps different resolvers together to build the GraphQL tree.

@@ -48,8 +48,8 @@ graphql.explorer:
   options:
     _admin_route: TRUE
     parameters:
-      server:
-        type: entity:graphql_server
+      graphql_server:
+        with_config_overrides: TRUE
 
 graphql.voyager:
   path: '/admin/config/graphql/servers/manage/{graphql_server}/voyager'
@@ -62,7 +62,7 @@ graphql.voyager:
     _admin_route: TRUE
     parameters:
       graphql_server:
-        type: entity:graphql_server
+        with_config_overrides: TRUE
 
 graphql.validate:
   path: '/admin/config/graphql/servers/manage/{graphql_server}/validate'
@@ -75,8 +75,7 @@ graphql.validate:
     _admin_route: TRUE
     parameters:
       graphql_server:
-        type: entity:graphql_server
-
+        with_config_overrides: TRUE
 
 entity.graphql_server.delete_form:
   path: '/admin/config/graphql/servers/manage/{graphql_server}/delete'

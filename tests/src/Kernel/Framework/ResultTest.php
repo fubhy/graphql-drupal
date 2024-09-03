@@ -58,7 +58,7 @@ GQL;
    * @coversClass \Drupal\graphql\Cache\RequestPolicy\DenyPost
    */
   public function testPostQuery(): void {
-    $result = $this->query('query { root }', NULL, [], NULL, FALSE, Request::METHOD_POST);
+    $result = $this->query('query { root }', NULL, [], [], FALSE, Request::METHOD_POST);
     $this->assertSame(200, $result->getStatusCode());
     $this->assertSame([
       'data' => [
