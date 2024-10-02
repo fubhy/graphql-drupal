@@ -1,0 +1,5 @@
+type: module
+name: GraphQL Menu Links Test
+description: Tests access on menu links.
+package: Testing
+hidden: TRUE

@@ -1,0 +1,7 @@
+graphql_menu_links_test.protected:
+  path: '/graphql-protected'
+  defaults:
+    _controller: '\Irrelevant'
+    _title: 'Protected page'
+  requirements:
+    _custom_access: '\Drupal\graphql_menu_links_test\Access\TestAccessCheck::access'

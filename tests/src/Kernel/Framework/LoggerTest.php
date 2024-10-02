@@ -55,8 +55,6 @@ GQL;
    *
    * @todo For some reason, PHPStan wants to see a type hint for the level here,
    * which is not correct.
-   *
-   * @phpstan-ignore-next-line
    */
   public function log($level, string|\Stringable $message, array $context = []): void {
     $this->loggerCalls[] = [

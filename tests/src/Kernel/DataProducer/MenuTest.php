@@ -224,4 +224,35 @@ class MenuTest extends GraphQLTestBase {
     }
   }
 
+  /**
+   * Test that there are no links returned that are not accessible.
+   */
+  public function testAccessDeniedLinksRemoved(): void {
+    $menu = Menu::create([
+      'id' => 'access_test',
+      'label' => 'Access test menu',
+      'description' => 'Description text',
+    ]);
+
+    $menu->save();
+
+    $link_options = [
+      'title' => 'Menu link test',
+      'provider' => 'graphql',
+      'menu_name' => 'access_test',
+      'link' => [
+        // Only accessible by admins, so must be removed for the anonymous user.
+        'uri' => 'internal:/admin/config/graphql',
+      ],
+      'description' => 'Test description',
+    ];
+    $link = MenuLinkContent::create($link_options);
+    $link->save();
+
+    $result = $this->executeDataProducer('menu_links', [
+      'menu' => $menu,
+    ]);
+    $this->assertEmpty($result);
+  }
+
 }

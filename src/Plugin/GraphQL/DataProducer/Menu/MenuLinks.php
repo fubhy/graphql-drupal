@@ -8,6 +8,7 @@ use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 use Drupal\system\MenuInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -79,10 +80,16 @@ class MenuLinks extends DataProducerPluginBase implements ContainerFactoryPlugin
    * Resolver.
    *
    * @param \Drupal\system\MenuInterface $menu
+   *   The menu to load links for.
+   * @param \Drupal\graphql\GraphQL\Execution\FieldContext $context
+   *   The context to add caching information to.
    *
-   * @return array
+   * @return \Drupal\Core\Menu\MenuLinkTreeElement[]
+   *   The list of menu links that are enabled and accessible.
    */
-  public function resolve(MenuInterface $menu) {
+  public function resolve(MenuInterface $menu, FieldContext $context) {
+    // Ensure the cache is invalidated when the menu changes.
+    $context->addCacheableDependency($menu);
     $tree = $this->menuLinkTree->load($menu->id(), new MenuTreeParameters());
 
     $manipulators = [
@@ -90,8 +97,9 @@ class MenuLinks extends DataProducerPluginBase implements ContainerFactoryPlugin
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
 
-    return array_filter($this->menuLinkTree->transform($tree, $manipulators), function (MenuLinkTreeElement $item) {
-      return $item->link instanceof MenuLinkInterface && $item->link->isEnabled();
+    return array_filter($this->menuLinkTree->transform($tree, $manipulators), function (MenuLinkTreeElement $item) use ($context) {
+      $context->addCacheableDependency($item->access);
+      return $item->link instanceof MenuLinkInterface && $item->link->isEnabled() && $item->access->isAllowed();
     });
   }
 
