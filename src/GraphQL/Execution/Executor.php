@@ -4,8 +4,8 @@ namespace Drupal\graphql\GraphQL\Execution;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\Utility\Error as ErrorUtil;
 use Drupal\graphql\Event\OperationEvent;

@@ -87,7 +87,7 @@ trait QueryResultAssertionTrait {
    * @param \Drupal\Core\Cache\CacheableMetadata|null $metadata
    *   The expected cache metadata object.
    */
-  protected function assertResults($query, array $variables, array $expected, CacheableMetadata $metadata = NULL): void {
+  protected function assertResults($query, array $variables, array $expected, ?CacheableMetadata $metadata = NULL): void {
     $context = new RenderContext();
     $result = $this->getRenderer()->executeInRenderContext(
       $context,

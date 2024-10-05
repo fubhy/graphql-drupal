@@ -82,13 +82,13 @@ class ImageDerivative extends DataProducerPluginBase implements ContainerFactory
   /**
    * Resolver.
    *
-   * @param \Drupal\file\FileInterface $entity
+   * @param \Drupal\file\FileInterface|null $entity
    * @param string $style
    * @param \Drupal\Core\Cache\RefinableCacheableDependencyInterface $metadata
    *
    * @return array|null
    */
-  public function resolve(FileInterface $entity = NULL, $style, RefinableCacheableDependencyInterface $metadata) {
+  public function resolve(?FileInterface $entity, $style, RefinableCacheableDependencyInterface $metadata) {
     // Return if we don't have an entity.
     if (!$entity) {
       return NULL;

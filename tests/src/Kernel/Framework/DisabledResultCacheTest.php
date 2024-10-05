@@ -3,8 +3,8 @@
 namespace Drupal\Tests\graphql\Kernel\Framework;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\graphql\Entity\Server;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
+use Drupal\graphql\Entity\Server;
 
 /**
  * Test disabled result cache.

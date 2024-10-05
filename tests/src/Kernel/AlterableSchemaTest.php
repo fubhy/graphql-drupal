@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\graphql\Kernel;
 
+use Drupal\Tests\graphql\Kernel\Schema\AlterableComposableTestSchema;
 use Drupal\graphql\GraphQL\ResolverRegistry;
 use Drupal\graphql\Plugin\SchemaExtensionPluginInterface;
 use Drupal\graphql\Plugin\SchemaExtensionPluginManager;
-use Drupal\Tests\graphql\Kernel\Schema\AlterableComposableTestSchema;
 
 /**
  * Tests the alterable schema.

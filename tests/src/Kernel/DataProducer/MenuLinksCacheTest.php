@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\graphql\Kernel\DataProducer;
 
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\system\Entity\Menu;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 
 /**
  * Tests that menu links cache metadata is correct.

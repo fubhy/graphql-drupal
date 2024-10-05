@@ -45,7 +45,7 @@ class OperationEvent extends Event {
    * @param \Drupal\graphql\GraphQL\Execution\ResolveContext $context
    * @param \GraphQL\Executor\ExecutionResult $result
    */
-  public function __construct(ResolveContext $context, ExecutionResult $result = NULL) {
+  public function __construct(ResolveContext $context, ?ExecutionResult $result = NULL) {
     $this->context = $context;
     $this->result = $result;
   }

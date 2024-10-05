@@ -3,10 +3,10 @@
 namespace Drupal\Tests\graphql\Kernel\DataProducer;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\node\Entity\Node;
-use Drupal\node\Entity\NodeType;
 use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
 
 /**
  * Tests the entity_reference data producers.

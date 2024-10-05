@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\graphql\Kernel\Framework;
 
-use Drupal\graphql\Routing\QueryRouteEnhancer;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
+use Drupal\graphql\Routing\QueryRouteEnhancer;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

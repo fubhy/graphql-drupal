@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\graphql\Kernel\Framework;
 
-use Drupal\graphql\GraphQL\Buffers\BufferBase;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
+use Drupal\graphql\GraphQL\Buffers\BufferBase;
 use GraphQL\Deferred;
 
 /**

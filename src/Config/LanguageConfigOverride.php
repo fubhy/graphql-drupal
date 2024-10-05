@@ -35,7 +35,7 @@ class LanguageConfigOverride implements ConfigFactoryOverrideInterface {
    *   The config storage service.
    * @param \Drupal\language\LanguageNegotiationMethodManager|null $negotiatorManager
    */
-  public function __construct(StorageInterface $storage, LanguageNegotiationMethodManager $negotiatorManager = NULL) {
+  public function __construct(StorageInterface $storage, ?LanguageNegotiationMethodManager $negotiatorManager = NULL) {
     $this->baseStorage = $storage;
     $this->negotiatorManager = $negotiatorManager;
   }

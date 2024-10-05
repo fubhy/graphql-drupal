@@ -3,9 +3,9 @@
 namespace Drupal\Tests\graphql\Kernel\DataProducer;
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\graphql\GraphQL\Execution\FieldContext;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\Entity\EntityLoad;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use GraphQL\Deferred;
 use PHPUnit\Framework\Assert;
 

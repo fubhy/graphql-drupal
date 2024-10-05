@@ -34,7 +34,7 @@ class OperationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    * @param \Drupal\language\LanguageNegotiatorInterface $languageNegotiator
    */
-  public function __construct(ModuleHandlerInterface $moduleHandler, LanguageManagerInterface $languageManager, TranslatorInterface $translator, AccountInterface $currentUser, LanguageNegotiatorInterface $languageNegotiator = NULL) {
+  public function __construct(ModuleHandlerInterface $moduleHandler, LanguageManagerInterface $languageManager, TranslatorInterface $translator, AccountInterface $currentUser, ?LanguageNegotiatorInterface $languageNegotiator = NULL) {
     $this->moduleHandler = $moduleHandler;
     $this->languageManager = $languageManager;
     $this->translator = $translator;

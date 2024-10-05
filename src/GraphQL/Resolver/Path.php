@@ -50,7 +50,7 @@ class Path implements ResolverInterface {
    * @param mixed $path
    * @param \Drupal\graphql\GraphQL\Resolver\ResolverInterface|null $value
    */
-  public function __construct($type, $path, ResolverInterface $value = NULL) {
+  public function __construct($type, $path, ?ResolverInterface $value = NULL) {
     $this->type = $type;
     $this->path = $path;
     $this->value = $value;

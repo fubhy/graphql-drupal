@@ -5,10 +5,7 @@ namespace Drupal\Tests\graphql\Kernel;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\PageCache\ChainRequestPolicy;
 use Drupal\Core\PageCache\RequestPolicy\NoSessionOpen;
-use Drupal\graphql\Cache\RequestPolicy\GetOnly;
-use Drupal\graphql\GraphQL\ResolverBuilder;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\graphql\Traits\DataProducerExecutionTrait;
 use Drupal\Tests\graphql\Traits\HttpRequestTrait;
 use Drupal\Tests\graphql\Traits\MockingTrait;
@@ -16,6 +13,9 @@ use Drupal\Tests\graphql\Traits\QueryFileTrait;
 use Drupal\Tests\graphql\Traits\QueryResultAssertionTrait;
 use Drupal\Tests\graphql\Traits\SchemaPrinterTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\graphql\Cache\RequestPolicy\GetOnly;
+use Drupal\graphql\GraphQL\ResolverBuilder;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**

@@ -3,10 +3,10 @@
 namespace Drupal\Tests\graphql\Kernel\DataProducer\Routing;
 
 use Drupal\Core\Url;
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 
 /**
  * Test class for the RouteEntity data producer.

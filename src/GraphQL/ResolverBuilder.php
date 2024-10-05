@@ -89,7 +89,7 @@ class ResolverBuilder {
    *
    * @return \Drupal\graphql\GraphQL\Resolver\Tap
    */
-  public function context($name, ResolverInterface $source = NULL) {
+  public function context($name, ?ResolverInterface $source = NULL) {
     $callback = new SourceContext($name, $source);
     return $this->tap($callback);
   }
@@ -114,7 +114,7 @@ class ResolverBuilder {
    *
    * @return \Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerProxy
    */
-  public function fromPath($type, $path, ResolverInterface $value = NULL) {
+  public function fromPath($type, $path, ?ResolverInterface $value = NULL) {
     return $this->produce('property_path')
       ->map('type', $this->fromValue($type))
       ->map('path', $this->fromValue($path))

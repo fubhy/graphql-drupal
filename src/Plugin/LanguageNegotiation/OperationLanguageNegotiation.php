@@ -40,7 +40,7 @@ class OperationLanguageNegotiation extends LanguageNegotiationMethodBase {
   /**
    * {@inheritdoc}
    */
-  public function getLangcode(Request $request = NULL) {
+  public function getLangcode(?Request $request = NULL) {
     if (!empty(static::$context)) {
       return static::$context->getContextLanguage();
     }
@@ -53,7 +53,7 @@ class OperationLanguageNegotiation extends LanguageNegotiationMethodBase {
    *
    * @param \Drupal\graphql\GraphQL\Execution\ResolveContext $context
    */
-  public static function setContext(ResolveContext $context = NULL): void {
+  public static function setContext(?ResolveContext $context = NULL): void {
     static::$context = $context;
   }
 

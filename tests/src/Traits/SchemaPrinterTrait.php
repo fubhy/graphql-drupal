@@ -19,7 +19,7 @@ trait SchemaPrinterTrait {
    * @return string
    *   The printed version of the schema.
    */
-  protected function getPrintedSchema(ServerInterface $server = NULL) {
+  protected function getPrintedSchema(?ServerInterface $server = NULL) {
     $server = $server ?? $this->server;
     /** @var \GraphQL\Server\ServerConfig $config */
     $config = $server->configuration();

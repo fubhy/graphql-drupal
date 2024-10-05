@@ -3,8 +3,8 @@
 namespace Drupal\Tests\graphql\Kernel\Framework;
 
 use Drupal\Core\Lock\LockBackendInterface;
-use Drupal\graphql\GraphQL\Utility\FileUpload;
 use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
+use Drupal\graphql\GraphQL\Utility\FileUpload;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

@@ -26,7 +26,7 @@ class SubrequestSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    * @param \Drupal\language\LanguageNegotiatorInterface $languageNegotiator
    */
-  public function __construct(LanguageManagerInterface $languageManager, TranslatorInterface $translator, AccountInterface $currentUser, LanguageNegotiatorInterface $languageNegotiator = NULL) {
+  public function __construct(LanguageManagerInterface $languageManager, TranslatorInterface $translator, AccountInterface $currentUser, ?LanguageNegotiatorInterface $languageNegotiator = NULL) {
     $this->languageManager = $languageManager;
     $this->translator = $translator;
     $this->currentUser = $currentUser;

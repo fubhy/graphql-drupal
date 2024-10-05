@@ -4,9 +4,9 @@ namespace Drupal\Tests\graphql\Kernel\DataProducer\Entity\Fields\Image;
 
 use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Access\AccessResultForbidden;
+use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\Tests\graphql\Kernel\GraphQLTestBase;
 
 /**
  * Test class for the ImageDerivative data producer.
