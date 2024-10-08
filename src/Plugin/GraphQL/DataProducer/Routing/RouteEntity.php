@@ -107,9 +107,21 @@ class RouteEntity extends DataProducerPluginBase implements ContainerFactoryPlug
    */
   public function resolve($url, ?string $language, FieldContext $context): ?Deferred {
     if ($url instanceof Url) {
-      [, $type] = explode('.', $url->getRouteName());
-      $parameters = $url->getRouteParameters();
-      $id = $parameters[$type];
+      [$baseType, $type] = explode('.', $url->getRouteName());
+
+      if ($baseType === 'entity') {
+        $parameters = $url->getRouteParameters();
+        $id = $parameters[$type];
+      }
+      elseif ($baseType === 'view') {
+        // View routeNames have format 'view.VIEW_ID.PAGE_ID'.
+        $id = $type;
+        $type = 'view';
+      }
+      else {
+        return NULL;
+      }
+
       $resolver = $this->entityBuffer->add($type, $id);
 
       return new Deferred(function () use ($type, $resolver, $context, $language) {
