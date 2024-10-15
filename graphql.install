@@ -36,11 +36,13 @@ function graphql_uninstall(): void {
   /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
   $configFactory = \Drupal::getContainer()->get('config.factory');
   $languageTypes = $configFactory->getEditable('language.types');
-  $negotiation = $languageTypes->get('negotiation');
-  foreach (array_keys($negotiation) as $type) {
-    unset($negotiation[$type]['enabled']['language-graphql']);
+  if (!$languageTypes->isNew()) {
+    $negotiation = $languageTypes->get('negotiation');
+    foreach (array_keys($negotiation) as $type) {
+        unset($negotiation[$type]['enabled']['language-graphql']);
+    }
+    $languageTypes->set('negotiation', $negotiation)->save();
   }
-  $languageTypes->set('negotiation', $negotiation)->save();
 }
 
 /**
