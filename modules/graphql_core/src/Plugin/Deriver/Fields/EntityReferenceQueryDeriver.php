@@ -92,15 +92,16 @@ class EntityReferenceQueryDeriver extends DeriverBase implements ContainerDerive
         $targetType = $this->entityTypeManager->getDefinition($targetTypeId);
         $fieldName = $fieldDefinition->getName();
 
+        $parents = [];
         if ($fieldDefinition instanceof BaseFieldDefinition || !$entityType->hasKey('bundle')) {
           $parents = [StringHelper::camelCase($entityTypeId)];
         }
-        else {
-          $parents = [];
+        elseif (isset($fieldMap[$entityTypeId][$fieldName])) {
           foreach ($fieldMap[$entityTypeId][$fieldName]['bundles'] as $bundle) {
             $parents[] = StringHelper::camelCase($entityTypeId . '_' . $bundle);
           }
         }
+
         $derivative = [
           'parents' => $parents,
           'name' => StringHelper::propCase('query', $fieldName),
