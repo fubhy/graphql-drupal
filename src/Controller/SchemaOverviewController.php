@@ -3,6 +3,7 @@
 namespace Drupal\graphql\Controller;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\graphql\Plugin\SchemaPluginManager;
@@ -27,11 +28,19 @@ class SchemaOverviewController implements ContainerInjectionInterface {
   protected $moduleHandler;
 
   /**
+   * The module extension list service.
+   *
+   * @var \Drupal\Core\Extension\ModuleExtensionList
+   */
+  protected $moduleExtensionList;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('module_handler'),
+      $container->get('extension.list.module'),
       $container->get('plugin.manager.graphql.schema')
     );
   }
@@ -40,12 +49,15 @@ class SchemaOverviewController implements ContainerInjectionInterface {
    * SchemaOverviewController constructor.
    *
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
-   *   The module handler srevice.
+   *   The module handler service.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
+   *   The module extension list service
    * @param \Drupal\graphql\Plugin\SchemaPluginManager $schemaManager
    *   The schema plugin manager service.
    */
-  public function __construct(ModuleHandlerInterface $moduleHandler, SchemaPluginManager $schemaManager) {
+  public function __construct(ModuleHandlerInterface $moduleHandler, ModuleExtensionList $moduleExtensionList, SchemaPluginManager $schemaManager) {
     $this->schemaManager = $schemaManager;
+    $this->moduleExtensionList = $moduleExtensionList;
     $this->moduleHandler = $moduleHandler;
   }
 
@@ -74,7 +86,7 @@ class SchemaOverviewController implements ContainerInjectionInterface {
       ];
 
       $table["schema:$key"]['provider'] = [
-        '#plain_text' => $this->moduleHandler->getName($definition['provider']),
+        '#plain_text' => $this->moduleExtensionList->getName($definition['provider']),
       ];
 
       $table["schema:$key"]['operations'] = $this->buildOperations($key, $definition);

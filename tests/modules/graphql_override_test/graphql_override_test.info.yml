@@ -2,7 +2,7 @@ type: module
 name: GraphQL Override Test
 description: Test plugin overrides in graphql schema.
 package: Testing
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 hidden: TRUE
 dependencies:
   - graphql:graphql_plugin_test

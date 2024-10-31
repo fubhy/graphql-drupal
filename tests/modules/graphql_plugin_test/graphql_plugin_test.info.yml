@@ -2,7 +2,7 @@ type: module
 name: GraphQL Plugin Test
 description: Test plugin based graphql schema.
 package: Testing
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 hidden: TRUE
 dependencies:
   - graphql:graphql

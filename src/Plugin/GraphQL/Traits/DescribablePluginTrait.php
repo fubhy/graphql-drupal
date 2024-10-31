@@ -10,8 +10,8 @@ trait DescribablePluginTrait {
    * @return null|string
    */
   protected function buildDescription($definition) {
-    if (!empty($definition['description'])) {
-      return (string) $definition['description'];
+    if (!empty($definition['description']) && !is_null($definition['description'])) {
+      return (string) ($definition['description']);
     }
 
     return NULL;
