@@ -95,6 +95,7 @@ class MenuLinks extends DataProducerPluginBase implements ContainerFactoryPlugin
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+      ['callable' => 'menu.language_tree_manipulator:filterLanguage'],
     ];
 
     return array_filter($this->menuLinkTree->transform($tree, $manipulators), function (MenuLinkTreeElement $item) use ($context) {
