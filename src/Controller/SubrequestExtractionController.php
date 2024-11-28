@@ -2,9 +2,9 @@
 
 namespace Drupal\graphql\Controller;
 
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\graphql\SubRequestResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -70,9 +70,19 @@ class SubrequestExtractionController extends ControllerBase {
     $request = $this->requestStack->getCurrentRequest();
     $callback = $request->attributes->get('_graphql_subrequest');
 
-    $metadata = new CacheableMetadata();
-    $response = new SubRequestResponse($callback($metadata));
-    $response->addCacheableDependency($metadata);
+    // @todo Remove this once https://www.drupal.org/project/drupal/issues/2940036#comment-12479912 is resolved.
+    $this->languageManager->reset();
+
+    // Collect any potentially leaked cache metadata released by the callback.
+    $context = new RenderContext();
+    $result = $this->renderer->executeInRenderContext($context, function () use ($callback) {
+      return $callback();
+    });
+
+    $response = new SubRequestResponse($result);
+    if (!$context->isEmpty()) {
+      $response->addCacheableDependency($context->pop());
+    }
 
     return $response;
   }
