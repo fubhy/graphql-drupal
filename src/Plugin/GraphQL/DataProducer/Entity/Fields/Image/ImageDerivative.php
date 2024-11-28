@@ -7,6 +7,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\file\FileInterface;
+use Drupal\file_entity\FileEntityInterface;
 use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
 use Drupal\image\Entity\ImageStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -101,6 +102,15 @@ class ImageDerivative extends DataProducerPluginBase implements ContainerFactory
       $width = $entity->width;
       // @phpstan-ignore-next-line
       $height = $entity->height;
+      // Optionally support the extra data from file_entity.
+      if ($entity instanceof FileEntityInterface) {
+        if (empty($width)) {
+          $width = $entity->getMetadata('width');
+        }
+        if (empty($height)) {
+          $height = $entity->getMetadata('height');
+        }
+      }
 
       if ($width == NULL || $height == NULL) {
         /** @var \Drupal\Core\Image\ImageInterface $image */
