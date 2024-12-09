@@ -9,6 +9,13 @@
   <rule ref="Drupal"></rule>
   <rule ref="DrupalPractice"></rule>
 
+  <!-- We want to enforce use statements to be alphabetically sorted.  -->
+  <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
+    <properties>
+      <property name="caseSensitive" value="true"/>
+    </properties>
+  </rule>
+
   <!-- We want to document the return type on the base class even when there is
     no return statement on the default implementation. -->
   <rule ref="Drupal.Commenting.FunctionComment.InvalidNoReturn">
