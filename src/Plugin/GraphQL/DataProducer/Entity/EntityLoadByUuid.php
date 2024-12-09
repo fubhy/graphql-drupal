@@ -165,6 +165,9 @@ class EntityLoadByUuid extends DataProducerPluginBase implements ContainerFactor
 
       // Get the correct translation.
       if (isset($language) && $language != $entity->language()->getId() && $entity instanceof TranslatableInterface) {
+        if (!$entity->hasTranslation($language)) {
+          return NULL;
+        }
         $entity = $entity->getTranslation($language);
         $entity->addCacheContexts(["static:language:{$language}"]);
       }
