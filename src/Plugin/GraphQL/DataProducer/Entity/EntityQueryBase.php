@@ -17,6 +17,27 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class EntityQueryBase extends DataProducerPluginBase implements ContainerFactoryPluginInterface {
 
   /**
+   * Allow list of condition operators that can be used in an entity query.
+   */
+  const ALLOWED_OPERATORS = [
+    'BETWEEN',
+    'NOT BETWEEN',
+    'IN',
+    'NOT IN',
+    'IS NULL',
+    'IS NOT NULL',
+    'LIKE',
+    'NOT LIKE',
+    'EXISTS',
+    'NOT EXISTS',
+    '=',
+    '<',
+    '>',
+    '>=',
+    '<=',
+  ];
+
+  /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManager
@@ -93,7 +114,7 @@ abstract class EntityQueryBase extends DataProducerPluginBase implements Contain
    *   Base entity query.
    *
    * @throws \GraphQL\Error\UserError
-   *   No bundles defined for given entity type.
+   *   For invalid bundles, condition fields or operators.
    */
   protected function buildBaseEntityQuery(string $type, bool $ownedOnly, array $conditions, array $allowedFilters, array $languages, array $bundles, bool $access, FieldContext $context): QueryInterface {
     $entity_type = $this->entityTypeManager->getStorage($type);
@@ -128,11 +149,15 @@ abstract class EntityQueryBase extends DataProducerPluginBase implements Contain
 
     // Filter by given conditions.
     foreach ($conditions as $condition) {
-      if (!in_array($condition['field'], $allowedFilters)) {
-        throw new UserError("Field '{$condition['field']}' is not allowed as filter.");
+      $field = $condition['field'];
+      if (!in_array($field, $allowedFilters)) {
+        throw new UserError("Field '$field' is not allowed as filter.");
       }
-      $operation = $condition['operator'] ?? NULL;
-      $query->condition($condition['field'], $condition['value'], $operation);
+      $operator = $condition['operator'] ?? '=';
+      if (!in_array(strtoupper($operator), static::ALLOWED_OPERATORS)) {
+        throw new UserError("Invalid condition operator '$operator' for field '$field'.");
+      }
+      $query->condition($condition['field'], $condition['value'], $operator);
     }
 
     return $query;
