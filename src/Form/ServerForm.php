@@ -268,7 +268,10 @@ class ServerForm extends EntityForm {
     // Trim the submitted value of whitespace and slashes. Ensure to not trim
     // the slash on the left side.
     $endpoint = rtrim(trim(trim($endpoint), ''), "\\/");
-    if ($endpoint[0] !== '/') {
+    // The endpoint has to start with a forward slash. Skip this check if no
+    // endpoint has been entered yet, to avoid showing this error message during
+    // AJAX requests that do a partial form update.
+    if (!empty($endpoint) && $endpoint[0] !== '/') {
       $formState->setErrorByName('endpoint', 'The endpoint path has to start with a forward slash.');
     }
     elseif (!UrlHelper::isValid($endpoint)) {
