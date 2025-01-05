@@ -1,1 +1,2 @@
+dataproducer_allow_current_user_caching: true
 dataproducer_populate_default_values: true

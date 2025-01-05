@@ -82,3 +82,15 @@ function graphql_update_10400() :void {
     ->set('dataproducer_populate_default_values', FALSE)
     ->save();
 }
+
+/**
+ * Preserve caching behavior of current_user data producer for existing sites.
+ *
+ * Set dataproducer_allow_current_user_caching to TRUE after you verified that
+ * your resolvers that use the current_user data producer can handle caching.
+ */
+function graphql_update_10401() :void {
+  \Drupal::configFactory()->getEditable('graphql.settings')
+    ->set('dataproducer_allow_current_user_caching', FALSE)
+    ->save();
+}
